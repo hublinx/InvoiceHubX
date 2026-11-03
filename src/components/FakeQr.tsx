@@ -11,7 +11,7 @@ export function FakeQr({ seed, size = 200 }: { seed: string; size?: number }) {
     <g key={`${x}-${y}`}>
       <rect x={x} y={y} width={7} height={7} rx={1.6} fill="#0a0b12" />
       <rect x={x + 1} y={y + 1} width={5} height={5} rx={1.1} fill="#fff" />
-      <rect x={x + 2} y={y + 2} width={3} height={3} rx={0.8} fill="#5933ff" />
+      <rect x={x + 2} y={y + 2} width={3} height={3} rx={0.8} fill="#1d4ed8" />
     </g>
   );
   return (
@@ -19,7 +19,7 @@ export function FakeQr({ seed, size = 200 }: { seed: string; size?: number }) {
       <rect x={-1} y={-1} width={n + 2} height={n + 2} rx={2} fill="#fff" />
       {cells.map(([x, y]) => <rect key={`${x}.${y}`} x={x + 0.08} y={y + 0.08} width={0.84} height={0.84} rx={0.3} fill="#0a0b12" />)}
       {finder(0, 0)}{finder(n - 7, 0)}{finder(0, n - 7)}
-      <rect x={n / 2 - 3} y={n / 2 - 3} width={6} height={6} rx={1.5} fill="#ccff1c" stroke="#fff" strokeWidth={0.6} />
+      <rect x={n / 2 - 3} y={n / 2 - 3} width={6} height={6} rx={1.5} fill="#f59e0b" stroke="#fff" strokeWidth={0.6} />
       <text x={n / 2} y={n / 2 + 1.1} fontSize={3} fontWeight={900} textAnchor="middle" fill="#0a0b12">X</text>
     </svg>
   );

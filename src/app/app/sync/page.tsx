@@ -84,7 +84,7 @@ export default function SyncPage() {
                       <Radio.Indicator />
                       <ThemeIcon variant="light" radius="md"><o.icon size={18} /></ThemeIcon>
                       <Box><Text fw={700} fz="sm">{o.t}</Text><Text fz="xs" c="dimmed">{o.d}</Text></Box>
-                      {o.v === 'cloud' && plan.id !== 'plus' && <Badge ml="auto" color="volt" variant="filled" c="dark.9">Cloud+</Badge>}
+                      {o.v === 'cloud' && plan.id !== 'plus' && <Badge ml="auto" color="volt" variant="light" >Cloud+</Badge>}
                     </Group>
                   </Radio.Card>
                 ))}

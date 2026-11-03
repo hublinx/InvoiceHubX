@@ -5,7 +5,7 @@ import { IconMoonStars, IconSun } from '@tabler/icons-react';
 
 export function ThemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
-  const scheme = useComputedColorScheme('dark', { getInitialValueInEffect: true });
+  const scheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
   return (
     <Tooltip label={scheme === 'dark' ? 'Giao diện sáng' : 'Giao diện tối'}>
       <ActionIcon

@@ -8,7 +8,7 @@ import { StoreProvider } from '@/lib/store';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme="light">
       <Notifications position="top-right" />
       <StoreProvider>{children}</StoreProvider>
     </MantineProvider>

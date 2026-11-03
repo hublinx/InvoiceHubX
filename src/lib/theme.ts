@@ -1,12 +1,14 @@
 import { createTheme, type MantineColorsTuple } from '@mantine/core';
 
+// Sapphire — xanh ngân hàng/sổ sách, tạo cảm giác tin cậy
 const iris: MantineColorsTuple = [
-  '#f1eeff', '#ded7ff', '#bbadff', '#967fff', '#7758ff',
-  '#6440ff', '#5933ff', '#4926e4', '#3e20cc', '#3217b4',
+  '#eef4ff', '#dbe6fe', '#bfd3fe', '#93b4fd', '#6090fa',
+  '#3b6ef6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a',
 ];
+// Amber — điểm nhấn (ưu đãi, cảnh báo nhẹ, đầu ra)
 const volt: MantineColorsTuple = [
-  '#fbffe1', '#f4ffcb', '#e9ff9a', '#ddff64', '#d3ff38',
-  '#ccff1c', '#c8ff08', '#afe300', '#9aca00', '#82ae00',
+  '#fffbeb', '#fef3c7', '#fde68a', '#fcd34d', '#fbbf24',
+  '#f59e0b', '#d97706', '#b45309', '#92400e', '#78350f',
 ];
 const dark: MantineColorsTuple = [
   '#d4d6e2', '#a9adc0', '#80859c', '#5d6278', '#41455a',
@@ -15,22 +17,22 @@ const dark: MantineColorsTuple = [
 
 export const theme = createTheme({
   primaryColor: 'iris',
-  primaryShade: { light: 6, dark: 4 },
+  primaryShade: { light: 7, dark: 5 },
   colors: { iris, volt, dark },
   fontFamily: '"Be Vietnam Pro", system-ui, -apple-system, sans-serif',
   fontFamilyMonospace: '"JetBrains Mono", ui-monospace, monospace',
   headings: {
     fontFamily: '"Be Vietnam Pro", system-ui, sans-serif',
-    fontWeight: '800',
+    fontWeight: '700',
   },
-  defaultRadius: 'lg',
+  defaultRadius: 'md',
   cursorType: 'pointer',
   components: {
-    Card: { defaultProps: { radius: 'xl', withBorder: true } },
-    Paper: { defaultProps: { radius: 'xl' } },
-    Button: { defaultProps: { radius: 'xl' } },
+    Card: { defaultProps: { radius: 'lg', withBorder: true } },
+    Paper: { defaultProps: { radius: 'lg' } },
+    Button: { defaultProps: { radius: 'md' } },
     Badge: { defaultProps: { radius: 'sm', variant: 'light' } },
-    Modal: { defaultProps: { radius: 'xl', centered: true, overlayProps: { blur: 6, backgroundOpacity: 0.55 } } },
+    Modal: { defaultProps: { radius: 'lg', centered: true, overlayProps: { blur: 6, backgroundOpacity: 0.35 } } },
     Drawer: { defaultProps: { overlayProps: { blur: 4, backgroundOpacity: 0.5 } } },
     TextInput: { defaultProps: { radius: 'md' } },
     PasswordInput: { defaultProps: { radius: 'md' } },

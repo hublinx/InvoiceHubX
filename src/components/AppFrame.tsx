@@ -38,9 +38,9 @@ function PlanWidget() {
   const left = Math.max(0, Math.ceil((end - now) / 86400000));
   const pct = Math.min(100, ((now - start) / (end - start)) * 100);
   return (
-    <Paper p="md" radius="lg" style={{ background: 'linear-gradient(135deg, rgba(119,88,255,.28), rgba(204,255,28,.08))', border: '1px solid rgba(150,127,255,.3)' }}>
+    <Paper p="md" radius="lg" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,.08), rgba(245,158,11,.08))', border: '1px solid rgba(37,99,235,.2)' }}>
       <Group justify="space-between" mb={6}>
-        <Badge color="volt" variant="filled" c="dark.9" leftSection={<IconSparkles size={12} />}>
+        <Badge color="volt" variant="light" leftSection={<IconSparkles size={12} />}>
           {plan.id === 'plus' ? 'Cloud+' : plan.id === 'pro' ? 'Pro' : 'Starter'}
         </Badge>
         <Text fz="xs" c="dimmed">còn {left} ngày</Text>
@@ -170,7 +170,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
                   className="nav-link"
                   style={{ borderRadius: 12 }}
                   fw={600}
-                  rightSection={n.href === '/app/invoices' ? <Badge size="xs" color="volt" variant="filled" c="dark.9">{invoices.length}</Badge> : null}
+                  rightSection={n.href === '/app/invoices' ? <Badge size="xs" color="volt" variant="light" >{invoices.length}</Badge> : null}
                 />
               );
             })}
@@ -200,8 +200,8 @@ export function PageHeader({ title, subtitle, right, eyebrow }: { title: ReactNo
   return (
     <Group justify="space-between" align="flex-end" mb="xl" gap="md">
       <Box>
-        {eyebrow && <Text fz="xs" fw={700} tt="uppercase" lts={1.5} c="iris.3" mb={4}>{eyebrow}</Text>}
-        <Text component="h1" fz={{ base: 26, md: 34 }} fw={900} lts={-1} lh={1.1} m={0}>{title}</Text>
+        {eyebrow && <Text fz="xs" fw={700} tt="uppercase" lts={1.5} c="iris.7" mb={4}>{eyebrow}</Text>}
+        <Text component="h1" fz={{ base: 26, md: 34 }} fw={800} lts={-0.5} lh={1.1} m={0}>{title}</Text>
         {subtitle && <Text c="dimmed" mt={6} maw={680}>{subtitle}</Text>}
       </Box>
       {right}

@@ -65,7 +65,7 @@ export function CompanySwitcher({ compact = false }: { compact?: boolean }) {
           </Menu.Item>
         ))}
         <Divider my={6} />
-        <Menu.Item component={Link} href="/app/companies?add=1" leftSection={<IconPlus size={16} />} c="iris.3" fw={600}>
+        <Menu.Item component={Link} href="/app/companies?add=1" leftSection={<IconPlus size={16} />} c="iris.7" fw={600}>
           Thêm mã số thuế
         </Menu.Item>
         <Menu.Item component={Link} href="/app/companies" leftSection={<IconSettings2 size={16} />}>

@@ -94,8 +94,8 @@ function AddCompanyModal({ opened, onClose }: { opened: boolean; onClose: () => 
 
       {step === 2 && (
         <Stack align="center" ta="center" py="md">
-          <ThemeIcon size={72} radius="xl" color="volt" c="dark.9"><IconCheck size={40} /></ThemeIcon>
-          <Text fw={900} fz="xl">Đã kết nối {name}</Text>
+          <ThemeIcon size={72} radius="xl" color="volt" ><IconCheck size={40} /></ThemeIcon>
+          <Text fw={800} fz="xl">Đã kết nối {name}</Text>
           <Text c="dimmed" maw={420}>Lần đồng bộ đầu tiên sẽ tải hoá đơn của 12 tháng gần nhất. Quá trình chạy nền, bạn có thể đóng cửa sổ này.</Text>
           <Group gap="xs"><Loader size="xs" type="dots" /><Text fz="sm" c="dimmed">Đang khởi tạo đồng bộ…</Text></Group>
           <Button onClick={close} mt="sm">Xong</Button>

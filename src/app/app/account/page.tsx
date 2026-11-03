@@ -69,12 +69,12 @@ export default function AccountPage() {
       <PageHeader eyebrow="Cá nhân" title="Tài khoản của tôi" subtitle="Quản lý hồ sơ, bảo mật, thiết bị đăng nhập và cách bạn nhận thông báo." />
 
       <Card p={0} mb="lg" style={{ overflow: 'hidden' }} className="glass">
-        <Box h={110} style={{ background: 'linear-gradient(110deg, #3e20cc, #7758ff 55%, #ccff1c)' }} />
+        <Box h={110} style={{ background: 'linear-gradient(110deg, #0f1f3d, #1e3a8a 50%, #3b82f6)' }} />
         <Group px="xl" pb="lg" mt={-44} justify="space-between" align="flex-end">
           <Group align="flex-end">
             <Avatar size={96} radius={28} color="iris" variant="filled" style={{ border: '4px solid var(--mantine-color-body)' }} fz={32}>{initials(user.name)}</Avatar>
             <Box pb={6}>
-              <Group gap="xs"><Text fz={24} fw={900}>{user.name}</Text><Badge color="volt" variant="filled" c="dark.9">{plan.id.toUpperCase()}</Badge></Group>
+              <Group gap="xs"><Text fz={24} fw={800}>{user.name}</Text><Badge color="volt" variant="light" >{plan.id.toUpperCase()}</Badge></Group>
               <Text c="dimmed" fz="sm">Thành viên từ {dateVN(user.joinedAt)} · {user.email}</Text>
             </Box>
           </Group>

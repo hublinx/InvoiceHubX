@@ -19,7 +19,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
     <Drawer opened={!!inv} onClose={onClose} position="right" size="xl" title={<Text fw={800}>Chi tiết hoá đơn</Text>} scrollAreaComponent={ScrollArea.Autosize}>
       {inv && (
         <Stack gap="lg">
-          <Paper p="lg" radius="xl" style={{ background: 'linear-gradient(135deg, rgba(119,88,255,.25), rgba(119,88,255,.05))', border: '1px solid rgba(150,127,255,.3)' }}>
+          <Paper p="lg" radius="xl" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,.10), rgba(37,99,235,.02))', border: '1px solid rgba(37,99,235,.2)' }}>
             <Group justify="space-between" align="flex-start">
               <Box>
                 <Group gap={6}>
@@ -42,7 +42,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
               </Box>
               <Box ta="right">
                 <Text fz="xs" c="dimmed">Tổng thanh toán</Text>
-                <Text fz={28} fw={900} className="tnum" lts={-0.5}>{vnd(inv.total)}</Text>
+                <Text fz={28} fw={800} className="tnum" lts={-0.5}>{vnd(inv.total)}</Text>
               </Box>
             </Group>
           </Paper>

@@ -111,7 +111,7 @@ function InvoicesInner() {
         ].map((s) => (
           <Paper key={s.label} className="glass" withBorder p="md" radius="lg" style={{ borderLeft: `4px solid var(--mantine-color-${s.color}-5)` }}>
             <Text fz="xs" c="dimmed" tt="uppercase" fw={700} lts={1}>{s.label}</Text>
-            <Text fz={22} fw={900} className="tnum">{vnd(s.value)}</Text>
+            <Text fz={22} fw={800} className="tnum">{vnd(s.value)}</Text>
           </Paper>
         ))}
       </SimpleGrid>
@@ -252,7 +252,7 @@ function InvoicesInner() {
         <Transition transition="slide-up" mounted={selected.length > 0}>
           {(styles) => (
             <Group justify="center" style={styles} px="md">
-              <Paper shadow="xl" radius="xl" px="lg" py="sm" style={{ background: '#151725', border: '1px solid rgba(150,127,255,.4)' }}>
+              <Paper shadow="xl" radius="xl" px="lg" py="sm" style={{ background: '#0f1f3d', border: '1px solid rgba(37,99,235,.4)' }}>
                 <Group gap="md">
                   <Text fw={700} c="white">Đã chọn {selected.length} hoá đơn</Text>
                   <Text fz="sm" c="gray.5" className="tnum" visibleFrom="sm">{compact(invoices.filter((i) => selected.includes(i.id)).reduce((s, i) => s + i.total, 0))}</Text>

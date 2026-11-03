@@ -81,22 +81,22 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
 
       {step === 0 && (
         <Stack>
-          <Paper p="lg" radius="xl" className="ticket" style={{ background: 'linear-gradient(135deg, #3e20cc, #6440ff)', color: '#fff' }}>
+          <Paper p="lg" radius="xl" className="ticket" style={{ background: 'linear-gradient(135deg, #1e3a8a, #1d4ed8)', color: '#fff' }}>
             <Group justify="space-between" align="flex-start">
               <Box>
                 <Text fz="xs" tt="uppercase" fw={700} lts={1.5} opacity={0.7}>Gói đã chọn</Text>
-                <Text fz={26} fw={900}>{p.name} · {months} tháng</Text>
+                <Text fz={26} fw={800}>{p.name} · {months} tháng</Text>
                 <Text fz="sm" opacity={0.8}>Hiệu lực đến {dateVN(newExpiry)}</Text>
               </Box>
-              <Badge color="volt" variant="filled" c="dark.9" size="lg">-{price.discount}%</Badge>
+              <Badge color="volt" variant="light" size="lg">-{price.discount}%</Badge>
             </Group>
           </Paper>
           <Stack gap={6}>
             <Line label="Giá gốc" value={<Text td="line-through" c="dimmed" className="tnum">{vnd(price.original)}</Text>} />
-            <Line label={`Ưu đãi theo thời hạn (${price.discount}%)`} value={<Text c="teal.4" fw={700} className="tnum">- {vnd(price.saved)}</Text>} />
-            {applied && <Line label={`Mã ${applied} (${couponPct}%)`} value={<Text c="teal.4" fw={700} className="tnum">- {vnd(price.total - final)}</Text>} />}
+            <Line label={`Ưu đãi theo thời hạn (${price.discount}%)`} value={<Text c="teal.7" fw={700} className="tnum">- {vnd(price.saved)}</Text>} />
+            {applied && <Line label={`Mã ${applied} (${couponPct}%)`} value={<Text c="teal.7" fw={700} className="tnum">- {vnd(price.total - final)}</Text>} />}
             <Divider my={4} />
-            <Line label={<Text fw={800}>Tổng thanh toán</Text>} value={<Text fz={26} fw={900} className="tnum">{vnd(final)}</Text>} />
+            <Line label={<Text fw={800}>Tổng thanh toán</Text>} value={<Text fz={26} fw={800} className="tnum">{vnd(final)}</Text>} />
             <Text fz="xs" c="dimmed" ta="right">≈ {vnd(final / months)}/tháng · đã gồm VAT</Text>
           </Stack>
           <Group align="flex-end" gap="xs">
@@ -169,8 +169,8 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
 
       {step === 2 && (
         <Stack align="center" ta="center" py="lg">
-          <ThemeIcon size={84} radius={999} color="volt" c="dark.9" className="floaty"><IconConfetti size={44} /></ThemeIcon>
-          <Text fz={28} fw={900}>Kích hoạt thành công!</Text>
+          <ThemeIcon size={84} radius={999} color="volt"  className="floaty"><IconConfetti size={44} /></ThemeIcon>
+          <Text fz={28} fw={800}>Kích hoạt thành công!</Text>
           <Text c="dimmed">Gói <b>{p.name}</b> đã được áp dụng cho {user.email}.<br />Hiệu lực đến <b>{dateVN(newExpiry)}</b>.</Text>
           <Button size="md" onClick={onClose} mt="sm">Bắt đầu sử dụng</Button>
         </Stack>

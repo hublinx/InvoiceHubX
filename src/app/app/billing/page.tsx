@@ -33,12 +33,12 @@ function MembershipCard() {
   const pct = Math.max(0, Math.min(100, ((end - now) / (end - start)) * 100));
   const name = PLANS.find((p) => p.id === plan.id)!.name;
   return (
-    <Paper p="xl" radius={28} style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(125deg, #1d1450 0%, #3e20cc 45%, #7758ff 100%)', color: '#fff', border: '1px solid rgba(255,255,255,.12)' }}>
-      <Box style={{ position: 'absolute', right: -60, top: -60, width: 240, height: 240, borderRadius: '50%', background: 'radial-gradient(circle, rgba(204,255,28,.45), transparent 70%)' }} />
+    <Paper p="xl" radius={28} style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(125deg, #0f1f3d 0%, #1e3a8a 45%, #2563eb 100%)', color: '#fff', border: '1px solid rgba(255,255,255,.12)' }}>
+      <Box style={{ position: 'absolute', right: -60, top: -60, width: 240, height: 240, borderRadius: '50%', background: 'radial-gradient(circle, rgba(245,158,11,.45), transparent 70%)' }} />
       <Group justify="space-between" align="flex-start" style={{ position: 'relative' }} wrap="nowrap">
         <Box>
-          <Group gap="xs"><IconCrown size={18} color="#ccff1c" /><Text fz="xs" tt="uppercase" fw={800} lts={2} opacity={0.8}>Thẻ thành viên</Text></Group>
-          <Text fz={44} fw={900} lh={1.1} mt="sm" lts={-1}>{name}</Text>
+          <Group gap="xs"><IconCrown size={18} color="#f59e0b" /><Text fz="xs" tt="uppercase" fw={800} lts={2} opacity={0.8}>Thẻ thành viên</Text></Group>
+          <Text fz={44} fw={800} lh={1.1} mt="sm" lts={-0.5}>{name}</Text>
           <Text opacity={0.75} fz="sm">{user.email}</Text>
           <Group mt="xl" gap="xl">
             <Box><Text fz={11} opacity={0.6} tt="uppercase" fw={700}>Bắt đầu</Text><Text fw={700} className="mono">{dateVN(plan.startedAt)}</Text></Box>
@@ -47,9 +47,9 @@ function MembershipCard() {
         </Box>
         <RingProgress
           size={130} thickness={10} roundCaps
-          sections={[{ value: pct, color: '#ccff1c' }]}
+          sections={[{ value: pct, color: '#f59e0b' }]}
           rootColor="rgba(255,255,255,.15)"
-          label={<Box ta="center"><Text fz={30} fw={900} lh={1} c="white">{left}</Text><Text fz={11} c="rgba(255,255,255,.7)">ngày còn lại</Text></Box>}
+          label={<Box ta="center"><Text fz={30} fw={800} lh={1} c="white">{left}</Text><Text fz={11} c="rgba(255,255,255,.7)">ngày còn lại</Text></Box>}
         />
       </Group>
       <Text fz="xs" opacity={0.6} mt="lg" style={{ position: 'relative' }}>Hết hạn, tài khoản tự chuyển về Starter — dữ liệu vẫn được giữ nguyên.</Text>
@@ -73,7 +73,7 @@ export default function BillingPage() {
             <Text fw={800} mb="sm">Bạn đang dùng</Text>
             <SimpleGrid cols={2}>
               {[['MST đã kết nối', '3 / ∞'], ['Lượt tải tháng này', '312'], ['Dung lượng Cloud', '1,8 GB'], ['Thiết bị', '3']].map(([k, v]) => (
-                <Paper key={k} withBorder p="sm" radius="lg"><Text fz="xs" c="dimmed">{k}</Text><Text fw={900} fz="lg" className="tnum">{v}</Text></Paper>
+                <Paper key={k} withBorder p="sm" radius="lg"><Text fz="xs" c="dimmed">{k}</Text><Text fw={800} fz="lg" className="tnum">{v}</Text></Paper>
               ))}
             </SimpleGrid>
             <Button mt="md" fullWidth className="volt-btn" onClick={() => setCheckout(plan.id === 'free' ? 'pro' : plan.id)} leftSection={<IconSparkles size={16} />}>
@@ -95,13 +95,13 @@ export default function BillingPage() {
             return (
               <UnstyledButton key={d.months} onClick={() => setMonths(d.months)} p="sm" style={{
                 borderRadius: 16, textAlign: 'center', position: 'relative',
-                background: on ? 'linear-gradient(135deg, #5933ff, #7758ff)' : 'transparent',
+                background: on ? 'linear-gradient(135deg, #1d4ed8, #2563eb)' : 'transparent',
                 border: `1px solid ${on ? 'transparent' : 'var(--ihx-border)'}`, color: on ? '#fff' : undefined, transition: 'all 150ms',
               }}>
                 {d.tag && <Badge size="xs" variant="filled" color={d.months === 36 ? 'volt' : 'pink'} c={d.months === 36 ? 'dark.9' : undefined} style={{ position: 'absolute', top: -9, left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>{d.tag}</Badge>}
-                <Text fw={900} fz="xl" lh={1.2}>{d.months}</Text>
+                <Text fw={800} fz="xl" lh={1.2}>{d.months}</Text>
                 <Text fz="xs" opacity={0.75}>tháng</Text>
-                <Text fz="xs" fw={800} c={on ? '#ccff1c' : 'teal.5'} mt={2}>-{d.discount}%</Text>
+                <Text fz="xs" fw={800} c={on ? '#fde68a' : 'teal.7'} mt={2}>-{d.discount}%</Text>
               </UnstyledButton>
             );
           })}
@@ -114,40 +114,40 @@ export default function BillingPage() {
           const current = plan.id === p.id;
           const featured = p.id === 'plus';
           return (
-            <Card key={p.id} p="xl" className={featured ? 'lift' : 'glass lift'} style={featured ? { background: 'linear-gradient(160deg, #151725 0%, #1d1450 100%)', border: '1px solid rgba(204,255,28,.5)', color: '#fff' } : undefined}>
+            <Card key={p.id} p="xl" className="glass lift" style={featured ? { borderColor: 'var(--mantine-color-iris-7)', borderWidth: 2, boxShadow: '0 12px 32px -16px rgba(30,58,138,.45)', borderTop: '5px solid var(--mantine-color-volt-5)' } : undefined}>
               <Group justify="space-between">
-                <Text fw={900} fz={22}>{p.name}</Text>
-                {current ? <Badge color="teal" variant="filled">Đang dùng</Badge> : p.highlight ? <Badge color="volt" variant="filled" c="dark.9">{p.highlight}</Badge> : null}
+                <Text fw={800} fz={22}>{p.name}</Text>
+                {current ? <Badge color="teal" variant="filled">Đang dùng</Badge> : p.highlight ? <Badge color="volt" variant="light" >{p.highlight}</Badge> : null}
               </Group>
-              <Text fz="sm" c={featured ? 'gray.4' : 'dimmed'} mih={40}>{p.tagline}</Text>
+              <Text fz="sm" c="dimmed" mih={40}>{p.tagline}</Text>
               <Box my="lg">
                 {pr ? (
                   <>
                     <Group gap={8} align="baseline">
-                      <Text fz={40} fw={900} lts={-1.5} className="tnum">{Math.round(pr.perMonth / 1000)}k</Text>
-                      <Text c={featured ? 'gray.4' : 'dimmed'}>/tháng</Text>
+                      <Text fz={40} fw={800} lts={-0.5} className="tnum">{Math.round(pr.perMonth / 1000)}k</Text>
+                      <Text c="dimmed">/tháng</Text>
                     </Group>
                     <Group gap={8}>
-                      <Text fz="sm" td="line-through" c={featured ? 'gray.5' : 'dimmed'} className="tnum">{vnd(pr.original)}</Text>
+                      <Text fz="sm" td="line-through" c="dimmed" className="tnum">{vnd(pr.original)}</Text>
                       <Text fz="sm" fw={800} className="tnum">{vnd(pr.total)}</Text>
                     </Group>
                     <Badge mt={8} color="teal" variant="light">Tiết kiệm {vnd(pr.saved)}</Badge>
                   </>
                 ) : (
                   <>
-                    <Text fz={40} fw={900} lts={-1.5}>0 ₫</Text>
+                    <Text fz={40} fw={800} lts={-0.5}>0 ₫</Text>
                     <Text fz="sm" c="dimmed">Miễn phí trọn đời</Text>
                     <Badge mt={8} color="gray" variant="light">Mặc định khi đăng ký</Badge>
                   </>
                 )}
               </Box>
-              <List spacing="sm" size="sm" mb="xl" icon={<ThemeIcon size={20} radius="xl" color={featured ? 'volt' : 'iris'} variant={featured ? 'filled' : 'light'} c={featured ? 'dark.9' : undefined}><IconCheck size={12} stroke={3} /></ThemeIcon>} style={{ flex: 1 }}>
+              <List spacing="sm" size="sm" mb="xl" icon={<ThemeIcon size={20} radius="xl" color="iris" variant={featured ? 'filled' : 'light'}><IconCheck size={12} stroke={3} /></ThemeIcon>} style={{ flex: 1 }}>
                 {p.features.map((f) => <List.Item key={f}>{f}</List.Item>)}
               </List>
               {p.id === 'free' ? (
                 <Button variant="default" fullWidth size="md" disabled>{current ? 'Gói hiện tại' : 'Tự quay về khi hết hạn'}</Button>
               ) : (
-                <Button fullWidth size="md" className={featured ? 'volt-btn' : undefined} variant={featured ? 'filled' : current ? 'filled' : 'light'} onClick={() => setCheckout(p.id)}>
+                <Button fullWidth size="md" variant={featured || current ? 'filled' : 'light'} onClick={() => setCheckout(p.id)}>
                   {current ? `Gia hạn ${months} tháng` : `Chọn ${p.name} ${months} tháng`}
                 </Button>
               )}

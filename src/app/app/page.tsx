@@ -27,7 +27,7 @@ function Kpi({ label, value, delta, icon: Icon, color, spark }: { label: string;
         </Badge>
       </Group>
       <Text c="dimmed" fz="sm" mt="md">{label}</Text>
-      <Text fz={26} fw={900} lts={-0.5} className="tnum">{value}</Text>
+      <Text fz={26} fw={800} lts={-0.5} className="tnum">{value}</Text>
       <Sparkline h={40} mt={6} data={spark} curveType="natural" color={color} fillOpacity={0.4} strokeWidth={2} />
     </Card>
   );
@@ -83,7 +83,7 @@ export default function Dashboard() {
           title={`${stats.risky.filter((r) => r.risk === 'high').length} hoá đơn đầu vào từ nhà cung cấp có rủi ro cao`}
         >
           Một số MST bán hàng đang trong danh sách cảnh báo / ngừng hoạt động. Kiểm tra trước khi kê khai khấu trừ thuế.{' '}
-          <Text component={Link} href="/app/invoices?risk=1" c="orange.4" fw={700} fz="sm">Xem ngay →</Text>
+          <Text component={Link} href="/app/invoices?risk=1" c="orange.8" fw={700} fz="sm">Xem ngay →</Text>
         </Alert>
       )}
 
@@ -91,7 +91,7 @@ export default function Dashboard() {
         <Kpi label="Tổng tiền đầu vào" value={compact(stats.inTotal)} delta={12} icon={IconArrowDownLeft} color="iris" spark={spark('Đầu vào')} />
         <Kpi label="Tổng tiền đầu ra" value={compact(stats.outTotal)} delta={8} icon={IconArrowUpRight} color="teal" spark={spark('Đầu ra')} />
         <Kpi label="VAT được khấu trừ" value={compact(stats.vatIn)} delta={-3} icon={IconReceiptTax} color="yellow" spark={spark('Đầu vào').map((v) => v * 0.09)} />
-        <Kpi label="Hoá đơn trong kỳ" value={String(invoices.length)} delta={21} icon={IconFileInvoice} color="grape" spark={series.map((s) => s['Đầu vào'] + s['Đầu ra'])} />
+        <Kpi label="Hoá đơn trong kỳ" value={String(invoices.length)} delta={21} icon={IconFileInvoice} color="cyan" spark={series.map((s) => s['Đầu vào'] + s['Đầu ra'])} />
       </SimpleGrid>
 
       <Grid gap="lg">
@@ -208,16 +208,16 @@ export default function Dashboard() {
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Card p="xl" style={{ background: 'linear-gradient(120deg, #3e20cc 0%, #6440ff 50%, #2a1a7a 100%)', border: 0 }}>
+          <Card p="xl" style={{ background: 'linear-gradient(120deg, #1e3a8a 0%, #1d4ed8 50%, #172554 100%)', border: 0 }}>
             <Group justify="space-between" gap="lg">
               <Group gap="lg" wrap="nowrap">
-                <ThemeIcon size={56} radius="xl" color="volt" c="dark.9" variant="filled"><IconSparkles size={28} /></ThemeIcon>
+                <ThemeIcon size={56} radius="xl" color="volt"  variant="filled"><IconSparkles size={28} /></ThemeIcon>
                 <Box>
-                  <Text fw={900} fz="xl" c="white">Còn {stats.missing} hoá đơn chưa tải bản gốc (XML/PDF)</Text>
+                  <Text fw={800} fz="xl" c="white">Còn {stats.missing} hoá đơn chưa tải bản gốc (XML/PDF)</Text>
                   <Text c="rgba(255,255,255,.75)" fz="sm">Tải hàng loạt một lần, lưu trữ 10 năm trên Cloud theo quy định Thông tư 78. Cập nhật {dateVN(new Date().toISOString())}.</Text>
                 </Box>
               </Group>
-              <Button size="md" className="volt-btn" component={Link} href="/app/invoices" leftSection={<IconDownload size={18} />}>Tải hàng loạt</Button>
+              <Button size="md" variant="white" component={Link} href="/app/invoices" leftSection={<IconDownload size={18} />}>Tải hàng loạt</Button>
             </Group>
           </Card>
         </Grid.Col>
