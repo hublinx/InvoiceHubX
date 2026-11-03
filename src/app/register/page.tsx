@@ -62,13 +62,12 @@ export default function RegisterPage() {
     <AuthLayout
       tabs
       title="Tạo tài khoản miễn phí"
-      subtitle="Gói Starter miễn phí trọn đời, không cần thẻ thanh toán"
-      footer={<Text fz="sm" c="dimmed">Đã có tài khoản? <Anchor component={Link} href="/login" fw={600}>Đăng nhập</Anchor></Text>}
+      subtitle="Starter miễn phí trọn đời, không cần thẻ"
     >
       <GoogleButton text="signup_with" label="Đăng ký với Google" onSuccess={finish} />
       <OrDivider />
       <form noValidate onSubmit={(e) => { e.preventDefault(); setTouched(true); if (valid) { setStep('otp'); setResend(60); } }}>
-        <Stack gap="md">
+        <Stack gap="sm">
           <TextInput label="Họ và tên" leftSection={<IconUser size={18} />} value={name} onChange={(e) => setName(e.currentTarget.value)}
             error={touched && name.trim().length < 2 ? 'Vui lòng nhập họ tên' : null} autoComplete="name" />
           <TextInput label="Email công việc" type="email" leftSection={<IconMail size={18} />} value={email} onChange={(e) => setEmail(e.currentTarget.value.trim())}
@@ -76,18 +75,18 @@ export default function RegisterPage() {
           <Box>
             <PasswordInput label="Mật khẩu" leftSection={<IconLock size={18} />} value={pw} onChange={(e) => setPw(e.currentTarget.value)}
               error={touched && score < 4 ? 'Mật khẩu chưa đủ mạnh' : null} autoComplete="new-password" />
-            <Progress value={(score / 4) * 100} color={score < 2 ? 'red' : score < 4 ? 'yellow' : 'teal'} size={4} mt={8} radius="xl" />
-            <Group gap="md" mt={6}>
+            <Progress value={(score / 4) * 100} color={score < 2 ? 'red' : score < 4 ? 'yellow' : 'teal'} size={3} mt={6} radius="xl" />
+            <Group gap="sm" mt={4}>
               {RULES.map((r) => {
                 const ok = r.re.test(pw);
                 return <Group key={r.label} gap={4} c={ok ? 'teal.7' : 'dimmed'}>{ok ? <IconCheck size={12} /> : <IconX size={12} />}<Text fz="xs">{r.label}</Text></Group>;
               })}
             </Group>
           </Box>
-          <Checkbox checked={agree} onChange={(e) => setAgree(e.currentTarget.checked)}
+          <Checkbox size="xs" checked={agree} onChange={(e) => setAgree(e.currentTarget.checked)}
             error={touched && !agree ? 'Bạn cần đồng ý điều khoản' : null}
-            label={<Text fz="sm">Tôi đồng ý với <Anchor fz="sm">Điều khoản sử dụng</Anchor> và <Anchor fz="sm">Chính sách bảo mật</Anchor></Text>} />
-          <Button type="submit" size="md" fullWidth>Tạo tài khoản</Button>
+            label={<Text fz="xs">Tôi đồng ý với <Anchor fz="xs">Điều khoản</Anchor> và <Anchor fz="xs">Chính sách bảo mật</Anchor></Text>} />
+          <Button type="submit" fullWidth>Tạo tài khoản</Button>
         </Stack>
       </form>
     </AuthLayout>

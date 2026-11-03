@@ -32,7 +32,7 @@ export function AuthLayout({ title, subtitle, children, footer, tabs = false }: 
       <Box pos="absolute" inset={0} className="ledger-bg" style={{ pointerEvents: 'none' }} />
 
       {/* Thanh trên */}
-      <Group justify="space-between" px={{ base: 'md', sm: 'xl' }} py="md" pos="relative">
+      <Group justify="space-between" px={{ base: 'md', sm: 'xl' }} py="sm" pos="relative">
         <Anchor component={Link} href="/" c="dimmed" fz="sm" underline="never">
           <Group gap={6}><IconArrowLeft size={16} />Trang chủ</Group>
         </Anchor>
@@ -40,22 +40,24 @@ export function AuthLayout({ title, subtitle, children, footer, tabs = false }: 
       </Group>
 
       {/* Thẻ */}
-      <Box pos="relative" my="auto" px={{ base: 'md', sm: 'xl' }} py="xl">
+      <Box pos="relative" my="auto" px={{ base: 'md', sm: 'xl' }} py="md">
         <Paper
           mx="auto" maw={440} radius="lg" withBorder
-          p={{ base: 'lg', sm: 36 }}
+          p={{ base: 'lg', sm: 28 }}
           className="auth-card"
           style={{ background: 'var(--ihx-surface)', boxShadow: '0 1px 2px rgba(15,31,61,.04), 0 24px 48px -24px rgba(15,31,61,.25)' }}
         >
-          <Box ta="center" mb="lg">
-            <Box mx="auto" w={52} mb="sm"><LogoMark size={52} /></Box>
-            <Text fz={22} fw={700} lh={1.3}>{title}</Text>
-            {subtitle && <Text c="dimmed" fz="sm" mt={6}>{subtitle}</Text>}
-          </Box>
+          <Group gap="sm" wrap="nowrap" mb="md">
+            <LogoMark size={40} />
+            <Box style={{ minWidth: 0 }}>
+              <Text fz={18} fw={700} lh={1.25}>{title}</Text>
+              {subtitle && <Text c="dimmed" fz="xs" mt={2}>{subtitle}</Text>}
+            </Box>
+          </Group>
 
           {tabs && (
             <SegmentedControl
-              fullWidth radius="md" mb="lg"
+              fullWidth radius="md" size="sm" mb="md"
               value={mode}
               onChange={(v) => router.push(v === 'register' ? '/register' : '/login')}
               data={[{ value: 'login', label: 'Đăng nhập' }, { value: 'register', label: 'Đăng ký' }]}
@@ -65,9 +67,9 @@ export function AuthLayout({ title, subtitle, children, footer, tabs = false }: 
           {children}
         </Paper>
 
-        {footer && <Box mt="lg" ta="center">{footer}</Box>}
+        {footer && <Box mt="sm" ta="center">{footer}</Box>}
 
-        <Group justify="center" gap="lg" mt="xl" maw={560} mx="auto">
+        <Group justify="center" gap="md" mt="md" maw={560} mx="auto">
           {TRUST.map((x) => (
             <Group key={x.t} gap={6} wrap="nowrap">
               <x.icon size={15} color="var(--mantine-color-teal-6)" />
@@ -77,7 +79,7 @@ export function AuthLayout({ title, subtitle, children, footer, tabs = false }: 
         </Group>
       </Box>
 
-      <Text fz="xs" c="dimmed" ta="center" pb="md" pos="relative" style={{ paddingBottom: 'calc(var(--mantine-spacing-md) + env(safe-area-inset-bottom, 0px))' }}>
+      <Text fz="xs" c="dimmed" ta="center" pos="relative" style={{ paddingBottom: 'calc(var(--mantine-spacing-sm) + env(safe-area-inset-bottom, 0px))' }}>
         © 2026 InvoiceHubX · <Anchor fz="xs" c="dimmed">Điều khoản</Anchor> · <Anchor fz="xs" c="dimmed">Bảo mật</Anchor>
       </Text>
     </Box>

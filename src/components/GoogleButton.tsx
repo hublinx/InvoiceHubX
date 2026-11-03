@@ -113,7 +113,7 @@ export function GoogleButton({ label = 'Tiếp tục với Google', text = 'cont
       {mode !== 'real' && (
         <>
           <Button
-            fullWidth size="md" variant="default" loading={mode === 'loading'}
+            fullWidth size="sm" h={40} variant="default" loading={mode === 'loading'}
             leftSection={<GoogleLogo />}
             rightSection={mode === 'demo' ? <Badge size="xs" color="gray" variant="light">demo</Badge> : null}
             onClick={() => setChooser(true)}
@@ -129,5 +129,5 @@ export function GoogleButton({ label = 'Tiếp tục với Google', text = 'cont
 }
 
 export function OrDivider() {
-  return <Divider my="lg" label={<Text fz="xs" c="dimmed">hoặc dùng email</Text>} labelPosition="center" />;
+  return <Divider my="md" label={<Text fz="xs" c="dimmed">hoặc dùng email</Text>} labelPosition="center" />;
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { Alert, Anchor, Box, Button, Checkbox, Group, PasswordInput, PinInput, SegmentedControl, Stack, Text, TextInput } from '@mantine/core';
-import { IconAlertCircle, IconArrowLeft, IconInfoCircle, IconKey, IconLock, IconMail, IconMailFast } from '@tabler/icons-react';
+import { Alert, Anchor, Button, Checkbox, Group, PasswordInput, PinInput, Stack, Text, TextInput, Tooltip } from '@mantine/core';
+import { IconAlertCircle, IconArrowLeft, IconKey, IconLock, IconMail, IconMailFast } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
@@ -65,59 +65,45 @@ function LoginInner() {
     <AuthLayout
       tabs
       title="Chào mừng trở lại"
-      subtitle="Đăng nhập để tiếp tục quản lý hoá đơn"
-      footer={<Text fz="sm" c="dimmed">Chưa có tài khoản? <Anchor component={Link} href="/register" fw={600}>Đăng ký miễn phí</Anchor></Text>}
+      subtitle="Đăng nhập để quản lý hoá đơn"
     >
       <GoogleButton text="signin_with" label="Đăng nhập với Google" onSuccess={finish} />
       <OrDivider />
 
-      <SegmentedControl
-        fullWidth size="xs" mb="md" radius="md"
-        value={method}
-        onChange={(v) => { setMethod(v as 'password' | 'otp'); setError(null); setOtpSent(false); }}
-        data={[
-          { value: 'password', label: <Group gap={6} justify="center" wrap="nowrap"><IconKey size={14} />Mật khẩu</Group> },
-          { value: 'otp', label: <Group gap={6} justify="center" wrap="nowrap"><IconMailFast size={14} />Mã qua email</Group> },
-        ]}
-      />
-
-      {error && <Alert color="red" icon={<IconAlertCircle size={18} />} p="sm" mb="md">{error}</Alert>}
+      {error && <Alert color="red" icon={<IconAlertCircle size={18} />} p="xs" mb="sm">{error}</Alert>}
 
       {method === 'password' && (
         <form onSubmit={submitPassword} noValidate>
-          <Stack gap="md">
+          <Stack gap="sm">
             <TextInput label="Email" placeholder="ban@congty.vn" type="email" autoComplete="email"
               leftSection={<IconMail size={16} />} value={email} onChange={(e) => setEmail(e.currentTarget.value.trim())} error={emailErr} />
-            <Box>
-              <Group justify="space-between" mb={4}>
-                <Text component="label" htmlFor="pw" fz="sm" fw={500}>Mật khẩu</Text>
-                <Anchor component={Link} href="/forgot-password" fz="xs">Quên mật khẩu?</Anchor>
-              </Group>
-              <PasswordInput id="pw" placeholder="Nhập mật khẩu" autoComplete="current-password"
+            <PasswordInput label="Mật khẩu" placeholder="Nhập mật khẩu" autoComplete="current-password"
                 leftSection={<IconLock size={16} />} value={password} onChange={(e) => setPassword(e.currentTarget.value)}
                 error={touched && password.length < 6 ? 'Mật khẩu tối thiểu 6 ký tự' : null} />
-            </Box>
-            <Checkbox label="Ghi nhớ đăng nhập trên thiết bị này" checked={remember} onChange={(e) => setRemember(e.currentTarget.checked)} size="sm" />
-            <Button type="submit" loading={busy} fullWidth size="md">Đăng nhập</Button>
+            <Group justify="space-between">
+              <Checkbox label="Ghi nhớ đăng nhập" checked={remember} onChange={(e) => setRemember(e.currentTarget.checked)} size="xs" />
+              <Anchor component={Link} href="/forgot-password" fz="xs">Quên mật khẩu?</Anchor>
+            </Group>
+            <Button type="submit" loading={busy} fullWidth>Đăng nhập</Button>
           </Stack>
         </form>
       )}
 
       {method === 'otp' && !otpSent && (
         <form onSubmit={sendOtp} noValidate>
-          <Stack gap="md">
-            <TextInput label="Email" placeholder="ban@congty.vn" type="email" autoComplete="email" description="Chúng tôi sẽ gửi mã 6 số, không cần mật khẩu."
+          <Stack gap="sm">
+            <TextInput label="Email" placeholder="ban@congty.vn" type="email" autoComplete="email" description="Nhận mã 6 số qua email, không cần mật khẩu."
               leftSection={<IconMail size={16} />} value={email} onChange={(e) => setEmail(e.currentTarget.value.trim())} error={emailErr} />
-            <Button type="submit" loading={busy} fullWidth size="md">Gửi mã đăng nhập</Button>
+            <Button type="submit" loading={busy} fullWidth>Gửi mã đăng nhập</Button>
           </Stack>
         </form>
       )}
 
       {method === 'otp' && otpSent && (
-        <Stack gap="md" align="center">
+        <Stack gap="sm" align="center">
           <Text fz="sm" ta="center">Nhập mã 6 số đã gửi tới<br /><b>{email}</b></Text>
           <PinInput length={6} type="number" oneTimeCode autoFocus value={otp} onChange={setOtp} onComplete={verifyOtp} aria-label="Mã đăng nhập" />
-          <Button fullWidth size="md" disabled={otp.length < 6} loading={busy} onClick={verifyOtp}>Xác nhận</Button>
+          <Button fullWidth disabled={otp.length < 6} loading={busy} onClick={verifyOtp}>Xác nhận</Button>
           <Group justify="space-between" w="100%">
             <Anchor component="button" fz="sm" c="dimmed" onClick={() => setOtpSent(false)}><IconArrowLeft size={14} style={{ verticalAlign: -2 }} /> Đổi email</Anchor>
             {wait > 0 ? <Text fz="sm" c="dimmed">Gửi lại sau {wait}s</Text> : <Anchor component="button" fz="sm" onClick={() => sendOtp()}>Gửi lại mã</Anchor>}
@@ -125,12 +111,16 @@ function LoginInner() {
         </Stack>
       )}
 
-      <Alert mt="lg" color="gray" variant="light" icon={<IconInfoCircle size={16} />} p="xs">
-        <Group justify="space-between" gap={6}>
-          <Text fz="xs">Bản demo: email bất kỳ · mật khẩu ≥ 6 ký tự · mã OTP 6 số bất kỳ.</Text>
-          {method === 'password' && <Anchor component="button" fz="xs" fw={600} onClick={() => { setEmail('demo@invoicehubx.vn'); setPassword('Demo@123'); }}>Điền tài khoản demo</Anchor>}
-        </Group>
-      </Alert>
+      <Group justify="space-between" mt="sm" gap={6}>
+        <Anchor component="button" fz="xs" onClick={() => { setMethod(method === 'password' ? 'otp' : 'password'); setError(null); setOtpSent(false); }}>
+          <Group gap={4} wrap="nowrap">{method === 'password' ? <><IconMailFast size={14} />Đăng nhập bằng mã qua email</> : <><IconKey size={14} />Đăng nhập bằng mật khẩu</>}</Group>
+        </Anchor>
+        {method === 'password' && (
+          <Tooltip label="Bản demo: email bất kỳ, mật khẩu ≥ 6 ký tự, mã OTP 6 số bất kỳ">
+            <Anchor component="button" fz="xs" c="dimmed" onClick={() => { setEmail('demo@invoicehubx.vn'); setPassword('Demo@123'); }}>Điền tài khoản demo</Anchor>
+          </Tooltip>
+        )}
+      </Group>
     </AuthLayout>
   );
 }
