@@ -50,7 +50,7 @@ function AddCompanyModal({ opened, onClose }: { opened: boolean; onClose: () => 
   };
 
   return (
-    <Modal opened={opened} onClose={close} size="lg" title={<Text fw={800} fz="lg">Kết nối mã số thuế mới</Text>}>
+    <Modal opened={opened} onClose={close} size="lg" title={<Text fw={500} fz="lg">Kết nối mã số thuế mới</Text>}>
       <Stepper active={step} size="sm" color="iris" mb="xl" mt="xs">
         <Stepper.Step label="Mã số thuế" icon={<IconSearch size={16} />} />
         <Stepper.Step label="Đăng nhập cổng thuế" icon={<IconKey size={16} />} />
@@ -79,7 +79,7 @@ function AddCompanyModal({ opened, onClose }: { opened: boolean; onClose: () => 
           <Paper withBorder p="md" radius="md">
             <Group>
               <Avatar color="iris" radius="xl">{initials(name)}</Avatar>
-              <Box><Text fw={700}>{name}</Text><Text fz="sm" c="dimmed" className="mono">MST {mst} · Đang hoạt động</Text></Box>
+              <Box><Text fw={500}>{name}</Text><Text fz="sm" c="dimmed" className="mono">MST {mst} · Đang hoạt động</Text></Box>
             </Group>
           </Paper>
           <TextInput label="Tên đăng nhập cổng hoá đơn điện tử" leftSection={<IconUser size={16} />} value={user} onChange={(e) => setUser(e.currentTarget.value)} />
@@ -95,7 +95,7 @@ function AddCompanyModal({ opened, onClose }: { opened: boolean; onClose: () => 
       {step === 2 && (
         <Stack align="center" ta="center" py="md">
           <ThemeIcon size={72} radius="xl" color="volt" ><IconCheck size={40} /></ThemeIcon>
-          <Text fw={800} fz="xl">Đã kết nối {name}</Text>
+          <Text fw={500} fz="xl">Đã kết nối {name}</Text>
           <Text c="dimmed" maw={420}>Lần đồng bộ đầu tiên sẽ tải hoá đơn của 12 tháng gần nhất. Quá trình chạy nền, bạn có thể đóng cửa sổ này.</Text>
           <Group gap="xs"><Loader size="xs" type="dots" /><Text fz="sm" c="dimmed">Đang khởi tạo đồng bộ…</Text></Group>
           <Button onClick={close} mt="sm">Xong</Button>
@@ -129,7 +129,7 @@ function CompaniesInner() {
                 <Group wrap="nowrap" style={{ minWidth: 0 }}>
                   <Avatar size={48} radius="lg" color={c.color} variant="filled">{initials(c.shortName)}</Avatar>
                   <Box style={{ minWidth: 0 }}>
-                    <Text fw={800} truncate>{c.shortName}</Text>
+                    <Text fw={500} truncate>{c.shortName}</Text>
                     <Text fz="xs" c="dimmed" className="mono">MST {c.taxCode}</Text>
                   </Box>
                 </Group>
@@ -152,12 +152,12 @@ function CompaniesInner() {
                 <Badge color="gray" variant="light">{c.invoices.toLocaleString('vi-VN')} hoá đơn</Badge>
               </Group>
               {c.status === 'error' && (
-                <Text mt="sm" fz="xs" c="red.7" fw={600}>Mật khẩu cổng thuế đã thay đổi — cập nhật để tiếp tục đồng bộ.</Text>
+                <Text mt="sm" fz="xs" c="red.7" fw={500}>Mật khẩu cổng thuế đã thay đổi — cập nhật để tiếp tục đồng bộ.</Text>
               )}
               <Group justify="space-between" mt="auto" pt="md" style={{ borderTop: '1px solid var(--ihx-border)', marginTop: 'auto' }}>
                 <Box>
                   <Text fz={11} c="dimmed">Đồng bộ lần cuối</Text>
-                  <Text fz="sm" fw={600}>{timeVN(c.lastSync)}</Text>
+                  <Text fz="sm" fw={500}>{timeVN(c.lastSync)}</Text>
                 </Box>
                 <Switch label="Tự động" checked={c.autoSync} onChange={(e) => updateCompany(c.id, { autoSync: e.currentTarget.checked })} color="teal" />
               </Group>
@@ -174,7 +174,7 @@ function CompaniesInner() {
         <Card p="lg" onClick={open} style={{ borderStyle: 'dashed', cursor: 'pointer', background: 'transparent' }} className="lift">
           <Stack align="center" justify="center" h="100%" mih={200} gap="sm">
             <ThemeIcon size={56} radius="xl" variant="light"><IconPlus size={28} /></ThemeIcon>
-            <Text fw={800}>Thêm doanh nghiệp</Text>
+            <Text fw={500}>Thêm doanh nghiệp</Text>
             <Text fz="sm" c="dimmed" ta="center" maw={240}>Chỉ cần MST và tài khoản cổng hoá đơn điện tử</Text>
           </Stack>
         </Card>

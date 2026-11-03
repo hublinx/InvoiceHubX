@@ -31,7 +31,7 @@ function PasswordCard() {
   const ok = cur && score === 4 && pw === pw2;
   return (
     <Card className="glass" p="lg">
-      <Text fw={800} fz="lg">Đổi mật khẩu</Text>
+      <Text fw={500} fz="lg">Đổi mật khẩu</Text>
       <Text fz="sm" c="dimmed" mb="lg">Mật khẩu mạnh giúp bảo vệ dữ liệu hoá đơn của mọi doanh nghiệp bạn quản lý.</Text>
       <Stack maw={480}>
         <PasswordInput label="Mật khẩu hiện tại" leftSection={<IconLock size={16} />} value={cur} onChange={(e) => setCur(e.currentTarget.value)} />
@@ -74,7 +74,7 @@ export default function AccountPage() {
           <Group align="flex-end">
             <Avatar size={96} radius={28} src={user.avatar} color="iris" variant="filled" style={{ border: '4px solid var(--mantine-color-body)' }} fz={32}>{initials(user.name)}</Avatar>
             <Box pb={6}>
-              <Group gap="xs"><Text fz={24} fw={800}>{user.name}</Text><Badge color="volt" variant="light" >{plan.id.toUpperCase()}</Badge></Group>
+              <Group gap="xs"><Text fz={24} fw={500}>{user.name}</Text><Badge color="volt" variant="light" >{plan.id.toUpperCase()}</Badge></Group>
               <Text c="dimmed" fz="sm">Thành viên từ {dateVN(user.joinedAt)} · {user.email}{user.method?.startsWith('google') ? ' · Đăng nhập bằng Google' : ''}</Text>
             </Box>
           </Group>
@@ -116,13 +116,13 @@ export default function AccountPage() {
               <Group justify="space-between">
                 <Group>
                   <ThemeIcon size={44} radius="md" variant="light" color="volt"><IconShieldLock size={22} /></ThemeIcon>
-                  <Box><Text fw={800}>Xác thực 2 lớp (2FA)</Text><Text fz="sm" c="dimmed">Yêu cầu mã OTP qua email khi đăng nhập trên thiết bị mới.</Text></Box>
+                  <Box><Text fw={500}>Xác thực 2 lớp (2FA)</Text><Text fz="sm" c="dimmed">Yêu cầu mã OTP qua email khi đăng nhập trên thiết bị mới.</Text></Box>
                 </Group>
                 <Switch size="lg" checked={twoFa} onChange={(e) => setTwoFa(e.currentTarget.checked)} onLabel="BẬT" offLabel="TẮT" />
               </Group>
             </Card>
             <Card p="lg" style={{ borderColor: 'var(--mantine-color-red-8)' }} className="glass">
-              <Text fw={800} c="red.5">Vùng nguy hiểm</Text>
+              <Text fw={500} c="red.5">Vùng nguy hiểm</Text>
               <Group justify="space-between" mt="sm">
                 <Text fz="sm" c="dimmed" maw={520}>Xoá vĩnh viễn tài khoản và toàn bộ dữ liệu hoá đơn đã lưu trên Cloud. Không thể hoàn tác.</Text>
                 <Button color="red" variant="light" leftSection={<IconTrash size={16} />}>Xoá tài khoản</Button>
@@ -134,7 +134,7 @@ export default function AccountPage() {
         <Tabs.Panel value="devices">
           <Card className="glass" p="lg">
             <Group justify="space-between" mb="md">
-              <Box><Text fw={800} fz="lg">Thiết bị đang đăng nhập</Text><Text fz="sm" c="dimmed">Gói Pro cho phép tối đa 5 thiết bị cùng lúc.</Text></Box>
+              <Box><Text fw={500} fz="lg">Thiết bị đang đăng nhập</Text><Text fz="sm" c="dimmed">Gói Pro cho phép tối đa 5 thiết bị cùng lúc.</Text></Box>
               <Button variant="light" color="red" disabled={devices.length <= 1} onClick={() => setDevices((d) => d.filter((x) => x.current))}>Đăng xuất tất cả thiết bị khác</Button>
             </Group>
             <Stack gap={0}>
@@ -147,7 +147,7 @@ export default function AccountPage() {
                       <Group>
                         <ThemeIcon size={44} radius="md" variant="light" color={d.current ? 'teal' : 'gray'}><Icon size={22} /></ThemeIcon>
                         <Box>
-                          <Group gap={6}><Text fw={700}>{d.name}</Text>{d.current && <Badge color="teal" size="xs">Thiết bị này</Badge>}</Group>
+                          <Group gap={6}><Text fw={500}>{d.name}</Text>{d.current && <Badge color="teal" size="xs">Thiết bị này</Badge>}</Group>
                           <Text fz="sm" c="dimmed">{d.location} · {d.lastActive}</Text>
                         </Box>
                       </Group>
@@ -171,7 +171,7 @@ export default function AccountPage() {
                 ['Bản tin sản phẩm', 'Tính năng mới, mẹo kế toán, ưu đãi', false],
               ].map(([t, d, on]) => (
                 <Group key={t as string} justify="space-between" wrap="nowrap">
-                  <Box><Text fw={700}>{t}</Text><Text fz="sm" c="dimmed">{d}</Text></Box>
+                  <Box><Text fw={500}>{t}</Text><Text fz="sm" c="dimmed">{d}</Text></Box>
                   <Group gap="lg" wrap="nowrap"><Switch label="Email" defaultChecked={on as boolean} /><Switch label="Zalo" defaultChecked={false} /></Group>
                 </Group>
               ))}

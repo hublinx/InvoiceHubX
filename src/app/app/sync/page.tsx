@@ -39,7 +39,7 @@ export default function SyncPage() {
       <Grid gap="md">
         <Grid.Col span={{ base: 12, lg: 7 }}>
           <Card className="glass" p="lg" h="100%">
-            <Text fw={800} fz="lg" mb="md">Trạng thái theo doanh nghiệp</Text>
+            <Text fw={500} fz="lg" mb="md">Trạng thái theo doanh nghiệp</Text>
             <Stack>
               {companies.map((c) => {
                 const p = c.status === 'syncing' ? progress[c.id] ?? 30 : c.status === 'error' ? 100 : 100;
@@ -50,7 +50,7 @@ export default function SyncPage() {
                         <ThemeIcon radius="xl" variant="light" color={c.status === 'error' ? 'red' : c.status === 'syncing' ? 'iris' : 'teal'}>
                           {c.status === 'error' ? <IconX size={16} /> : c.status === 'syncing' ? <IconRefresh size={16} className="spin" /> : <IconCheck size={16} />}
                         </ThemeIcon>
-                        <Box><Text fw={700} fz="sm">{c.shortName}</Text><Text fz="xs" c="dimmed" className="mono">{c.taxCode}</Text></Box>
+                        <Box><Text fw={500} fz="sm">{c.shortName}</Text><Text fz="xs" c="dimmed" className="mono">{c.taxCode}</Text></Box>
                       </Group>
                       <Text fz="xs" c="dimmed">{c.status === 'syncing' ? `${p}% · trang ${Math.ceil(p / 10)}/10` : c.status === 'error' ? 'Lỗi xác thực' : `Xong · ${timeVN(c.lastSync)}`}</Text>
                     </Group>
@@ -63,7 +63,7 @@ export default function SyncPage() {
         </Grid.Col>
         <Grid.Col span={{ base: 12, lg: 5 }}>
           <Card className="glass" p="lg" h="100%">
-            <Text fw={800} fz="lg">Hoá đơn tải về 7 ngày qua</Text>
+            <Text fw={500} fz="lg">Hoá đơn tải về 7 ngày qua</Text>
             <Text fz="sm" c="dimmed" mb="md">Tất cả doanh nghiệp</Text>
             <BarChart h={240} data={weekly} dataKey="day" type="stacked" series={[{ name: 'Mới', color: 'iris.4' }, { name: 'Cập nhật', color: 'volt.6' }]} barProps={{ radius: [6, 6, 0, 0] }} gridAxis="none" />
           </Card>
@@ -71,8 +71,8 @@ export default function SyncPage() {
 
         <Grid.Col span={{ base: 12, lg: 5 }}>
           <Card className="glass" p="lg" h="100%">
-            <Text fw={800} fz="lg" mb="md">Cấu hình đồng bộ</Text>
-            <Text fz="sm" fw={600} mb={8}>Nơi chạy</Text>
+            <Text fw={500} fz="lg" mb="md">Cấu hình đồng bộ</Text>
+            <Text fz="sm" fw={500} mb={8}>Nơi chạy</Text>
             <Radio.Group value={engine} onChange={(v) => { if (v === 'cloud' && plan.id !== 'plus') { notifications.show({ color: 'yellow', title: 'Cần gói Cloud+', message: 'Đồng bộ trên Cloud chỉ có ở gói Cloud+.' }); return; } setEngine(v); }}>
               <Stack gap="xs">
                 {[
@@ -83,18 +83,18 @@ export default function SyncPage() {
                     <Group wrap="nowrap">
                       <Radio.Indicator />
                       <ThemeIcon variant="light" radius="md"><o.icon size={18} /></ThemeIcon>
-                      <Box><Text fw={700} fz="sm">{o.t}</Text><Text fz="xs" c="dimmed">{o.d}</Text></Box>
+                      <Box><Text fw={500} fz="sm">{o.t}</Text><Text fz="xs" c="dimmed">{o.d}</Text></Box>
                       {o.v === 'cloud' && plan.id !== 'plus' && <Badge ml="auto" color="volt" variant="light" >Cloud+</Badge>}
                     </Group>
                   </Radio.Card>
                 ))}
               </Stack>
             </Radio.Group>
-            <Text fz="sm" fw={600} mt="lg" mb={8}><IconClock size={14} style={{ verticalAlign: -2 }} /> Khung giờ tự động</Text>
+            <Text fz="sm" fw={500} mt="lg" mb={8}><IconClock size={14} style={{ verticalAlign: -2 }} /> Khung giờ tự động</Text>
             <Chip.Group multiple value={hours} onChange={setHours}>
               <Group gap="xs">{HOURS.map((h) => <Chip key={h} value={h} variant="light" radius="md">{h}</Chip>)}</Group>
             </Chip.Group>
-            <Text fz="sm" fw={600} mt="lg" mb={8}>Phạm vi</Text>
+            <Text fz="sm" fw={500} mt="lg" mb={8}>Phạm vi</Text>
             <SegmentedControl fullWidth radius="xl" value={scope} onChange={setScope} data={[{ value: 'both', label: 'Vào + Ra' }, { value: 'in', label: 'Chỉ đầu vào' }, { value: 'out', label: 'Chỉ đầu ra' }]} />
             <Stack mt="lg" gap="sm">
               <Switch defaultChecked label="Tự tải bản gốc XML/PDF" />
@@ -105,7 +105,7 @@ export default function SyncPage() {
         </Grid.Col>
         <Grid.Col span={{ base: 12, lg: 7 }}>
           <Card className="glass" p={0} h="100%">
-            <Text fw={800} fz="lg" p="lg" pb="sm">Nhật ký đồng bộ</Text>
+            <Text fw={500} fz="lg" p="lg" pb="sm">Nhật ký đồng bộ</Text>
             <Table.ScrollContainer minWidth={560}>
               <Table verticalSpacing="sm" horizontalSpacing="lg" highlightOnHover>
                 <Table.Thead><Table.Tr><Table.Th>Thời gian</Table.Th><Table.Th>Doanh nghiệp</Table.Th><Table.Th>Kết quả</Table.Th><Table.Th ta="right">Thời lượng</Table.Th></Table.Tr></Table.Thead>
@@ -113,7 +113,7 @@ export default function SyncPage() {
                   {SYNC_LOG.map((s) => (
                     <Table.Tr key={s.id}>
                       <Table.Td><Text fz="sm" className="tnum">{timeVN(s.at)}</Text></Table.Td>
-                      <Table.Td><Text fz="sm" fw={600}>{s.company}</Text></Table.Td>
+                      <Table.Td><Text fz="sm" fw={500}>{s.company}</Text></Table.Td>
                       <Table.Td>
                         {s.status === 'ok' && <Badge color="teal" variant="light">+{s.added} mới · {s.updated} sửa</Badge>}
                         {s.status === 'running' && <Badge color="iris" variant="light">Đang chạy</Badge>}

@@ -25,27 +25,27 @@ function HeroPreview() {
     <Box pos="relative" className="floaty">
       <Card className="glass" p="lg" radius={20} shadow="lg" style={{ transform: 'rotate(-1.5deg)' }}>
         <Group justify="space-between" mb="md">
-          <Group gap="xs"><Avatar color="iris" variant="filled" radius="xl" size="sm">HĐ</Avatar><Box><Text fz="sm" fw={800}>Hải Đăng Travel</Text><Text fz={10} c="dimmed" className="mono">MST 0312456789</Text></Box></Group>
+          <Group gap="xs"><Avatar color="iris" variant="filled" radius="xl" size="sm">HĐ</Avatar><Box><Text fz="sm" fw={600}>Hải Đăng Travel</Text><Text fz={10} c="dimmed" className="mono">MST 0312456789</Text></Box></Group>
           <Badge color="teal" variant="dot">Đang kết nối</Badge>
         </Group>
         <SimpleGrid cols={2} mb="md">
-          <Paper withBorder p="sm" radius="lg"><Text fz={11} c="dimmed">Đầu vào T10</Text><Text fw={800} fz="lg">482 tr</Text><Progress value={72} size={4} color="iris" mt={6} /></Paper>
-          <Paper withBorder p="sm" radius="lg"><Text fz={11} c="dimmed">Đầu ra T10</Text><Text fw={800} fz="lg">615 tr</Text><Progress value={88} size={4} color="volt" mt={6} /></Paper>
+          <Paper withBorder p="sm" radius="lg"><Text fz={11} c="dimmed">Đầu vào T10</Text><Text fw={600} fz="lg">482 tr</Text><Progress value={72} size={4} color="iris" mt={6} /></Paper>
+          <Paper withBorder p="sm" radius="lg"><Text fz={11} c="dimmed">Đầu ra T10</Text><Text fw={600} fz="lg">615 tr</Text><Progress value={88} size={4} color="volt" mt={6} /></Paper>
         </SimpleGrid>
         <Stack gap={8}>
           {[['00012874', 'Hàng không Sao Việt', '18.540.000'], ['00004417', 'Khách sạn Biển Xanh', '7.236.000'], ['00098120', 'Viễn thông Ánh Dương', '594.000']].map(([n, p, t]) => (
             <Group key={n} justify="space-between" wrap="nowrap" p={8} style={{ borderRadius: 12, border: '1px solid var(--ihx-border)' }}>
-              <Group gap={8} wrap="nowrap"><Box w={4} h={26} bg="iris.4" style={{ borderRadius: 4 }} /><Box><Text fz="xs" fw={700} className="mono">{n}</Text><Text fz={11} c="dimmed">{p}</Text></Box></Group>
-              <Text fz="sm" fw={800} className="tnum">{t}</Text>
+              <Group gap={8} wrap="nowrap"><Box w={4} h={26} bg="iris.4" style={{ borderRadius: 4 }} /><Box><Text fz="xs" fw={600} className="mono">{n}</Text><Text fz={11} c="dimmed">{p}</Text></Box></Group>
+              <Text fz="sm" fw={600} className="tnum">{t}</Text>
             </Group>
           ))}
         </Stack>
       </Card>
       <Paper p="sm" radius="xl" shadow="xl" pos="absolute" bottom={-24} left={-24} style={{ background: '#f59e0b', color: '#0a0b12', transform: 'rotate(3deg)' }}>
-        <Group gap={8}><IconBolt size={18} /><Text fw={800} fz="sm">+18 hoá đơn mới · 42s</Text></Group>
+        <Group gap={8}><IconBolt size={18} /><Text fw={600} fz="sm">+18 hoá đơn mới · 42s</Text></Group>
       </Paper>
       <Paper p="sm" radius="xl" shadow="xl" pos="absolute" top={-20} right={-14} className="glass" withBorder>
-        <Group gap={8}><IconBell size={16} color="var(--mantine-color-orange-5)" /><Text fw={700} fz="xs">1 MST rủi ro cần kiểm tra</Text></Group>
+        <Group gap={8}><IconBell size={16} color="var(--mantine-color-orange-5)" /><Text fw={600} fz="xs">1 MST rủi ro cần kiểm tra</Text></Group>
       </Paper>
     </Box>
   );
@@ -103,20 +103,20 @@ export default function Landing() {
       <Container size="xl" mb={80}>
         <SimpleGrid cols={{ base: 2, md: 4 }}>
           {[['12.000+', 'doanh nghiệp'], ['3,4 triệu', 'hoá đơn/tháng'], ['42 giây', 'đồng bộ trung bình'], ['99,9%', 'uptime Cloud']].map(([v, l]) => (
-            <Paper key={l} p="lg" radius="xl" className="glass" withBorder ta="center"><Text fz={30} fw={800} className="gradient-text">{v}</Text><Text c="dimmed" fz="sm">{l}</Text></Paper>
+            <Paper key={l} p="lg" radius="xl" className="glass" withBorder ta="center"><Text fz={30} fw={600} className="gradient-text">{v}</Text><Text c="dimmed" fz="sm">{l}</Text></Paper>
           ))}
         </SimpleGrid>
       </Container>
 
       <Container size="xl" id="features" py={60}>
-        <Text c="iris.7" fw={800} tt="uppercase" lts={2} fz="sm">Tính năng</Text>
+        <Text c="iris.7" fw={600} tt="uppercase" lts={2} fz="sm">Tính năng</Text>
         <Title order={2} fz={{ base: 30, md: 44 }} lts={-0.5} mb="xl" maw={720}>Được thiết kế cho kế toán bận rộn nhất</Title>
         <Grid gap="lg">
           {FEATURES.map((f) => (
             <Grid.Col key={f.title} span={{ base: 12, md: f.span }}>
               <Card className="glass lift" p="xl" h="100%">
                 <ThemeIcon size={52} radius="lg" variant="light" color={f.color} mb="lg"><f.icon size={26} /></ThemeIcon>
-                <Text fw={800} fz="xl">{f.title}</Text>
+                <Text fw={600} fz="xl">{f.title}</Text>
                 <Text c="dimmed" mt={6}>{f.desc}</Text>
               </Card>
             </Grid.Col>
@@ -134,8 +134,8 @@ export default function Landing() {
               { icon: IconChartAreaLine, t: 'Xem báo cáo & xuất file', d: 'Dashboard VAT, cảnh báo rủi ro, xuất Excel một chạm.' },
             ].map((s, i) => (
               <Box key={s.t}>
-                <Group mb="md"><Text fz={56} fw={800} c="#f59e0b" lh={1}>0{i + 1}</Text><s.icon size={30} opacity={0.8} /></Group>
-                <Text fw={800} fz="lg">{s.t}</Text>
+                <Group mb="md"><Text fz={56} fw={600} c="#f59e0b" lh={1}>0{i + 1}</Text><s.icon size={30} opacity={0.8} /></Group>
+                <Text fw={600} fz="lg">{s.t}</Text>
                 <Text opacity={0.75} mt={4}>{s.d}</Text>
               </Box>
             ))}
@@ -146,7 +146,7 @@ export default function Landing() {
       <Container size="xl" id="pricing" py={60}>
         <Group justify="space-between" align="flex-end" mb="xl">
           <Box>
-            <Text c="iris.7" fw={800} tt="uppercase" lts={2} fz="sm">Bảng giá</Text>
+            <Text c="iris.7" fw={600} tt="uppercase" lts={2} fz="sm">Bảng giá</Text>
             <Title order={2} fz={{ base: 30, md: 44 }} lts={-0.5}>Ưu đãi đến {best.discount}% khi trả trước {best.months} tháng</Title>
           </Box>
           <Button component={Link} href="/app/billing" variant="light" rightSection={<IconArrowRight size={16} />}>Chi tiết các gói</Button>
@@ -157,8 +157,8 @@ export default function Landing() {
             const featured = p.id === 'plus';
             return (
               <Card key={p.id} p="xl" className="glass lift" style={featured ? { borderColor: 'var(--mantine-color-iris-7)', borderWidth: 2, borderTop: '5px solid var(--mantine-color-volt-5)' } : undefined}>
-                <Group justify="space-between"><Text fw={800} fz="xl">{p.name}</Text>{p.highlight && <Badge color="volt" variant="light" >{p.highlight}</Badge>}</Group>
-                <Text fz={38} fw={800} mt="md" lts={-0.5}>{pr ? `${Math.round(pr.perMonth / 1000)}k` : '0 ₫'}<Text span fz="md" fw={500} opacity={0.6}>{pr ? ' /tháng' : ''}</Text></Text>
+                <Group justify="space-between"><Text fw={600} fz="xl">{p.name}</Text>{p.highlight && <Badge color="volt" variant="light" >{p.highlight}</Badge>}</Group>
+                <Text fz={38} fw={600} mt="md" lts={-0.5}>{pr ? `${Math.round(pr.perMonth / 1000)}k` : '0 ₫'}<Text span fz="md" fw={500} opacity={0.6}>{pr ? ' /tháng' : ''}</Text></Text>
                 <Text fz="sm" opacity={0.6} mb="lg">{pr ? `Giá gốc ${p.base.toLocaleString('vi-VN')} ₫/tháng` : 'Miễn phí trọn đời'}</Text>
                 <Stack gap={8}>{p.features.slice(0, 4).map((f) => <Group key={f} gap={8} wrap="nowrap"><IconCheck size={16} color="var(--mantine-color-iris-6)" /><Text fz="sm">{f}</Text></Group>)}</Stack>
                 <Button mt="xl" component={Link} href="/app/billing" variant={featured ? 'filled' : 'light'}>Bắt đầu</Button>
@@ -177,7 +177,7 @@ export default function Landing() {
             ['Pro và Cloud+ khác nhau thế nào?', 'Pro chạy đồng bộ trên ứng dụng máy tính của bạn. Cloud+ chạy trên máy chủ 24/7, không cần mở máy.'],
             ['Có dùng thử được không?', 'Gói Starter miễn phí trọn đời với 1 MST và 100 lượt tải bản gốc mỗi tháng.'],
           ].map(([q, a]) => (
-            <Accordion.Item key={q} value={q}><Accordion.Control fw={700}>{q}</Accordion.Control><Accordion.Panel c="dimmed">{a}</Accordion.Panel></Accordion.Item>
+            <Accordion.Item key={q} value={q}><Accordion.Control fw={600}>{q}</Accordion.Control><Accordion.Panel c="dimmed">{a}</Accordion.Panel></Accordion.Item>
           ))}
         </Accordion>
       </Container>

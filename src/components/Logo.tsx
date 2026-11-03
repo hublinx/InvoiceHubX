@@ -26,7 +26,7 @@ export function Logo({ size = 32 }: { size?: number }) {
   return (
     <Group gap={10} wrap="nowrap">
       <LogoMark size={size} />
-      <Text fw={800} fz={size * 0.6} lts={-0.5}>
+      <Text fw={500} fz={size * 0.6} lts={-0.5}>
         InvoiceHub<span className="gradient-text">X</span>
       </Text>
     </Group>

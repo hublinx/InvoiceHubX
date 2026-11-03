@@ -21,7 +21,7 @@ function CopyRow({ label, value, mono = true }: { label: string; value: string; 
     <Group justify="space-between" wrap="nowrap" py={6}>
       <Text fz="sm" c="dimmed">{label}</Text>
       <Group gap={4} wrap="nowrap">
-        <Text fz="sm" fw={700} className={mono ? 'mono' : undefined} ta="right">{value}</Text>
+        <Text fz="sm" fw={500} className={mono ? 'mono' : undefined} ta="right">{value}</Text>
         <CopyButton value={value}>
           {({ copied, copy }) => (
             <Tooltip label={copied ? 'Đã chép' : 'Sao chép'}>
@@ -72,7 +72,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
   };
 
   return (
-    <Modal opened={!!planId} onClose={onClose} size={step === 1 ? 760 : 'lg'} title={<Group gap="xs"><IconReceipt2 size={20} /><Text fw={800}>Thanh toán gói {p.name}</Text></Group>}>
+    <Modal opened={!!planId} onClose={onClose} size={step === 1 ? 760 : 'lg'} title={<Group gap="xs"><IconReceipt2 size={20} /><Text fw={500}>Thanh toán gói {p.name}</Text></Group>}>
       <Stepper active={step} size="xs" mb="lg" color="iris" allowNextStepsSelect={false} onStepClick={(s) => s < step && step < 2 && setStep(s)}>
         <Stepper.Step label="Đơn hàng" />
         <Stepper.Step label="Thanh toán" />
@@ -84,8 +84,8 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
           <Paper p="lg" radius="md" className="ticket" style={{ background: 'linear-gradient(135deg, #1e3a8a, #1d4ed8)', color: '#fff' }}>
             <Group justify="space-between" align="flex-start">
               <Box>
-                <Text fz="xs" tt="uppercase" fw={700} lts={1.5} opacity={0.7}>Gói đã chọn</Text>
-                <Text fz={26} fw={800}>{p.name} · {months} tháng</Text>
+                <Text fz="xs" tt="uppercase" fw={500} lts={1.5} opacity={0.7}>Gói đã chọn</Text>
+                <Text fz={26} fw={500}>{p.name} · {months} tháng</Text>
                 <Text fz="sm" opacity={0.8}>Hiệu lực đến {dateVN(newExpiry)}</Text>
               </Box>
               <Badge color="volt" variant="light" size="lg">-{price.discount}%</Badge>
@@ -93,10 +93,10 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
           </Paper>
           <Stack gap={6}>
             <Line label="Giá gốc" value={<Text td="line-through" c="dimmed" className="tnum">{vnd(price.original)}</Text>} />
-            <Line label={`Ưu đãi theo thời hạn (${price.discount}%)`} value={<Text c="teal.7" fw={700} className="tnum">- {vnd(price.saved)}</Text>} />
-            {applied && <Line label={`Mã ${applied} (${couponPct}%)`} value={<Text c="teal.7" fw={700} className="tnum">- {vnd(price.total - final)}</Text>} />}
+            <Line label={`Ưu đãi theo thời hạn (${price.discount}%)`} value={<Text c="teal.7" fw={500} className="tnum">- {vnd(price.saved)}</Text>} />
+            {applied && <Line label={`Mã ${applied} (${couponPct}%)`} value={<Text c="teal.7" fw={500} className="tnum">- {vnd(price.total - final)}</Text>} />}
             <Divider my={4} />
-            <Line label={<Text fw={800}>Tổng thanh toán</Text>} value={<Text fz={26} fw={800} className="tnum">{vnd(final)}</Text>} />
+            <Line label={<Text fw={500}>Tổng thanh toán</Text>} value={<Text fz={26} fw={500} className="tnum">{vnd(final)}</Text>} />
             <Text fz="xs" c="dimmed" ta="right">≈ {vnd(final / months)}/tháng · đã gồm VAT</Text>
           </Stack>
           <Group align="flex-end" gap="xs">
@@ -121,7 +121,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
                 <Paper p="md" radius="md" bg="white" shadow="md"><FakeQr seed={orderCode} size={210} /></Paper>
                 <Group gap={6}>
                   <RingProgress size={34} thickness={4} roundCaps sections={[{ value: (left / 900) * 100, color: left < 120 ? 'red' : 'iris' }]} />
-                  <Text fz="sm" c="dimmed">Mã hết hạn sau <Text span fw={800} c="var(--mantine-color-text)" className="mono">{String(Math.floor(left / 60)).padStart(2, '0')}:{String(left % 60).padStart(2, '0')}</Text></Text>
+                  <Text fz="sm" c="dimmed">Mã hết hạn sau <Text span fw={500} c="var(--mantine-color-text)" className="mono">{String(Math.floor(left / 60)).padStart(2, '0')}:{String(left % 60).padStart(2, '0')}</Text></Text>
                 </Group>
                 <Text fz="xs" c="dimmed" ta="center">Mở app ngân hàng bất kỳ → Quét QR (minh hoạ trong bản demo)</Text>
               </Stack>
@@ -153,7 +153,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
                 ].map((c) => (
                   <Paper key={c.t} withBorder p="md" radius="md" className="lift" style={{ cursor: 'pointer' }}>
                     <ThemeIcon variant="light" radius="md" mb="xs"><c.icon size={18} /></ThemeIcon>
-                    <Text fw={700} fz="sm">{c.t}</Text>
+                    <Text fw={500} fz="sm">{c.t}</Text>
                     <Text fz="xs" c="dimmed">{c.d}</Text>
                   </Paper>
                 ))}
@@ -170,7 +170,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
       {step === 2 && (
         <Stack align="center" ta="center" py="lg">
           <ThemeIcon size={84} radius={999} color="volt"  className="floaty"><IconConfetti size={44} /></ThemeIcon>
-          <Text fz={28} fw={800}>Kích hoạt thành công!</Text>
+          <Text fz={28} fw={500}>Kích hoạt thành công!</Text>
           <Text c="dimmed">Gói <b>{p.name}</b> đã được áp dụng cho {user.email}.<br />Hiệu lực đến <b>{dateVN(newExpiry)}</b>.</Text>
           <Button size="md" onClick={onClose} mt="sm">Bắt đầu sử dụng</Button>
         </Stack>

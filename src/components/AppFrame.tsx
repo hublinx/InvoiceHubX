@@ -174,7 +174,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
               </Menu.Target>
               <Menu.Dropdown>
                 <Box px="sm" py={6}>
-                  <Text fw={700} fz="sm">{user.name}</Text>
+                  <Text fw={500} fz="sm">{user.name}</Text>
                   <Text fz="xs" c="dimmed">{user.email}</Text>
                 </Box>
                 <Menu.Divider />
@@ -202,7 +202,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
                 {mini ? (
                   <Box h={1} mx="sm" mb={8} bg="var(--ihx-border)" />
                 ) : (
-                  <Text fz={11} fw={700} c="dimmed" tt="uppercase" lts={1} px={12} mb={6}>{g.label}</Text>
+                  <Text fz={11} fw={500} c="dimmed" tt="uppercase" lts={1} px={12} mb={6}>{g.label}</Text>
                 )}
                 <Stack gap={2}>
                   {g.items.map((n) => {
@@ -264,8 +264,8 @@ export function PageHeader({ title, subtitle, right, eyebrow }: { title: ReactNo
   return (
     <Group justify="space-between" align="flex-end" mb={28} gap="md">
       <Box style={{ minWidth: 0 }}>
-        {eyebrow && <Text fz="xs" fw={700} tt="uppercase" lts={1.2} c="iris.7" mb={4}>{eyebrow}</Text>}
-        <Text component="h1" fz={{ base: 22, md: 26 }} fw={700} lh={1.25} m={0}>{title}</Text>
+        {eyebrow && <Text fz="xs" fw={500} tt="uppercase" lts={1.2} c="iris.7" mb={4}>{eyebrow}</Text>}
+        <Text component="h1" fz={{ base: 22, md: 26 }} fw={500} lh={1.25} m={0}>{title}</Text>
         {subtitle && <Text c="dimmed" fz="sm" mt={6} maw={720}>{subtitle}</Text>}
       </Box>
       {right && <Group gap="sm">{right}</Group>}
@@ -282,7 +282,7 @@ export function SectionCard({ title, description, actions, children, noPadding, 
       {(title || actions) && (
         <Group justify="space-between" align="flex-start" px={20} pt={18} pb={noPadding ? 14 : 0} gap="sm" wrap="nowrap">
           <Box style={{ minWidth: 0 }}>
-            {title && <Text component="div" fw={600} fz="md">{title}</Text>}
+            {title && <Text component="div" fw={500} fz="md">{title}</Text>}
             {description && <Text component="div" fz="xs" c="dimmed" mt={2}>{description}</Text>}
           </Box>
           {actions && <Group gap="xs" wrap="nowrap">{actions}</Group>}

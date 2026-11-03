@@ -35,7 +35,7 @@ function DemoChooser({ opened, onClose, onPick }: { opened: boolean; onClose: ()
   const [email, setEmail] = useState('');
   const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && name.trim().length > 1;
   return (
-    <Modal opened={opened} onClose={() => { onClose(); setOther(false); }} size={420} title={<Group gap={8}><GoogleLogo /><Text fw={700}>Tiếp tục với Google</Text></Group>}>
+    <Modal opened={opened} onClose={() => { onClose(); setOther(false); }} size={420} title={<Group gap={8}><GoogleLogo /><Text fw={500}>Tiếp tục với Google</Text></Group>}>
       <Alert color="yellow" variant="light" icon={<IconInfoCircle size={18} />} p="sm" mb="md">
         <Text fz="xs">Chế độ demo: chưa cấu hình Google Client ID nên không kết nối Google thật. Chọn một tài khoản mẫu để thử.</Text>
       </Alert>
@@ -46,14 +46,14 @@ function DemoChooser({ opened, onClose, onPick }: { opened: boolean; onClose: ()
               <Group justify="space-between" wrap="nowrap">
                 <Group gap="sm" wrap="nowrap">
                   <Avatar radius="xl" color="iris">{a.name.split(' ').slice(-1)[0]![0]}</Avatar>
-                  <Box><Text fz="sm" fw={600}>{a.name}</Text><Text fz="xs" c="dimmed">{a.email}</Text></Box>
+                  <Box><Text fz="sm" fw={500}>{a.name}</Text><Text fz="xs" c="dimmed">{a.email}</Text></Box>
                 </Group>
                 <IconChevronRight size={16} opacity={0.5} />
               </Group>
             </UnstyledButton>
           ))}
           <UnstyledButton onClick={() => setOther(true)} py="sm" px={4}>
-            <Group gap="sm"><Avatar radius="xl" variant="default"><IconUserPlus size={18} /></Avatar><Text fz="sm" fw={600}>Dùng tài khoản khác</Text></Group>
+            <Group gap="sm"><Avatar radius="xl" variant="default"><IconUserPlus size={18} /></Avatar><Text fz="sm" fw={500}>Dùng tài khoản khác</Text></Group>
           </UnstyledButton>
         </Stack>
       ) : (

@@ -41,7 +41,7 @@ function Field({ label, value, mono }: { label: string; value?: string; mono?: b
     <Box py={10} style={{ borderBottom: '1px dashed var(--ihx-border)' }}>
       <Text fz="xs" c="dimmed" mb={2}>{label}</Text>
       <Group gap={4} wrap="nowrap" justify="space-between">
-        <Text fz="sm" fw={600} className={mono ? 'mono' : undefined}>{value || <Text span c="dimmed" fw={400}>—</Text>}</Text>
+        <Text fz="sm" fw={500} className={mono ? 'mono' : undefined}>{value || <Text span c="dimmed" fw={400}>—</Text>}</Text>
         {value && <CopyIcon value={value} />}
       </Group>
     </Box>
@@ -59,7 +59,7 @@ function ResultCard({ r }: { r: MstResult }) {
         <Group gap="md" wrap="nowrap" style={{ minWidth: 0 }}>
           <ThemeIcon size={48} radius="md" variant="light"><IconBuilding size={24} /></ThemeIcon>
           <Box style={{ minWidth: 0 }}>
-            <Text fw={800} fz="lg" lh={1.3}>{r.name}</Text>
+            <Text fw={500} fz="lg" lh={1.3}>{r.name}</Text>
             <Group gap={6}>
               <Text fz="sm" c="dimmed" className="mono">MST {r.taxCode}</Text>
               <CopyIcon value={r.taxCode} />
@@ -179,7 +179,7 @@ function QuickLookup() {
           {!value && !state.result && (
             <Paper withBorder radius="md" p={32} ta="center" style={{ borderStyle: 'dashed' }}>
               <ThemeIcon size={48} radius="xl" variant="light" mx="auto" mb="sm"><IconSearch size={24} /></ThemeIcon>
-              <Text fw={700}>Nhập MST để bắt đầu</Text>
+              <Text fw={500}>Nhập MST để bắt đầu</Text>
               <Text fz="sm" c="dimmed">Kết quả gồm tên, địa chỉ và các hoá đơn bạn có với doanh nghiệp đó.</Text>
             </Paper>
           )}
@@ -198,7 +198,7 @@ function QuickLookup() {
             <Stack gap={0}>
               {history.map((h) => (
                 <UnstyledButton key={h.taxCode} onClick={() => setValue(h.taxCode)} px={20} py={10} style={{ borderTop: '1px solid var(--ihx-border)' }}>
-                  <Text fz="sm" fw={600} truncate>{h.name}</Text>
+                  <Text fz="sm" fw={500} truncate>{h.name}</Text>
                   <Text fz="xs" c="dimmed" className="mono">{h.taxCode}</Text>
                 </UnstyledButton>
               ))}
@@ -289,7 +289,7 @@ function BatchLookup() {
                     <Table.Td>
                       {r.status === 'loading' && <Group gap={6}><Loader size={14} /><Text fz="sm" c="dimmed">Đang tra cứu…</Text></Group>}
                       {r.status === 'wait' && <Text fz="sm" c="dimmed">Đang chờ</Text>}
-                      {r.status === 'ok' && <><Text fz="sm" fw={600}>{r.result!.name}</Text><Text fz="xs" c="dimmed">{r.result!.address}{r.result!.source === 'demo' ? ' · dữ liệu mẫu' : ''}</Text></>}
+                      {r.status === 'ok' && <><Text fz="sm" fw={500}>{r.result!.name}</Text><Text fz="xs" c="dimmed">{r.result!.address}{r.result!.source === 'demo' ? ' · dữ liệu mẫu' : ''}</Text></>}
                       {(r.status === 'notfound' || r.status === 'error') && <Text fz="sm" c="red.7">{r.status === 'notfound' ? 'Không tìm thấy' : r.error}</Text>}
                       {r.status === 'invalid' && <Text fz="sm" c="dimmed">{(r.check as { reason: string }).reason}</Text>}
                     </Table.Td>

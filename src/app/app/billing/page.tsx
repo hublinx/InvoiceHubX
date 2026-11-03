@@ -37,19 +37,19 @@ function MembershipCard() {
       <Box style={{ position: 'absolute', right: -60, top: -60, width: 240, height: 240, borderRadius: '50%', background: 'radial-gradient(circle, rgba(245,158,11,.45), transparent 70%)' }} />
       <Group justify="space-between" align="flex-start" style={{ position: 'relative' }} wrap="nowrap">
         <Box>
-          <Group gap="xs"><IconCrown size={18} color="#f59e0b" /><Text fz="xs" tt="uppercase" fw={800} lts={2} opacity={0.8}>Thẻ thành viên</Text></Group>
-          <Text fz={44} fw={800} lh={1.1} mt="sm" lts={-0.5}>{name}</Text>
+          <Group gap="xs"><IconCrown size={18} color="#f59e0b" /><Text fz="xs" tt="uppercase" fw={500} lts={2} opacity={0.8}>Thẻ thành viên</Text></Group>
+          <Text fz={44} fw={500} lh={1.1} mt="sm" lts={-0.5}>{name}</Text>
           <Text opacity={0.75} fz="sm">{user.email}</Text>
           <Group mt="xl" gap="xl">
-            <Box><Text fz={11} opacity={0.6} tt="uppercase" fw={700}>Bắt đầu</Text><Text fw={700} className="mono">{dateVN(plan.startedAt)}</Text></Box>
-            <Box><Text fz={11} opacity={0.6} tt="uppercase" fw={700}>Hết hạn</Text><Text fw={700} className="mono">{dateVN(plan.expiresAt)}</Text></Box>
+            <Box><Text fz={11} opacity={0.6} tt="uppercase" fw={500}>Bắt đầu</Text><Text fw={500} className="mono">{dateVN(plan.startedAt)}</Text></Box>
+            <Box><Text fz={11} opacity={0.6} tt="uppercase" fw={500}>Hết hạn</Text><Text fw={500} className="mono">{dateVN(plan.expiresAt)}</Text></Box>
           </Group>
         </Box>
         <RingProgress
           size={130} thickness={10} roundCaps
           sections={[{ value: pct, color: '#f59e0b' }]}
           rootColor="rgba(255,255,255,.15)"
-          label={<Box ta="center"><Text fz={30} fw={800} lh={1} c="white">{left}</Text><Text fz={11} c="rgba(255,255,255,.7)">ngày còn lại</Text></Box>}
+          label={<Box ta="center"><Text fz={30} fw={500} lh={1} c="white">{left}</Text><Text fz={11} c="rgba(255,255,255,.7)">ngày còn lại</Text></Box>}
         />
       </Group>
       <Text fz="xs" opacity={0.6} mt="lg" style={{ position: 'relative' }}>Hết hạn, tài khoản tự chuyển về Starter — dữ liệu vẫn được giữ nguyên.</Text>
@@ -70,10 +70,10 @@ export default function BillingPage() {
         <Grid.Col span={{ base: 12, lg: 7 }}><MembershipCard /></Grid.Col>
         <Grid.Col span={{ base: 12, lg: 5 }}>
           <Card className="glass" p="lg" h="100%">
-            <Text fw={800} mb="sm">Bạn đang dùng</Text>
+            <Text fw={500} mb="sm">Bạn đang dùng</Text>
             <SimpleGrid cols={2}>
               {[['MST đã kết nối', '3 / ∞'], ['Lượt tải tháng này', '312'], ['Dung lượng Cloud', '1,8 GB'], ['Thiết bị', '3']].map(([k, v]) => (
-                <Paper key={k} withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">{k}</Text><Text fw={800} fz="lg" className="tnum">{v}</Text></Paper>
+                <Paper key={k} withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">{k}</Text><Text fw={500} fz="lg" className="tnum">{v}</Text></Paper>
               ))}
             </SimpleGrid>
             <Button mt="md" fullWidth className="volt-btn" onClick={() => setCheckout(plan.id === 'free' ? 'pro' : plan.id)} leftSection={<IconSparkles size={16} />}>
@@ -86,7 +86,7 @@ export default function BillingPage() {
       {/* Duration picker */}
       <Paper className="glass" withBorder p="md" radius="md" mb="lg">
         <Group justify="space-between" mb="sm" px={4}>
-          <Text fw={800}>Chọn thời hạn</Text>
+          <Text fw={500}>Chọn thời hạn</Text>
           <Text fz="sm" c="dimmed">Áp dụng cho mọi gói trả phí</Text>
         </Group>
         <SimpleGrid cols={{ base: 3, sm: 6 }} spacing="xs">
@@ -99,9 +99,9 @@ export default function BillingPage() {
                 border: `1px solid ${on ? 'transparent' : 'var(--ihx-border)'}`, color: on ? '#fff' : undefined, transition: 'all 150ms',
               }}>
                 {d.tag && <Badge size="xs" variant="filled" color={d.months === 36 ? 'volt' : 'pink'} c={d.months === 36 ? 'dark.9' : undefined} style={{ position: 'absolute', top: -9, left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap' }}>{d.tag}</Badge>}
-                <Text fw={800} fz="xl" lh={1.2}>{d.months}</Text>
+                <Text fw={500} fz="xl" lh={1.2}>{d.months}</Text>
                 <Text fz="xs" opacity={0.75}>tháng</Text>
-                <Text fz="xs" fw={800} c={on ? '#fde68a' : 'teal.7'} mt={2}>-{d.discount}%</Text>
+                <Text fz="xs" fw={500} c={on ? '#fde68a' : 'teal.7'} mt={2}>-{d.discount}%</Text>
               </UnstyledButton>
             );
           })}
@@ -116,7 +116,7 @@ export default function BillingPage() {
           return (
             <Card key={p.id} p="lg" className="glass lift" style={featured ? { borderColor: 'var(--mantine-color-iris-7)', borderWidth: 2, boxShadow: '0 12px 32px -16px rgba(30,58,138,.45)', borderTop: '5px solid var(--mantine-color-volt-5)' } : undefined}>
               <Group justify="space-between">
-                <Text fw={800} fz={22}>{p.name}</Text>
+                <Text fw={500} fz={22}>{p.name}</Text>
                 {current ? <Badge color="teal" variant="filled">Đang dùng</Badge> : p.highlight ? <Badge color="volt" variant="light" >{p.highlight}</Badge> : null}
               </Group>
               <Text fz="sm" c="dimmed" mih={40}>{p.tagline}</Text>
@@ -124,18 +124,18 @@ export default function BillingPage() {
                 {pr ? (
                   <>
                     <Group gap={8} align="baseline">
-                      <Text fz={40} fw={800} lts={-0.5} className="tnum">{Math.round(pr.perMonth / 1000)}k</Text>
+                      <Text fz={40} fw={500} lts={-0.5} className="tnum">{Math.round(pr.perMonth / 1000)}k</Text>
                       <Text c="dimmed">/tháng</Text>
                     </Group>
                     <Group gap={8}>
                       <Text fz="sm" td="line-through" c="dimmed" className="tnum">{vnd(pr.original)}</Text>
-                      <Text fz="sm" fw={800} className="tnum">{vnd(pr.total)}</Text>
+                      <Text fz="sm" fw={500} className="tnum">{vnd(pr.total)}</Text>
                     </Group>
                     <Badge mt={8} color="teal" variant="light">Tiết kiệm {vnd(pr.saved)}</Badge>
                   </>
                 ) : (
                   <>
-                    <Text fz={40} fw={800} lts={-0.5}>0 ₫</Text>
+                    <Text fz={40} fw={500} lts={-0.5}>0 ₫</Text>
                     <Text fz="sm" c="dimmed">Miễn phí trọn đời</Text>
                     <Badge mt={8} color="gray" variant="light">Mặc định khi đăng ký</Badge>
                   </>
@@ -157,14 +157,14 @@ export default function BillingPage() {
       </SimpleGrid>
 
       <Card className="glass" p={0} mb="xl">
-        <Text fw={800} fz="lg" p="lg" pb={0}>So sánh chi tiết</Text>
+        <Text fw={500} fz="lg" p="lg" pb={0}>So sánh chi tiết</Text>
         <Table.ScrollContainer minWidth={640}>
           <Table verticalSpacing="md" horizontalSpacing="lg" striped>
             <Table.Thead><Table.Tr><Table.Th>Tính năng</Table.Th>{PLANS.map((p) => <Table.Th key={p.id} ta="center">{p.name}</Table.Th>)}</Table.Tr></Table.Thead>
             <Table.Tbody>
               {COMPARE.map(([f, ...vals]) => (
                 <Table.Tr key={f}>
-                  <Table.Td fw={600}>{f}</Table.Td>
+                  <Table.Td fw={500}>{f}</Table.Td>
                   {vals.map((v, i) => (
                     <Table.Td key={i} ta="center">
                       {v === true ? <IconCircleCheckFilled size={20} color="var(--mantine-color-teal-5)" /> : v === false ? <IconMinus size={18} opacity={0.3} /> : <Text fz="sm">{v}</Text>}
@@ -180,7 +180,7 @@ export default function BillingPage() {
       <Grid gap="md">
         <Grid.Col span={{ base: 12, lg: 7 }}>
           <Card className="glass" p={0} h="100%">
-            <Text fw={800} fz="lg" p="lg" pb={0}>Lịch sử thanh toán</Text>
+            <Text fw={500} fz="lg" p="lg" pb={0}>Lịch sử thanh toán</Text>
             <Table.ScrollContainer minWidth={640}>
               <Table verticalSpacing="sm" horizontalSpacing="lg" highlightOnHover>
                 <Table.Thead><Table.Tr><Table.Th>Mã GD</Table.Th><Table.Th>Ngày</Table.Th><Table.Th>Gói</Table.Th><Table.Th ta="right">Số tiền</Table.Th><Table.Th /></Table.Tr></Table.Thead>
@@ -190,7 +190,7 @@ export default function BillingPage() {
                       <Table.Td className="mono" fz="sm" style={{ whiteSpace: 'nowrap' }}>{p.id}</Table.Td>
                       <Table.Td fz="sm">{dateVN(p.date)}</Table.Td>
                       <Table.Td fz="sm">{p.plan}</Table.Td>
-                      <Table.Td ta="right" fw={700} className="tnum" style={{ whiteSpace: 'nowrap' }}>{vnd(p.amount)}</Table.Td>
+                      <Table.Td ta="right" fw={500} className="tnum" style={{ whiteSpace: 'nowrap' }}>{vnd(p.amount)}</Table.Td>
                       <Table.Td><Badge color="teal" variant="light" style={{ overflow: 'visible' }}>{p.status}</Badge></Table.Td>
                     </Table.Tr>
                   ))}
@@ -201,7 +201,7 @@ export default function BillingPage() {
         </Grid.Col>
         <Grid.Col span={{ base: 12, lg: 5 }}>
           <Card className="glass" p="lg" h="100%">
-            <Text fw={800} fz="lg" mb="sm">Câu hỏi thường gặp</Text>
+            <Text fw={500} fz="lg" mb="sm">Câu hỏi thường gặp</Text>
             <Accordion variant="separated" radius="lg">
               <Accordion.Item value="a"><Accordion.Control>Gia hạn sớm có mất ngày còn lại?</Accordion.Control><Accordion.Panel>Không. Thời hạn mới được cộng nối tiếp vào ngày hết hạn hiện tại.</Accordion.Panel></Accordion.Item>
               <Accordion.Item value="b"><Accordion.Control>Nâng cấp Pro → Cloud+ thế nào?</Accordion.Control><Accordion.Panel>Số ngày Pro còn lại được quy đổi thành tiền và trừ thẳng vào đơn Cloud+.</Accordion.Panel></Accordion.Item>

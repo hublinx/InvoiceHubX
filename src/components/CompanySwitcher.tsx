@@ -26,7 +26,7 @@ export function CompanySwitcher({ compact = false }: { compact?: boolean }) {
               {initials(active.shortName)}
             </Avatar>
             <Box style={{ minWidth: 0 }}>
-              <Text fz="sm" fw={700} truncate>
+              <Text fz="sm" fw={500} truncate>
                 {active.shortName}
               </Text>
               <Text fz={11} c="dimmed" className="mono">
@@ -65,7 +65,7 @@ export function CompanySwitcher({ compact = false }: { compact?: boolean }) {
           </Menu.Item>
         ))}
         <Divider my={6} />
-        <Menu.Item component={Link} href="/app/companies?add=1" leftSection={<IconPlus size={16} />} c="iris.7" fw={600}>
+        <Menu.Item component={Link} href="/app/companies?add=1" leftSection={<IconPlus size={16} />} c="iris.7" fw={500}>
           Thêm mã số thuế
         </Menu.Item>
         <Menu.Item component={Link} href="/app/companies" leftSection={<IconSettings2 size={16} />}>

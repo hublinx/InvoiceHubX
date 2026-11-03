@@ -27,7 +27,7 @@ function Kpi({ label, value, delta, icon: Icon, color, spark }: { label: string;
         </Badge>
       </Group>
       <Text c="dimmed" fz="sm" mt="md">{label}</Text>
-      <Text fz={26} fw={800} lts={-0.5} className="tnum">{value}</Text>
+      <Text fz={26} fw={500} lts={-0.5} className="tnum">{value}</Text>
       <Sparkline h={40} mt={6} data={spark} curveType="natural" color={color} fillOpacity={0.4} strokeWidth={2} />
     </Card>
   );
@@ -83,7 +83,7 @@ export default function Dashboard() {
           title={`${stats.risky.filter((r) => r.risk === 'high').length} hoá đơn đầu vào từ nhà cung cấp có rủi ro cao`}
         >
           Một số MST bán hàng đang trong danh sách cảnh báo / ngừng hoạt động. Kiểm tra trước khi kê khai khấu trừ thuế.{' '}
-          <Text component={Link} href="/app/invoices?risk=1" c="orange.8" fw={700} fz="sm">Xem ngay →</Text>
+          <Text component={Link} href="/app/invoices?risk=1" c="orange.8" fw={500} fz="sm">Xem ngay →</Text>
         </Alert>
       )}
 
@@ -99,7 +99,7 @@ export default function Dashboard() {
           <Card className="glass" p="lg" h="100%">
             <Group justify="space-between" mb="md">
               <Box>
-                <Text fw={800} fz="lg">Dòng tiền hoá đơn</Text>
+                <Text fw={500} fz="lg">Dòng tiền hoá đơn</Text>
                 <Text fz="sm" c="dimmed">Triệu đồng · không tính hoá đơn đã huỷ</Text>
               </Box>
               <SegmentedControl size="xs" radius="xl" value={range} onChange={setRange} data={[{ label: '3T', value: '3' }, { label: '6T', value: '6' }, { label: '10T', value: '10' }]} />
@@ -123,7 +123,7 @@ export default function Dashboard() {
 
         <Grid.Col span={{ base: 12, lg: 4 }}>
           <Card className="glass" p="lg" h="100%">
-            <Text fw={800} fz="lg">Trạng thái hoá đơn</Text>
+            <Text fw={500} fz="lg">Trạng thái hoá đơn</Text>
             <Text fz="sm" c="dimmed" mb="md">{invoices.length} hoá đơn đã đồng bộ</Text>
             <Group justify="center">
               <DonutChart data={stats.byStatus} size={180} thickness={22} paddingAngle={3} chartLabel={`${Math.round((stats.byStatus[0]!.value / invoices.length) * 100)}% hợp lệ`} />
@@ -132,7 +132,7 @@ export default function Dashboard() {
               {stats.byStatus.map((s) => (
                 <Group key={s.name} justify="space-between">
                   <Group gap={8}><Box w={10} h={10} style={{ borderRadius: 3, background: `var(--mantine-color-${s.color.replace('.', '-')})` }} /><Text fz="sm">{s.name}</Text></Group>
-                  <Text fz="sm" fw={700} className="tnum">{s.value}</Text>
+                  <Text fz="sm" fw={500} className="tnum">{s.value}</Text>
                 </Group>
               ))}
             </Stack>
@@ -142,7 +142,7 @@ export default function Dashboard() {
         <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
           <Card className="glass" p="lg" h="100%">
             <Group justify="space-between" mb="md">
-              <Text fw={800} fz="lg">Thuế GTGT tạm tính</Text>
+              <Text fw={500} fz="lg">Thuế GTGT tạm tính</Text>
               <Badge color={vatNet > 0 ? 'orange' : 'teal'}>{vatNet > 0 ? 'Phải nộp' : 'Còn khấu trừ'}</Badge>
             </Group>
             <Group align="center" wrap="nowrap">
@@ -152,11 +152,11 @@ export default function Dashboard() {
                   { value: (stats.vatOut / (stats.vatIn + stats.vatOut)) * 100, color: 'volt.6' },
                   { value: (stats.vatIn / (stats.vatIn + stats.vatOut)) * 100, color: 'iris.4' },
                 ]}
-                label={<Text ta="center" fz="xs" c="dimmed">Chênh lệch<br /><Text span fw={800} fz="sm" c="var(--mantine-color-text)">{compact(Math.abs(vatNet))}</Text></Text>}
+                label={<Text ta="center" fz="xs" c="dimmed">Chênh lệch<br /><Text span fw={500} fz="sm" c="var(--mantine-color-text)">{compact(Math.abs(vatNet))}</Text></Text>}
               />
               <Stack gap="sm" style={{ flex: 1 }}>
-                <Box><Text fz="xs" c="dimmed">VAT đầu ra</Text><Text fw={800} className="tnum">{vnd(stats.vatOut)}</Text></Box>
-                <Box><Text fz="xs" c="dimmed">VAT đầu vào</Text><Text fw={800} className="tnum">{vnd(stats.vatIn)}</Text></Box>
+                <Box><Text fz="xs" c="dimmed">VAT đầu ra</Text><Text fw={500} className="tnum">{vnd(stats.vatOut)}</Text></Box>
+                <Box><Text fz="xs" c="dimmed">VAT đầu vào</Text><Text fw={500} className="tnum">{vnd(stats.vatIn)}</Text></Box>
               </Stack>
             </Group>
             <Text fz="xs" c="dimmed" mt="md">Số liệu tham khảo, chưa thay thế tờ khai 01/GTGT.</Text>
@@ -165,7 +165,7 @@ export default function Dashboard() {
 
         <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
           <Card className="glass" p="lg" h="100%">
-            <Text fw={800} fz="lg" mb="md">Nhà cung cấp lớn nhất</Text>
+            <Text fw={500} fz="lg" mb="md">Nhà cung cấp lớn nhất</Text>
             <Stack gap="md">
               {stats.top.map(([name, total], idx) => (
                 <Box key={name}>
@@ -174,7 +174,7 @@ export default function Dashboard() {
                       <Avatar size={26} radius="md" color={['iris', 'teal', 'grape', 'cyan', 'yellow'][idx]}>{initials(name)}</Avatar>
                       <Text fz="sm" truncate>{name.replace(/^Công ty (CP|TNHH|Cổ phần)\s*/i, '')}</Text>
                     </Group>
-                    <Text fz="sm" fw={700} className="tnum">{compact(total)}</Text>
+                    <Text fz="sm" fw={500} className="tnum">{compact(total)}</Text>
                   </Group>
                   <Progress value={(total / topMax) * 100} size={6} radius="xl" color={['iris', 'teal', 'grape', 'cyan', 'yellow'][idx]} />
                 </Box>
@@ -186,7 +186,7 @@ export default function Dashboard() {
         <Grid.Col span={{ base: 12, lg: 4 }}>
           <Card className="glass" p="lg" h="100%">
             <Group justify="space-between" mb="md">
-              <Text fw={800} fz="lg">Hoạt động đồng bộ</Text>
+              <Text fw={500} fz="lg">Hoạt động đồng bộ</Text>
               <Button component={Link} href="/app/sync" variant="subtle" size="compact-sm">Tất cả</Button>
             </Group>
             <Timeline bulletSize={26} lineWidth={2} active={10}>
@@ -195,7 +195,7 @@ export default function Dashboard() {
                   key={s.id}
                   color={s.status === 'ok' ? 'teal' : s.status === 'error' ? 'red' : 'iris'}
                   bullet={s.status === 'ok' ? <IconCheck size={14} /> : s.status === 'error' ? <IconX size={14} /> : <IconRefresh size={14} className="spin" />}
-                  title={<Text fz="sm" fw={700}>{s.company}</Text>}
+                  title={<Text fz="sm" fw={500}>{s.company}</Text>}
                 >
                   <Text fz="xs" c="dimmed">
                     {s.status === 'error' ? s.message : s.status === 'running' ? 'Đang tải hoá đơn…' : `+${s.added} mới · ${s.updated} cập nhật · ${s.duration}`}
@@ -213,7 +213,7 @@ export default function Dashboard() {
               <Group gap="lg" wrap="nowrap">
                 <ThemeIcon size={56} radius="xl" color="volt"  variant="filled"><IconSparkles size={28} /></ThemeIcon>
                 <Box>
-                  <Text fw={800} fz="xl" c="white">Còn {stats.missing} hoá đơn chưa tải bản gốc (XML/PDF)</Text>
+                  <Text fw={500} fz="xl" c="white">Còn {stats.missing} hoá đơn chưa tải bản gốc (XML/PDF)</Text>
                   <Text c="rgba(255,255,255,.75)" fz="sm">Tải hàng loạt một lần, lưu trữ 10 năm trên Cloud theo quy định Thông tư 78. Cập nhật {dateVN(new Date().toISOString())}.</Text>
                 </Box>
               </Group>
@@ -225,7 +225,7 @@ export default function Dashboard() {
         {stats.risky.length > 0 && (
           <Grid.Col span={12}>
             <Card className="glass" p="lg">
-              <Group mb="md" gap="xs"><IconAlertTriangle size={20} color="var(--mantine-color-orange-5)" /><Text fw={800} fz="lg">Cảnh báo rủi ro gần đây</Text></Group>
+              <Group mb="md" gap="xs"><IconAlertTriangle size={20} color="var(--mantine-color-orange-5)" /><Text fw={500} fz="lg">Cảnh báo rủi ro gần đây</Text></Group>
               <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
                 {stats.risky.slice(0, 6).map((r) => (
                   <Card key={r.id} p="md" radius="md" withBorder>
@@ -236,7 +236,7 @@ export default function Dashboard() {
                     <Text fz="sm" fw={500} lineClamp={2} lh={1.4}>{r.partnerName}</Text>
                     <Group justify="space-between" mt={6}>
                       <Text fz="xs" c="dimmed">{dateVN(r.issuedAt)}</Text>
-                      <Text fz="sm" fw={800} className="tnum">{vnd(r.total)}</Text>
+                      <Text fz="sm" fw={500} className="tnum">{vnd(r.total)}</Text>
                     </Group>
                   </Card>
                 ))}

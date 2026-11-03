@@ -53,7 +53,7 @@ function Stat({ label, value, sub, color }: { label: string; value: ReactNode; s
   return (
     <Box px={{ base: 'md', sm: 'lg' }} py={16} className="stat-cell">
       <Text fz="xs" c="dimmed" fw={500} truncate>{label}</Text>
-      <Text fz={{ base: 15, sm: 17 }} fw={600} className="tnum" c={color} mt={4} truncate>{value}</Text>
+      <Text fz={{ base: 15, sm: 17 }} fw={500} className="tnum" c={color} mt={4} truncate>{value}</Text>
       {sub && <Text fz="xs" c="dimmed" mt={2} truncate>{sub}</Text>}
     </Box>
   );
@@ -269,7 +269,7 @@ function InvoicesInner() {
                   <Text fz="xs" c="dimmed">Thuế {r.vatRate}%: {r.vat.toLocaleString('vi-VN')}</Text>
                 </Box>
                 <Box ta="right">
-                  <Text fz="md" fw={600} className="tnum">{r.total.toLocaleString('vi-VN')} ₫</Text>
+                  <Text fz="md" fw={500} className="tnum">{r.total.toLocaleString('vi-VN')} ₫</Text>
                   <Text fz="xs" c={r.paid ? 'teal.7' : 'orange.7'}>{r.paid ? 'Đã thanh toán' : 'Chưa thanh toán'}</Text>
                 </Box>
               </Group>
@@ -277,7 +277,7 @@ function InvoicesInner() {
           ))}
           {pageRows.length === 0 && (
             <Box py={48} px="md" ta="center">
-              <Text fw={600}>Không có hoá đơn khớp bộ lọc</Text>
+              <Text fw={500}>Không có hoá đơn khớp bộ lọc</Text>
               <Button mt="md" variant="light" onClick={clearAll}>Xoá bộ lọc</Button>
             </Box>
           )}
@@ -339,7 +339,7 @@ function InvoicesInner() {
                     <Text fz="xs" c="dimmed" lh={1.5}>{r.vatRate}%</Text>
                   </Table.Td>
                   <Table.Td ta="right">
-                    <Text fz="sm" fw={600} className="tnum" lh={1.5}>{r.total.toLocaleString('vi-VN')}</Text>
+                    <Text fz="sm" fw={500} className="tnum" lh={1.5}>{r.total.toLocaleString('vi-VN')}</Text>
                     <Text fz="xs" c={r.paid ? 'teal.7' : 'orange.7'} lh={1.5}>{r.paid ? 'Đã TT' : 'Chưa TT'}</Text>
                   </Table.Td>
                   <Table.Td pl={28}>
@@ -368,7 +368,7 @@ function InvoicesInner() {
                 <Table.Tr>
                   <Table.Td colSpan={8}>
                     <Box py={56} ta="center">
-                      <Text fw={700}>Không có hoá đơn khớp bộ lọc</Text>
+                      <Text fw={500}>Không có hoá đơn khớp bộ lọc</Text>
                       <Text fz="sm" c="dimmed" mt={4}>Thử bỏ bớt điều kiện lọc hoặc đổi khoảng ngày.</Text>
                       <Button mt="md" variant="light" onClick={clearAll}>Xoá bộ lọc</Button>
                     </Box>
@@ -397,7 +397,7 @@ function InvoicesInner() {
             <Group justify="center" style={styles} px="md">
               <Paper shadow="xl" radius="md" px="md" py="sm" style={{ background: '#0f1f3d' }}>
                 <Group gap="md">
-                  <Text fw={700} c="white" fz="sm">Đã chọn {selected.length} hoá đơn</Text>
+                  <Text fw={500} c="white" fz="sm">Đã chọn {selected.length} hoá đơn</Text>
                   <Text fz="sm" c="gray.4" className="tnum" visibleFrom="sm">{vnd(invoices.filter((i) => selected.includes(i.id)).reduce((s, i) => s + i.total, 0))}</Text>
                   <Button size="xs" leftSection={<IconDownload size={14} />} onClick={() => { notifications.show({ title: 'Đã đưa vào hàng đợi', message: `Đang nén ${selected.length} hoá đơn (XML + PDF)…`, color: 'iris' }); setSelected([]); }}>Tải bản gốc</Button>
                   <Button size="xs" variant="white" leftSection={<IconFileSpreadsheet size={14} />} onClick={() => exportCsv(invoices.filter((i) => selected.includes(i.id)), 'hoa-don-da-chon.csv')}>Excel</Button>

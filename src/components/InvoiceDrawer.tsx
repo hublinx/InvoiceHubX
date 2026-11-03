@@ -18,7 +18,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
   const mobile = useMediaQuery('(max-width: 48em)');
   const inv = invoice;
   return (
-    <Drawer opened={!!inv} onClose={onClose} position="right" size={mobile ? '100%' : 'xl'} title={<Text fw={600} fz="lg">Chi tiết hoá đơn</Text>}>
+    <Drawer opened={!!inv} onClose={onClose} position="right" size={mobile ? '100%' : 'xl'} title={<Text fw={500} fz="lg">Chi tiết hoá đơn</Text>}>
       {inv && (
         <Stack gap="lg">
           <Paper p="lg" radius="md" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,.10), rgba(37,99,235,.02))', border: '1px solid rgba(37,99,235,.2)' }}>
@@ -44,7 +44,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
               </Box>
               <Box ta={{ base: 'left', xs: 'right' }}>
                 <Text fz="xs" c="dimmed">Tổng thanh toán</Text>
-                <Text fz={{ base: 22, sm: 26 }} fw={600} className="tnum">{vnd(inv.total)}</Text>
+                <Text fz={{ base: 22, sm: 26 }} fw={500} className="tnum">{vnd(inv.total)}</Text>
               </Box>
             </Group>
           </Paper>
@@ -108,7 +108,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
               <ThemeIcon variant="light" color={inv.risk === 'none' ? 'teal' : 'orange'} radius="md">
                 {inv.risk === 'none' ? <IconShieldCheck size={18} /> : <IconShieldExclamation size={18} />}
               </ThemeIcon>
-              <Text fw={700}>Kiểm tra tự động</Text>
+              <Text fw={500}>Kiểm tra tự động</Text>
             </Group>
             <Timeline bulletSize={18} lineWidth={2} active={4}>
               <Timeline.Item color="teal" title="Chữ ký số hợp lệ"><Text fz="xs" c="dimmed">Đã xác thực với chứng thư người bán</Text></Timeline.Item>

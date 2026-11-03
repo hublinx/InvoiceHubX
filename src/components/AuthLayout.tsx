@@ -18,16 +18,16 @@ function Floaters() {
           <Text fz={11} c="dimmed" className="mono">C26TAA · 00012874</Text>
           <IconCircleCheckFilled size={16} color="var(--mantine-color-teal-6)" />
         </Group>
-        <Text fz="sm" fw={600} lh={1.3}>Công ty CP Hàng không Sao Việt</Text>
+        <Text fz="sm" fw={500} lh={1.3}>Công ty CP Hàng không Sao Việt</Text>
         <Group justify="space-between" mt={8}>
           <Text fz={11} c="teal.7">Đã cấp mã CQT</Text>
-          <Text fz="sm" fw={600} className="tnum">18.351.120 ₫</Text>
+          <Text fz="sm" fw={500} className="tnum">18.351.120 ₫</Text>
         </Group>
       </Paper>
 
       {/* Đồng bộ */}
       <Paper className="floater float-b" style={{ top: '22%', left: 'calc(50% + 300px)', background: '#f59e0b', color: '#1f1300' }} px="md" py={10} radius="xl" shadow="lg">
-        <Group gap={8} wrap="nowrap"><IconBolt size={16} /><Text fz="sm" fw={600}>+18 hoá đơn mới · 42 giây</Text></Group>
+        <Group gap={8} wrap="nowrap"><IconBolt size={16} /><Text fz="sm" fw={500}>+18 hoá đơn mới · 42 giây</Text></Group>
       </Paper>
 
       {/* VAT */}
@@ -36,7 +36,7 @@ function Floaters() {
           <Text fz={11} c="dimmed">Thuế GTGT tháng 10</Text>
           <Group gap={2} c="teal.7"><IconTrendingUp size={14} /><Text fz={11} inherit>12%</Text></Group>
         </Group>
-        <Text fz="lg" fw={700} className="tnum" mt={2}>400.947.500 ₫</Text>
+        <Text fz="lg" fw={500} className="tnum" mt={2}>400.947.500 ₫</Text>
         <svg width="100%" height="34" viewBox="0 0 200 34" preserveAspectRatio="none" style={{ display: 'block', marginTop: 4 }}>
           <defs><linearGradient id="spk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2563eb" stopOpacity=".35" /><stop offset="1" stopColor="#2563eb" stopOpacity="0" /></linearGradient></defs>
           <path d="M0 26 L25 22 L50 24 L75 15 L100 18 L125 9 L150 13 L175 6 L200 8 L200 34 L0 34Z" fill="url(#spk)" />
@@ -90,7 +90,7 @@ export function AuthLayout({ title, subtitle, children, footer, tabs = false }: 
             <Group gap="sm" wrap="nowrap" mb="md">
               <Box className="logo-glow"><LogoMark size={42} /></Box>
               <Box style={{ minWidth: 0 }}>
-                <Text fz={20} fw={700} lh={1.2} className="gradient-text">{title}</Text>
+                <Text fz={20} fw={500} lh={1.2} className="gradient-text">{title}</Text>
                 {subtitle && <Text c="dimmed" fz="xs" mt={3}>{subtitle}</Text>}
               </Box>
             </Group>

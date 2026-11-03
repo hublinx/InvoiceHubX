@@ -5,8 +5,8 @@
 }
 [data-mantine-color-scheme='light'] {
   --mantine-color-body: #f4f6fa;
-  --mantine-color-text: #1f2a44;
-  --mantine-color-dimmed: #5b6b85;
+  --mantine-color-text: #334155;
+  --mantine-color-dimmed: #64748b;
 }
 [data-mantine-color-scheme='dark'] {
   --ihx-border: rgba(255, 255, 255, 0.08);
@@ -157,3 +157,12 @@ body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-are
   .aurora { filter: blur(40px); }
   .glow-border { box-shadow: 0 20px 40px -24px rgba(30, 58, 138, .4); }
 }
+
+/* Chữ nhẹ, dễ đọc: thân chữ 400, tiêu đề 600 */
+body { font-weight: 400; letter-spacing: 0.005em; }
+h1, h2, h3, h4 { font-weight: 600 !important; color: #1e293b; }
+[data-mantine-color-scheme='dark'] h1, [data-mantine-color-scheme='dark'] h2, [data-mantine-color-scheme='dark'] h3 { color: #e2e8f0; }
+.mantine-Button-label { font-weight: 500; }
+.mantine-NavLink-label { font-weight: 500; }
+.mantine-SegmentedControl-label { font-weight: 500; }
+.mantine-Input-label, .mantine-InputWrapper-label { font-weight: 500; }

@@ -54,8 +54,8 @@ function PartyBox({ title, p }: { title: string; p: ParsedInvoice['seller'] }) {
   ];
   return (
     <Paper withBorder radius="md" p="md" h="100%">
-      <Text fz="xs" c="dimmed" fw={700} tt="uppercase" lts={0.5}>{title}</Text>
-      <Text fw={700} mt={4} mb={6}>{p.name || '—'}</Text>
+      <Text fz="xs" c="dimmed" fw={500} tt="uppercase" lts={0.5}>{title}</Text>
+      <Text fw={500} mt={4} mb={6}>{p.name || '—'}</Text>
       <Stack gap={4}>
         {rows.filter(([, v]) => v).map(([k, v]) => (
           <Group key={k} gap={8} wrap="nowrap" align="flex-start">
@@ -86,12 +86,12 @@ function InvoiceView({ inv }: { inv: ParsedInvoice }) {
               {mine && <Badge color={mine === 'Đầu vào' ? 'iris' : 'volt'} size="lg">{mine}</Badge>}
               {g.adjusts && <Badge color="yellow" size="lg">{g.adjusts.split(' ')[0]}</Badge>}
             </Group>
-            <Text fw={800} fz="xl">{g.name || 'Hoá đơn điện tử'}</Text>
+            <Text fw={500} fz="xl">{g.name || 'Hoá đơn điện tử'}</Text>
             <Text fz="sm" c="dimmed">{inv.fileName}</Text>
           </Box>
           <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="lg" verticalSpacing={6}>
             {[['Mẫu số', g.template], ['Ký hiệu', g.symbol], ['Số', g.number], ['Ngày lập', g.issuedAt ? dateVN(g.issuedAt) : '—']].map(([k, val]) => (
-              <Box key={k}><Text fz="xs" c="dimmed">{k}</Text><Text fw={700} className="mono">{val || '—'}</Text></Box>
+              <Box key={k}><Text fz="xs" c="dimmed">{k}</Text><Text fw={500} className="mono">{val || '—'}</Text></Box>
             ))}
           </SimpleGrid>
         </Group>
@@ -142,7 +142,7 @@ function InvoiceView({ inv }: { inv: ParsedInvoice }) {
                       <Table.Td ta="right" className="tnum" fz="sm">{i.qty ? n(i.qty) : ''}</Table.Td>
                       <Table.Td ta="right" className="tnum" fz="sm">{i.price ? n(i.price) : ''}</Table.Td>
                       <Table.Td ta="right" className="tnum" fz="sm">{i.discount ? n(i.discount) : ''}</Table.Td>
-                      <Table.Td ta="right" className="tnum" fz="sm" fw={600} c={i.kind === '3' ? 'orange.8' : undefined}>{i.kind === '3' ? '−' : ''}{n(i.amount)}</Table.Td>
+                      <Table.Td ta="right" className="tnum" fz="sm" fw={500} c={i.kind === '3' ? 'orange.8' : undefined}>{i.kind === '3' ? '−' : ''}{n(i.amount)}</Table.Td>
                       <Table.Td ta="center" fz="sm">{i.vatRate}</Table.Td>
                     </Table.Tr>
                   ))}
@@ -174,10 +174,10 @@ function InvoiceView({ inv }: { inv: ParsedInvoice }) {
                   ...(inv.totals.fees ? [['Phí, lệ phí', inv.totals.fees]] : []),
                   ...(inv.totals.discount ? [['Chiết khấu thương mại', -inv.totals.discount]] : []),
                 ].map(([k, val]) => (
-                  <Group key={k as string} justify="space-between" py={4}><Text fz="sm" c="dimmed">{k}</Text><Text fz="sm" fw={600} className="tnum">{n(val as number)}</Text></Group>
+                  <Group key={k as string} justify="space-between" py={4}><Text fz="sm" c="dimmed">{k}</Text><Text fz="sm" fw={500} className="tnum">{n(val as number)}</Text></Group>
                 ))}
                 <Divider my={6} />
-                <Group justify="space-between"><Text fw={700}>Tổng thanh toán</Text><Text fw={800} fz="xl" className="tnum">{n(inv.totals.total)} <Text span fz="sm" c="dimmed">{g.currency}</Text></Text></Group>
+                <Group justify="space-between"><Text fw={500}>Tổng thanh toán</Text><Text fw={500} fz="xl" className="tnum">{n(inv.totals.total)} <Text span fz="sm" c="dimmed">{g.currency}</Text></Text></Group>
                 {inv.totals.words && <Text fz="sm" fs="italic" c="dimmed" mt={4}>Bằng chữ: {inv.totals.words}</Text>}
               </Paper>
             </Grid.Col>
@@ -192,7 +192,7 @@ function InvoiceView({ inv }: { inv: ParsedInvoice }) {
                 <Group key={i} gap="sm" wrap="nowrap" align="flex-start" p="sm" style={{ border: '1px solid var(--ihx-border)', borderRadius: 8, borderLeft: `3px solid var(--mantine-color-${L.color}-6)` }}>
                   <L.icon size={18} color={`var(--mantine-color-${L.color}-6)`} style={{ flexShrink: 0, marginTop: 1 }} />
                   <Box>
-                    <Text fz="sm" fw={600}>{c.title}</Text>
+                    <Text fz="sm" fw={500}>{c.title}</Text>
                     {c.detail && <Text fz="xs" c="dimmed" style={{ wordBreak: 'break-word' }}>{c.detail}</Text>}
                   </Box>
                 </Group>
@@ -283,7 +283,7 @@ export default function XmlReaderPage() {
           <Dropzone.Reject><ThemeIcon size={52} radius="md" color="red" variant="light"><IconX size={28} /></ThemeIcon></Dropzone.Reject>
           <Dropzone.Idle><ThemeIcon size={52} radius="md" variant="light"><IconFileTypeXml size={28} /></ThemeIcon></Dropzone.Idle>
           <Box>
-            <Text fw={700} fz="lg">Kéo thả file XML vào đây, hoặc bấm để chọn</Text>
+            <Text fw={500} fz="lg">Kéo thả file XML vào đây, hoặc bấm để chọn</Text>
             <Text fz="sm" c="dimmed">Chọn được nhiều file cùng lúc · tối đa 5 MB/file</Text>
           </Box>
         </Group>
@@ -320,14 +320,14 @@ export default function XmlReaderPage() {
                       <UnstyledButton key={x.id} onClick={() => setActiveId(x.id)} w="100%" px={16} py={10} style={{ borderTop: '1px solid var(--ihx-border)', background: on ? 'var(--mantine-color-iris-light)' : undefined }}>
                         <Group justify="space-between" wrap="nowrap" gap="xs">
                           <Box style={{ minWidth: 0 }}>
-                            <Text fz="sm" fw={700} className="mono">{x.general.symbol} · {x.general.number}</Text>
+                            <Text fz="sm" fw={500} className="mono">{x.general.symbol} · {x.general.number}</Text>
                             <Text fz="xs" c="dimmed" truncate>{x.seller.name}</Text>
                           </Box>
                           <Tooltip label={v.label}><Box w={10} h={10} style={{ borderRadius: 99, flexShrink: 0, background: `var(--mantine-color-${v.color}-6)` }} /></Tooltip>
                         </Group>
                         <Group justify="space-between" mt={2}>
                           <Text fz="xs" c="dimmed">{x.general.issuedAt ? dateVN(x.general.issuedAt) : ''}</Text>
-                          <Text fz="xs" fw={700} className="tnum">{n(x.totals.total)}</Text>
+                          <Text fz="xs" fw={500} className="tnum">{n(x.totals.total)}</Text>
                         </Group>
                       </UnstyledButton>
                     );

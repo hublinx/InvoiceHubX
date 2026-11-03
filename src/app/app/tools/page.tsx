@@ -53,8 +53,8 @@ function WordsBox({ amount }: { amount: number }) {
     <Paper p="md" radius="md" bg="var(--mantine-color-iris-light)">
       <Group justify="space-between" wrap="nowrap" align="flex-start">
         <Box>
-          <Text fz="xs" c="dimmed" fw={600} mb={2}>Bằng chữ</Text>
-          <Text fw={600} fs="italic">{w}.</Text>
+          <Text fz="xs" c="dimmed" fw={500} mb={2}>Bằng chữ</Text>
+          <Text fw={500} fs="italic">{w}.</Text>
         </Box>
         <CopyButton value={w + '.'}>
           {({ copied, copy }) => <Button size="compact-xs" variant="light" onClick={copy}>{copied ? 'Đã chép' : 'Chép'}</Button>}
@@ -75,12 +75,12 @@ function VatTool() {
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Stack gap="md">
             <Box>
-              <Text fz="sm" fw={600} mb={6}>Số tiền nhập vào là</Text>
+              <Text fz="sm" fw={500} mb={6}>Số tiền nhập vào là</Text>
               <SegmentedControl fullWidth value={mode} onChange={(v) => setMode(v as 'net' | 'gross')} data={[{ value: 'net', label: 'Giá chưa thuế' }, { value: 'gross', label: 'Tổng đã gồm thuế' }]} />
             </Box>
             <NumberInput label="Số tiền" value={amount} onChange={(v) => setAmount(Number(v) || 0)} {...money} />
             <Box>
-              <Text fz="sm" fw={600} mb={6}>Thuế suất</Text>
+              <Text fz="sm" fw={500} mb={6}>Thuế suất</Text>
               <SegmentedControl fullWidth value={rate} onChange={setRate} data={['0', '5', '8', '10'].map((v) => ({ value: v, label: `${v}%` }))} />
             </Box>
           </Stack>
@@ -152,7 +152,7 @@ function PitTool() {
             ].map((x) => (
               <Paper key={x.l} withBorder p="sm" radius="md">
                 <Text fz="xs" c="dimmed">{x.l}</Text>
-                <Text fw={800} c={x.c} className="tnum" fz="md">{x.v.toLocaleString('vi-VN')}</Text>
+                <Text fw={500} c={x.c} className="tnum" fz="md">{x.v.toLocaleString('vi-VN')}</Text>
               </Paper>
             ))}
           </SimpleGrid>
@@ -169,7 +169,7 @@ function PitTool() {
                   <Table.Td>{x.level}</Table.Td>
                   <Table.Td className="tnum">{x.amount.toLocaleString('vi-VN')}</Table.Td>
                   <Table.Td ta="right">{pct(x.rate)}</Table.Td>
-                  <Table.Td ta="right" className="tnum" fw={600}>{x.tax.toLocaleString('vi-VN')}</Table.Td>
+                  <Table.Td ta="right" className="tnum" fw={500}>{x.tax.toLocaleString('vi-VN')}</Table.Td>
                 </Table.Tr>
               ))}
               {r.taxable === 0 && <Table.Tr><Table.Td colSpan={4}><Text fz="sm" c="dimmed" ta="center">Không phát sinh thuế TNCN</Text></Table.Td></Table.Tr>}
@@ -196,8 +196,8 @@ function DeadlineTool() {
               const days = Math.ceil((new Date(d.date).getTime() - today) / 86400000);
               return (
                 <Table.Tr key={i}>
-                  <Table.Td className="tnum" fw={600}>{dateVN(d.date)}</Table.Td>
-                  <Table.Td><Text fz="sm" fw={600}>{d.title}</Text><Text fz="xs" c="dimmed">{d.detail}</Text></Table.Td>
+                  <Table.Td className="tnum" fw={500}>{dateVN(d.date)}</Table.Td>
+                  <Table.Td><Text fz="sm" fw={500}>{d.title}</Text><Text fz="xs" c="dimmed">{d.detail}</Text></Table.Td>
                   <Table.Td><Badge variant="light" color={KIND_COLOR[d.kind]}>{d.kind}</Badge></Table.Td>
                   <Table.Td ta="right"><Badge variant={days <= 7 ? 'filled' : 'light'} color={days <= 7 ? 'red' : days <= 30 ? 'yellow' : 'gray'}>{days} ngày</Badge></Table.Td>
                 </Table.Tr>
@@ -229,9 +229,9 @@ function ReviewTool() {
   return (
     <SectionCard title="Rà soát điều kiện khấu trừ" description={`Hoá đơn đầu vào của ${active.shortName} có thể bị loại khi khấu trừ thuế GTGT.`} noPadding>
       <SimpleGrid cols={{ base: 1, sm: 3 }} px={20} pb={16} spacing="sm">
-        <Paper withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">Hoá đơn cần xem</Text><Text fw={800} fz="lg">{issues.length}</Text></Paper>
-        <Paper withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">VAT có nguy cơ bị loại</Text><Text fw={800} fz="lg" c="red.7" className="tnum">{vnd(vatAtRisk)}</Text></Paper>
-        <Paper withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">Ngưỡng chứng từ không tiền mặt</Text><Text fw={800} fz="lg" className="tnum">{vnd(TAX_CONFIG.nonCashThreshold)}</Text></Paper>
+        <Paper withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">Hoá đơn cần xem</Text><Text fw={500} fz="lg">{issues.length}</Text></Paper>
+        <Paper withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">VAT có nguy cơ bị loại</Text><Text fw={500} fz="lg" c="red.7" className="tnum">{vnd(vatAtRisk)}</Text></Paper>
+        <Paper withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">Ngưỡng chứng từ không tiền mặt</Text><Text fw={500} fz="lg" className="tnum">{vnd(TAX_CONFIG.nonCashThreshold)}</Text></Paper>
       </SimpleGrid>
       <ScrollArea.Autosize mah={520}>
         <Table.ScrollContainer minWidth={720}>
@@ -240,9 +240,9 @@ function ReviewTool() {
             <Table.Tbody>
               {issues.slice(0, 60).map(({ inv, reasons }) => (
                 <Table.Tr key={inv.id}>
-                  <Table.Td><Text fz="sm" fw={600} className="mono">{inv.number}</Text><Text fz="xs" c="dimmed">{dateVN(inv.issuedAt)} · <Badge size="xs" variant="dot" color={STATUS_META[inv.status].color}>{STATUS_META[inv.status].label}</Badge></Text></Table.Td>
+                  <Table.Td><Text fz="sm" fw={500} className="mono">{inv.number}</Text><Text fz="xs" c="dimmed">{dateVN(inv.issuedAt)} · <Badge size="xs" variant="dot" color={STATUS_META[inv.status].color}>{STATUS_META[inv.status].label}</Badge></Text></Table.Td>
                   <Table.Td maw={260}><Text fz="sm" lineClamp={2} lh={1.4}>{inv.partnerName}</Text><Text fz="xs" c="dimmed" className="mono">{inv.partnerTax}</Text></Table.Td>
-                  <Table.Td ta="right" className="tnum" fw={600}>{inv.total.toLocaleString('vi-VN')}</Table.Td>
+                  <Table.Td ta="right" className="tnum" fw={500}>{inv.total.toLocaleString('vi-VN')}</Table.Td>
                   <Table.Td ta="right" className="tnum">{inv.vat.toLocaleString('vi-VN')}</Table.Td>
                   <Table.Td><Stack gap={4}>{reasons.map((r) => <Badge key={r.text} size="sm" variant="light" color={r.color} style={{ textTransform: 'none', fontWeight: 600 }}>{r.text}</Badge>)}</Stack></Table.Td>
                 </Table.Tr>
@@ -273,7 +273,7 @@ export default function ToolsPage() {
                     <Group gap="sm" wrap="nowrap">
                       <ThemeIcon size={36} radius="md" variant={on ? 'filled' : 'light'} color="iris"><t.icon size={18} /></ThemeIcon>
                       <Box style={{ minWidth: 0 }}>
-                        <Text fz="sm" fw={700} c={on ? 'iris.8' : undefined}>{t.label}</Text>
+                        <Text fz="sm" fw={500} c={on ? 'iris.8' : undefined}>{t.label}</Text>
                         <Text fz="xs" c="dimmed" truncate>{t.desc}</Text>
                       </Box>
                     </Group>
