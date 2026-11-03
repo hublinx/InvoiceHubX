@@ -11,6 +11,7 @@ Giao diện (UI-only) cho nền tảng quản lý hoá đơn điện tử: gom h
 | Đường dẫn | Nội dung |
 |---|---|
 | `/` | Landing page |
+| `/login`, `/register`, `/forgot-password` | Đăng nhập (email/mật khẩu, Google), đăng ký có xác thực OTP, quên mật khẩu. Trang `/app/*` yêu cầu đăng nhập |
 | `/app` | Dashboard: KPI, biểu đồ dòng tiền, VAT tạm tính, NCC lớn nhất, cảnh báo rủi ro |
 | `/app/invoices` | Kho hoá đơn: lọc (trạng thái, ngày, thuế suất, rủi ro), sắp xếp, chọn hàng loạt, xuất CSV, drawer chi tiết |
 | `/app/lookup` | Tra cứu MST: nhập là tự tra, kiểm tra chữ số kiểm tra, tra hàng loạt, xuất Excel |
@@ -35,3 +36,16 @@ npm run dev
 ## Deploy GitHub Pages
 
 Workflow `.github/workflows/deploy.yml` tự build (`output: 'export'`) và deploy khi push. Bật **Settings → Pages → Source: GitHub Actions** cho repo.
+
+## Đăng nhập Google
+
+Không cấu hình gì: nút Google chạy **chế độ demo** (chọn tài khoản mẫu).
+
+Để dùng Google thật (Google Identity Services):
+
+1. Google Cloud Console → APIs & Services → Credentials → **Create OAuth client ID** → loại *Web application*.
+2. **Authorized JavaScript origins**: `https://hublinx.github.io` (và `http://localhost:3000` khi chạy local).
+3. Repo GitHub → Settings → Secrets and variables → Actions → tab **Variables** → thêm `GOOGLE_CLIENT_ID`.
+4. Chạy lại workflow deploy. Local: tạo `.env.local` với `NEXT_PUBLIC_GOOGLE_CLIENT_ID=...`.
+
+> Bản tĩnh chỉ đọc thông tin hiển thị từ ID token. Khi có backend, cần gửi `credential` lên server để xác minh chữ ký trước khi tạo phiên.

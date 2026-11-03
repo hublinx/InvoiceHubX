@@ -66,6 +66,7 @@ export default function Landing() {
             </Group>
             <Group gap="xs">
               <ThemeToggle />
+              <Button component={Link} href="/login" variant="subtle" visibleFrom="xs">Đăng nhập</Button>
               <Button component={Link} href="/app" className="volt-btn" rightSection={<IconArrowRight size={16} />}>Vào ứng dụng</Button>
             </Group>
           </Group>
@@ -85,7 +86,7 @@ export default function Landing() {
                 InvoiceHubX tự gom hoá đơn đầu vào – đầu ra từ cổng thuế cho mọi mã số thuế, đối soát VAT và cảnh báo rủi ro trước khi bạn kịp mở Excel.
               </Text>
               <Group mt={36}>
-                <Button size="lg" className="volt-btn" component={Link} href="/app" rightSection={<IconArrowRight size={18} />}>Dùng thử miễn phí</Button>
+                <Button size="lg" className="volt-btn" component={Link} href="/register" rightSection={<IconArrowRight size={18} />}>Dùng thử miễn phí</Button>
                 <Button size="lg" variant="default" component={Link} href="/app/billing">Xem bảng giá</Button>
               </Group>
               <Group mt="xl" gap="lg">

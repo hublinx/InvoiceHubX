@@ -1,11 +1,12 @@
 'use client';
 
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useAuth } from './auth';
 import { notifications } from '@mantine/notifications';
 import { COMPANIES, generateInvoices, type Company, type Invoice, type PlanId } from './data';
 
 type Store = {
-  user: { name: string; email: string; phone: string; joinedAt: string };
+  user: { name: string; email: string; phone: string; joinedAt: string; avatar?: string; method?: string };
   setUser: (u: Store['user']) => void;
   companies: Company[];
   activeId: string;
@@ -27,7 +28,12 @@ const Ctx = createContext<Store | null>(null);
 const COLORS = ['grape', 'cyan', 'pink', 'indigo', 'lime'];
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState({ name: 'Trần Minh Hưng', email: 'demo@invoicehubx.vn', phone: '0900 000 000', joinedAt: '2026-02-11' });
+  const [user, setUser] = useState<Store['user']>({ name: 'Trần Minh Hưng', email: 'demo@invoicehubx.vn', phone: '0900 000 000', joinedAt: '2026-02-11' });
+  const { session } = useAuth();
+  // Đồng bộ hồ sơ với phiên đăng nhập (tên, email, ảnh Google)
+  useEffect(() => {
+    if (session) setUser((u) => ({ ...u, name: session.name, email: session.email, avatar: session.picture, method: session.method }));
+  }, [session]);
   const [companies, setCompanies] = useState<Company[]>(COMPANIES);
   const [activeId, setActiveId] = useState(COMPANIES[0]!.id);
   const [plan, setPlan] = useState<Store['plan']>({ id: 'pro', startedAt: '2026-10-02', expiresAt: '2026-12-02' });

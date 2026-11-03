@@ -72,10 +72,10 @@ export default function AccountPage() {
         <Box h={110} style={{ background: 'linear-gradient(110deg, #0f1f3d, #1e3a8a 50%, #3b82f6)' }} />
         <Group px="xl" pb="lg" mt={-44} justify="space-between" align="flex-end">
           <Group align="flex-end">
-            <Avatar size={96} radius={28} color="iris" variant="filled" style={{ border: '4px solid var(--mantine-color-body)' }} fz={32}>{initials(user.name)}</Avatar>
+            <Avatar size={96} radius={28} src={user.avatar} color="iris" variant="filled" style={{ border: '4px solid var(--mantine-color-body)' }} fz={32}>{initials(user.name)}</Avatar>
             <Box pb={6}>
               <Group gap="xs"><Text fz={24} fw={800}>{user.name}</Text><Badge color="volt" variant="light" >{plan.id.toUpperCase()}</Badge></Group>
-              <Text c="dimmed" fz="sm">Thành viên từ {dateVN(user.joinedAt)} · {user.email}</Text>
+              <Text c="dimmed" fz="sm">Thành viên từ {dateVN(user.joinedAt)} · {user.email}{user.method?.startsWith('google') ? ' · Đăng nhập bằng Google' : ''}</Text>
             </Box>
           </Group>
         </Group>

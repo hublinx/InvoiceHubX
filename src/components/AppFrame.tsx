@@ -5,6 +5,7 @@ import {
   Progress, ScrollArea, Stack, Text, Tooltip, UnstyledButton,
 } from '@mantine/core';
 import { useDisclosure, useHotkeys, useLocalStorage } from '@mantine/hooks';
+import { Center, Loader } from '@mantine/core';
 import { Spotlight, spotlight, type SpotlightActionData } from '@mantine/spotlight';
 import {
   IconArrowsExchange, IconBell, IconBolt, IconBuildingStore, IconCalculator, IconCreditCard, IconFileInvoice,
@@ -16,6 +17,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { initials } from '@/lib/format';
 import { useStore } from '@/lib/store';
+import { useAuth } from '@/lib/auth';
+import { useEffect } from 'react';
 import { CompanySwitcher } from './CompanySwitcher';
 import { Logo, LogoMark } from './Logo';
 import { ThemeToggle } from './ThemeToggle';
@@ -93,6 +96,12 @@ export function AppFrame({ children }: { children: ReactNode }) {
   const pathname = norm(usePathname() || '/app');
   const router = useRouter();
   const { user, syncNow, syncing, invoices, companies, setActiveId } = useStore();
+  const { ready, session, signOut } = useAuth();
+  // Chưa đăng nhập → chuyển sang trang đăng nhập, giữ lại trang đang mở
+  useEffect(() => {
+    if (ready && !session) router.replace(`/login?next=${encodeURIComponent(pathname)}`);
+  }, [ready, session, pathname, router]);
+  const logout = () => { signOut(); router.replace('/login'); };
   // Trên mobile, menu luôn hiển thị đầy đủ khi mở
   const mini = collapsed && !opened;
 
@@ -117,6 +126,10 @@ export function AppFrame({ children }: { children: ReactNode }) {
       leftSection: <IconFileInvoice size={20} />, onClick: () => router.push(`/app/invoices?q=${i.number}`),
     })),
   ];
+
+  if (!ready || !session) {
+    return <Center h="100vh"><Loader /></Center>;
+  }
 
   return (
     <AppShell
@@ -157,7 +170,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
             <ThemeToggle />
             <Menu position="bottom-end" width={240} shadow="md">
               <Menu.Target>
-                <Avatar component="button" radius="xl" color="iris" variant="filled" style={{ border: 'none', cursor: 'pointer' }}>{initials(user.name)}</Avatar>
+                <Avatar component="button" src={user.avatar} radius="xl" color="iris" variant="filled" style={{ border: 'none', cursor: 'pointer' }} aria-label="Tài khoản">{initials(user.name)}</Avatar>
               </Menu.Target>
               <Menu.Dropdown>
                 <Box px="sm" py={6}>
@@ -169,7 +182,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
                 <Menu.Item component={Link} href="/app/billing" leftSection={<IconCreditCard size={16} />}>Gói & thanh toán</Menu.Item>
                 <Menu.Item leftSection={<IconHelpCircle size={16} />}>Trung tâm trợ giúp</Menu.Item>
                 <Menu.Divider />
-                <Menu.Item component={Link} href="/" color="red" leftSection={<IconLogout size={16} />}>Đăng xuất</Menu.Item>
+                <Menu.Item onClick={logout} color="red" leftSection={<IconLogout size={16} />}>Đăng xuất</Menu.Item>
               </Menu.Dropdown>
             </Menu>
           </Group>
