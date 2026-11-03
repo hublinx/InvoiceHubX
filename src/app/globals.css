@@ -86,3 +86,9 @@ body {
 .mantine-Table-th { font-size: 13px; font-weight: 500; color: var(--mantine-color-dimmed); white-space: nowrap; }
 .mantine-Table-td { color: var(--mantine-color-text); }
 .mantine-Table-tr { border-color: var(--ihx-border) !important; }
+
+/* iPhone: chừa vùng an toàn hai bên & đáy khi bật viewport-fit=cover */
+body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.mantine-AppShell-header { background: var(--ihx-surface); }
+.mantine-AppShell-main { padding-bottom: calc(var(--mantine-spacing-md) + env(safe-area-inset-bottom, 0px)); }
+.mantine-AppShell-navbar { padding-bottom: calc(var(--mantine-spacing-md) + env(safe-area-inset-bottom, 0px)) !important; }

@@ -133,12 +133,12 @@ export function AppFrame({ children }: { children: ReactNode }) {
 
   return (
     <AppShell
-      header={{ height: 64 }}
+      header={{ height: 'calc(4rem + env(safe-area-inset-top, 0px))' }}
       navbar={{ width: { base: NAV_W, md: collapsed ? NAV_W_MINI : NAV_W }, breakpoint: 'md', collapsed: { mobile: !opened } }}
       padding={{ base: 'md', md: 'lg', xl: 'xl' }}
       transitionDuration={200}
     >
-      <AppShell.Header withBorder>
+      <AppShell.Header withBorder style={{ paddingTop: 'env(safe-area-inset-top, 0px)', paddingLeft: 'env(safe-area-inset-left, 0px)', paddingRight: 'env(safe-area-inset-right, 0px)' }}>
         <Group h="100%" px={{ base: 'md', md: 'lg' }} justify="space-between" wrap="nowrap">
           <Group gap="sm" wrap="nowrap">
             <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" aria-label="Mở menu" />

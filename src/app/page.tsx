@@ -55,7 +55,7 @@ export default function Landing() {
   const best = DURATIONS[DURATIONS.length - 1]!;
   return (
     <Box>
-      <Box component="header" pos="sticky" top={0} style={{ zIndex: 100 }} className="glass">
+      <Box component="header" pos="sticky" top={0} style={{ zIndex: 100, paddingTop: 'env(safe-area-inset-top, 0px)' }} className="glass">
         <Container size="xl" py="md">
           <Group justify="space-between">
             <Logo />

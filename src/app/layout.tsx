@@ -7,12 +7,23 @@ import '@mantine/dropzone/styles.css';
 import './globals.css';
 
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'InvoiceHubX — Trung tâm hoá đơn điện tử',
   description: 'Tự động gom, đối soát và phân tích hoá đơn điện tử cho mọi mã số thuế.',
+};
+
+// viewport-fit=cover: cho phép header phủ cả vùng tai thỏ / thanh trạng thái trên iPhone
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d111a' },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -26,7 +37,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
         />
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </head>
       <body>
         <Providers>{children}</Providers>
