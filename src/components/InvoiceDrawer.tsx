@@ -5,6 +5,7 @@ import {
   ThemeIcon, Timeline, Tooltip, ActionIcon,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { useMediaQuery } from '@mantine/hooks';
 import {
   IconCheck, IconCloudDownload, IconCopy, IconFileTypePdf, IconFileTypeXml, IconShieldCheck, IconShieldExclamation, IconSend,
 } from '@tabler/icons-react';
@@ -14,14 +15,15 @@ import { useStore } from '@/lib/store';
 
 export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; onClose: () => void }) {
   const { active } = useStore();
+  const mobile = useMediaQuery('(max-width: 48em)');
   const inv = invoice;
   return (
-    <Drawer opened={!!inv} onClose={onClose} position="right" size="xl" title={<Text fw={800}>Chi tiết hoá đơn</Text>} scrollAreaComponent={ScrollArea.Autosize}>
+    <Drawer opened={!!inv} onClose={onClose} position="right" size={mobile ? '100%' : 'xl'} title={<Text fw={600} fz="lg">Chi tiết hoá đơn</Text>}>
       {inv && (
         <Stack gap="lg">
           <Paper p="lg" radius="md" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,.10), rgba(37,99,235,.02))', border: '1px solid rgba(37,99,235,.2)' }}>
-            <Group justify="space-between" align="flex-start">
-              <Box>
+            <Group justify="space-between" align="flex-start" gap="md">
+              <Box style={{ minWidth: 0 }}>
                 <Group gap={6}>
                   <Badge color={inv.direction === 'in' ? 'iris' : 'volt'} variant={inv.direction === 'in' ? 'light' : 'filled'} c={inv.direction === 'out' ? 'dark.9' : undefined}>
                     {inv.direction === 'in' ? 'Đầu vào' : 'Đầu ra'}
@@ -29,7 +31,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
                   <Badge color={STATUS_META[inv.status].color}>{STATUS_META[inv.status].label}</Badge>
                 </Group>
                 <Group gap={4} mt="sm">
-                  <Text className="mono" fz="lg" fw={700}>{inv.symbol} · {inv.number}</Text>
+                  <Text className="mono" fz="md" fw={500}>{inv.symbol} · {inv.number}</Text>
                   <CopyButton value={inv.number}>
                     {({ copied, copy }) => (
                       <Tooltip label={copied ? 'Đã chép' : 'Chép số HĐ'}>
@@ -40,27 +42,40 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
                 </Group>
                 <Text fz="sm" c="dimmed">Ngày lập {dateVN(inv.issuedAt)}</Text>
               </Box>
-              <Box ta="right">
+              <Box ta={{ base: 'left', xs: 'right' }}>
                 <Text fz="xs" c="dimmed">Tổng thanh toán</Text>
-                <Text fz={28} fw={800} className="tnum" lts={-0.5}>{vnd(inv.total)}</Text>
+                <Text fz={{ base: 22, sm: 26 }} fw={600} className="tnum">{vnd(inv.total)}</Text>
               </Box>
             </Group>
           </Paper>
 
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
             <Paper withBorder p="md" radius="md">
-              <Text fz="xs" c="dimmed" tt="uppercase" fw={700} lts={1}>Người bán</Text>
-              <Text fw={700} mt={4}>{inv.direction === 'in' ? inv.partnerName : active.name}</Text>
+              <Text fz="xs" c="dimmed">Người bán</Text>
+              <Text fw={500} mt={4}>{inv.direction === 'in' ? inv.partnerName : active.name}</Text>
               <Text fz="sm" className="mono" c="dimmed">MST {inv.direction === 'in' ? inv.partnerTax : active.taxCode}</Text>
             </Paper>
             <Paper withBorder p="md" radius="md">
-              <Text fz="xs" c="dimmed" tt="uppercase" fw={700} lts={1}>Người mua</Text>
-              <Text fw={700} mt={4}>{inv.direction === 'out' ? inv.partnerName : active.name}</Text>
+              <Text fz="xs" c="dimmed">Người mua</Text>
+              <Text fw={500} mt={4}>{inv.direction === 'out' ? inv.partnerName : active.name}</Text>
               <Text fz="sm" className="mono" c="dimmed">MST {inv.direction === 'out' ? inv.partnerTax : active.taxCode}</Text>
             </Paper>
           </SimpleGrid>
 
           <Paper withBorder radius="md" p={0} style={{ overflow: 'hidden' }}>
+            {mobile ? (
+              <Stack gap={0}>
+                {inv.items.map((it, i) => (
+                  <Box key={i} px="md" py="sm" style={{ borderBottom: '1px solid var(--ihx-border)' }}>
+                    <Text fz="sm" fw={500}>{it.name}</Text>
+                    <Group justify="space-between" mt={2}>
+                      <Text fz="xs" c="dimmed" className="tnum">{it.qty.toLocaleString('vi-VN')} {it.unit} × {it.price.toLocaleString('vi-VN')}</Text>
+                      <Text fz="sm" fw={500} className="tnum">{(it.qty * it.price).toLocaleString('vi-VN')}</Text>
+                    </Group>
+                  </Box>
+                ))}
+              </Stack>
+            ) : (
             <Table.ScrollContainer minWidth={520}>
               <Table verticalSpacing="sm" horizontalSpacing="md" striped>
                 <Table.Thead>
@@ -69,15 +84,16 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
                 <Table.Tbody>
                   {inv.items.map((it, i) => (
                     <Table.Tr key={i}>
-                      <Table.Td><Text fz="sm" fw={600}>{it.name}</Text><Text fz="xs" c="dimmed">ĐVT: {it.unit}</Text></Table.Td>
+                      <Table.Td><Text fz="sm" fw={500}>{it.name}</Text><Text fz="xs" c="dimmed">ĐVT: {it.unit}</Text></Table.Td>
                       <Table.Td ta="right" className="tnum">{it.qty.toLocaleString('vi-VN')}</Table.Td>
                       <Table.Td ta="right" className="tnum">{it.price.toLocaleString('vi-VN')}</Table.Td>
-                      <Table.Td ta="right" className="tnum" fw={700}>{(it.qty * it.price).toLocaleString('vi-VN')}</Table.Td>
+                      <Table.Td ta="right" className="tnum" fw={500}>{(it.qty * it.price).toLocaleString('vi-VN')}</Table.Td>
                     </Table.Tr>
                   ))}
                 </Table.Tbody>
               </Table>
             </Table.ScrollContainer>
+            )}
             <Stack gap={6} p="md" style={{ borderTop: '1px solid var(--ihx-border)' }}>
               <Row label="Cộng tiền hàng" value={vnd(inv.preTax)} />
               {inv.discount > 0 && <Row label="Chiết khấu thương mại" value={'- ' + vnd(inv.discount)} />}
@@ -123,8 +139,8 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
 function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
     <Group justify="space-between">
-      <Text fz="sm" c={bold ? undefined : 'dimmed'} fw={bold ? 800 : 400}>{label}</Text>
-      <Text fz={bold ? 'lg' : 'sm'} fw={bold ? 900 : 600} className="tnum">{value}</Text>
+      <Text fz="sm" c={bold ? undefined : 'dimmed'} fw={bold ? 600 : 400}>{label}</Text>
+      <Text fz={bold ? 'lg' : 'sm'} fw={bold ? 600 : 500} className="tnum">{value}</Text>
     </Group>
   );
 }

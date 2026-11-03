@@ -51,7 +51,7 @@ export function CompanySwitcher({ compact = false }: { compact?: boolean }) {
             }
             rightSection={c.id === active.id ? <IconCheck size={16} color="var(--mantine-color-volt-5)" /> : null}
           >
-            <Text fz="sm" fw={600} truncate maw={230}>
+            <Text fz="sm" fw={500} lineClamp={2} maw={230} lh={1.4}>
               {c.name}
             </Text>
             <Group gap={6}>

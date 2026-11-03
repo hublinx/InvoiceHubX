@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  ActionIcon, Affix, Badge, Box, Button, Checkbox, Collapse, Group, Input, Menu, MultiSelect, NumberInput, Pagination,
+  ActionIcon, Affix, Badge, Box, Button, Checkbox, Collapse, Group, Input, UnstyledButton, Menu, MultiSelect, NumberInput, Pagination,
   Paper, Pill, SegmentedControl, Select, SimpleGrid, Table, Text, TextInput, Tooltip, Transition,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
@@ -51,10 +51,10 @@ function exportCsv(rows: Invoice[], name: string) {
 /** Một ô số liệu trong dải thống kê */
 function Stat({ label, value, sub, color }: { label: string; value: ReactNode; sub?: ReactNode; color?: string }) {
   return (
-    <Box px="md" py={12} className="stat-cell">
-      <Text fz={11} c="dimmed" fw={600} tt="uppercase" lts={0.5} truncate>{label}</Text>
-      <Text fz="md" fw={800} className="tnum" c={color} mt={2} truncate>{value}</Text>
-      {sub && <Text fz={11} c="dimmed" truncate>{sub}</Text>}
+    <Box px={{ base: 'md', sm: 'lg' }} py={16} className="stat-cell">
+      <Text fz="xs" c="dimmed" fw={500} truncate>{label}</Text>
+      <Text fz={{ base: 15, sm: 17 }} fw={600} className="tnum" c={color} mt={4} truncate>{value}</Text>
+      {sub && <Text fz="xs" c="dimmed" mt={2} truncate>{sub}</Text>}
     </Box>
   );
 }
@@ -163,20 +163,19 @@ function InvoicesInner() {
 
       <Paper className="glass" withBorder radius="md" style={{ overflow: 'hidden' }}>
         {/* Dải thống kê gọn — luôn tính theo bộ lọc hiện tại */}
-        <SimpleGrid cols={{ base: 2, sm: 3, lg: 6 }} spacing={0} className="stat-strip" style={{ background: 'var(--mantine-color-body)' }}>
-          <Stat label="Số hoá đơn" value={totals.count.toLocaleString('vi-VN')} sub={`${totals.inCount} vào · ${totals.outCount} ra`} />
-          <Stat label="Tiền hàng (sau CK)" value={totals.pre.toLocaleString('vi-VN')} sub="Chưa gồm thuế" />
-          <Stat label="Thuế GTGT" value={totals.vat.toLocaleString('vi-VN')} sub="Không tính HĐ huỷ" />
-          <Stat label="Tổng thanh toán" value={totals.total.toLocaleString('vi-VN')} color="iris.8" sub="Đơn vị: đồng" />
-          <Stat label="Chưa thanh toán" value={totals.unpaid.toLocaleString('vi-VN')} color="orange.8" sub="Công nợ theo HĐ" />
-          <Stat label="MST rủi ro" value={totals.risky} color={totals.risky ? 'red.7' : undefined} sub="Hoá đơn cần kiểm tra" />
+        <SimpleGrid cols={{ base: 2, lg: 4 }} spacing={0} className="stat-strip" style={{ background: 'var(--mantine-color-body)' }}>
+          <Stat label="Số hoá đơn" value={totals.count.toLocaleString('vi-VN')} sub={`${totals.inCount} đầu vào · ${totals.outCount} đầu ra${totals.risky ? ` · ${totals.risky} MST rủi ro` : ''}`} />
+          <Stat label="Thuế GTGT" value={vnd(totals.vat)} sub={`Tiền hàng ${vnd(totals.pre)}`} />
+          <Stat label="Tổng thanh toán" value={vnd(totals.total)} color="iris.8" sub="Không tính hoá đơn huỷ" />
+          <Stat label="Chưa thanh toán" value={vnd(totals.unpaid)} color="orange.8" sub="Công nợ theo hoá đơn" />
         </SimpleGrid>
 
         {/* Thanh công cụ */}
-        <Box px="md" py="sm">
+        <Box px={{ base: 'md', sm: 'lg' }} py="md">
           <Group justify="space-between" gap="sm">
             <Group gap="sm" style={{ flex: 1 }} wrap="wrap">
               <SegmentedControl
+                w={{ base: '100%', sm: 'auto' }}
                 value={direction}
                 onChange={(v) => setDirection(v as typeof direction)}
                 data={[
@@ -191,14 +190,16 @@ function InvoicesInner() {
                 rightSection={q ? <ActionIcon variant="subtle" color="gray" size="sm" onClick={() => setQ('')} aria-label="Xoá"><IconX size={14} /></ActionIcon> : null}
                 value={q}
                 onChange={(e) => setQ(e.currentTarget.value)}
+                w={{ base: '100%', sm: 'auto' }}
                 style={{ flex: 1, minWidth: 220, maxWidth: 420 }}
               />
               <DatePickerInput
                 type="range" locale="vi" placeholder="Khoảng ngày lập" leftSection={<IconCalendar size={16} />}
-                value={f.dates} onChange={(v) => set('dates', v as [string | null, string | null])} clearable valueFormat="DD/MM/YYYY" w={230}
+                value={f.dates} onChange={(v) => set('dates', v as [string | null, string | null])} clearable valueFormat="DD/MM/YYYY" w={{ base: '100%', sm: 230 }}
               />
             </Group>
             <Button
+              w={{ base: '100%', md: 'auto' }}
               variant={advOpen || chips.length ? 'light' : 'default'}
               leftSection={<IconAdjustmentsHorizontal size={16} />}
               rightSection={<IconChevronDown size={14} style={{ transform: advOpen ? 'rotate(180deg)' : undefined, transition: 'transform 150ms' }} />}
@@ -211,8 +212,8 @@ function InvoicesInner() {
 
         {/* Bộ lọc nâng cao — xổ ra */}
         <Collapse expanded={advOpen} transitionDuration={180}>
-          <Box px="md" py="md" style={{ borderTop: '1px solid var(--ihx-border)', background: 'var(--mantine-color-body)' }}>
-            <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="md" verticalSpacing="sm">
+          <Box px={{ base: 'md', sm: 'lg' }} py="lg" style={{ borderTop: '1px solid var(--ihx-border)', background: 'var(--mantine-color-body)' }}>
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg" verticalSpacing="md">
               <MultiSelect label="Trạng thái hoá đơn" placeholder="Tất cả" data={Object.entries(STATUS_META).map(([value, m]) => ({ value, label: m.label }))} value={f.statuses} onChange={(v) => set('statuses', v)} clearable />
               <MultiSelect label="Thuế suất" placeholder="Tất cả" data={['0', '5', '8', '10'].map((v) => ({ value: v, label: `${v}%` }))} value={f.vatRates} onChange={(v) => set('vatRates', v)} clearable />
               <MultiSelect label="Đối tác" placeholder="Tìm theo tên / MST" data={partnerOptions} value={f.partners} onChange={(v) => set('partners', v)} searchable clearable maxDropdownHeight={260} />
@@ -240,15 +241,51 @@ function InvoicesInner() {
 
         {/* Bộ lọc đang áp dụng */}
         {chips.length > 0 && (
-          <Group gap={6} px="md" py={10} style={{ borderTop: '1px solid var(--ihx-border)' }}>
-            <Text fz="xs" c="dimmed" fw={600} mr={4}>Đang lọc:</Text>
+          <Group gap={8} px={{ base: 'md', sm: 'lg' }} py={12} style={{ borderTop: '1px solid var(--ihx-border)' }}>
+            <Text fz="xs" c="dimmed" mr={4}>Đang lọc:</Text>
             {chips.map((c) => <Pill key={c.key} withRemoveButton onRemove={c.clear} size="md">{c.label}</Pill>)}
             <Button variant="subtle" size="compact-xs" color="red" onClick={clearAll}>Xoá tất cả</Button>
           </Group>
         )}
 
-        <Table.ScrollContainer minWidth={1000} type="native">
-          <Table highlightOnHover verticalSpacing={10} horizontalSpacing="md" style={{ borderTop: '1px solid var(--ihx-border)', tableLayout: 'fixed' }}>
+        {/* Mobile / tablet nhỏ: danh sách thẻ */}
+        <Box hiddenFrom="md" style={{ borderTop: '1px solid var(--ihx-border)' }}>
+          {pageRows.map((r) => (
+            <UnstyledButton key={r.id} onClick={() => setOpen(r)} w="100%" px="md" py={14} style={{ borderBottom: '1px solid var(--ihx-border)', borderLeft: `3px solid var(--mantine-color-${r.direction === 'in' ? 'iris-6' : 'volt-5'})` }}>
+              <Group justify="space-between" wrap="nowrap" gap="sm" mb={4}>
+                <Text fz="sm" className="mono" c="dimmed">{r.symbol} · {r.number}</Text>
+                <Group gap={6} wrap="nowrap">
+                  <Box w={8} h={8} style={{ borderRadius: 99, background: `var(--mantine-color-${STATUS_META[r.status].color}-6)` }} />
+                  <Text fz="xs">{STATUS_META[r.status].label}</Text>
+                </Group>
+              </Group>
+              <Group gap={6} wrap="nowrap" align="flex-start">
+                <Text fz="md" fw={500} lh={1.4} lineClamp={2}>{r.partnerName}</Text>
+                {r.risk !== 'none' && <IconAlertTriangle size={16} color={`var(--mantine-color-${r.risk === 'high' ? 'red' : 'yellow'}-6)`} style={{ flexShrink: 0, marginTop: 3 }} />}
+              </Group>
+              <Group justify="space-between" mt={8} align="flex-end">
+                <Box>
+                  <Text fz="xs" c="dimmed">{dateVN(r.issuedAt)} · {r.direction === 'in' ? 'Đầu vào' : 'Đầu ra'}</Text>
+                  <Text fz="xs" c="dimmed">Thuế {r.vatRate}%: {r.vat.toLocaleString('vi-VN')}</Text>
+                </Box>
+                <Box ta="right">
+                  <Text fz="md" fw={600} className="tnum">{r.total.toLocaleString('vi-VN')} ₫</Text>
+                  <Text fz="xs" c={r.paid ? 'teal.7' : 'orange.7'}>{r.paid ? 'Đã thanh toán' : 'Chưa thanh toán'}</Text>
+                </Box>
+              </Group>
+            </UnstyledButton>
+          ))}
+          {pageRows.length === 0 && (
+            <Box py={48} px="md" ta="center">
+              <Text fw={600}>Không có hoá đơn khớp bộ lọc</Text>
+              <Button mt="md" variant="light" onClick={clearAll}>Xoá bộ lọc</Button>
+            </Box>
+          )}
+        </Box>
+
+        <Box visibleFrom="md">
+        <Table.ScrollContainer minWidth={900} type="native">
+          <Table highlightOnHover verticalSpacing={16} horizontalSpacing="lg" style={{ borderTop: '1px solid var(--ihx-border)', tableLayout: 'fixed' }}>
             <Table.Thead bg="var(--mantine-color-body)">
               <Table.Tr>
                 <Table.Th w={44}>
@@ -259,15 +296,13 @@ function InvoicesInner() {
                     onChange={() => setSelected((s) => (allOnPage ? s.filter((id) => !pageRows.some((r) => r.id === id)) : [...new Set([...s, ...pageRows.map((r) => r.id)])]))}
                   />
                 </Table.Th>
-                <Table.Th w={140}>Số / Ký hiệu</Table.Th>
-                <Th k="issuedAt" w={105}>Ngày lập</Th>
+                <Table.Th w={140}>Số hoá đơn</Table.Th>
+                <Th k="issuedAt" w={115}>Ngày lập</Th>
                 <Th k="partnerName">Đối tác</Th>
-                <Table.Th ta="right" w={125}>Tiền hàng</Table.Th>
-                <Th k="vat" right w={115}>Thuế GTGT</Th>
-                <Th k="total" right w={130}>Tổng tiền</Th>
-                <Table.Th w={115}>Trạng thái</Table.Th>
-                <Table.Th ta="center" w={56}>Gốc</Table.Th>
-                <Table.Th w={44} />
+                <Th k="vat" right w={120}>Thuế GTGT</Th>
+                <Th k="total" right w={140}>Tổng tiền</Th>
+                <Table.Th w={140} pl={28}>Trạng thái</Table.Th>
+                <Table.Th w={52} />
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -279,43 +314,43 @@ function InvoicesInner() {
                   <Table.Td>
                     <Group gap={10} wrap="nowrap">
                       <Tooltip label={r.direction === 'in' ? 'Đầu vào' : 'Đầu ra'}>
-                        <Box w={3} h={32} style={{ borderRadius: 2, flexShrink: 0, background: r.direction === 'in' ? 'var(--mantine-color-iris-6)' : 'var(--mantine-color-volt-5)' }} />
+                        <Box w={3} h={36} style={{ borderRadius: 2, flexShrink: 0, background: r.direction === 'in' ? 'var(--mantine-color-iris-6)' : 'var(--mantine-color-volt-5)' }} />
                       </Tooltip>
                       <Box>
-                        <Text fz="sm" fw={700} className="mono" lh={1.3}>{r.number}</Text>
-                        <Text fz="xs" c="dimmed" className="mono" lh={1.3}>{r.symbol}</Text>
+                        <Text fz="sm" fw={500} className="mono" lh={1.5}>{r.number}</Text>
+                        <Text fz="xs" c="dimmed" className="mono" lh={1.5}>{r.symbol}</Text>
                       </Box>
                     </Group>
                   </Table.Td>
                   <Table.Td><Text fz="sm" className="tnum">{dateVN(r.issuedAt)}</Text></Table.Td>
                   <Table.Td>
-                    <Group gap={6} wrap="nowrap">
-                      <Text fz="sm" fw={600} truncate lh={1.3} title={r.partnerName}>{r.partnerName}</Text>
+                    <Group gap={6} wrap="nowrap" align="flex-start">
+                      <Text fz="sm" fw={500} lineClamp={2} lh={1.45} title={r.partnerName}>{r.partnerName}</Text>
                       {r.risk !== 'none' && (
                         <Tooltip label={r.risk === 'high' ? 'MST ngừng hoạt động' : 'MST tạm ngừng kinh doanh'}>
-                          <IconAlertTriangle size={15} color={`var(--mantine-color-${r.risk === 'high' ? 'red' : 'yellow'}-6)`} style={{ flexShrink: 0 }} />
+                          <IconAlertTriangle size={15} color={`var(--mantine-color-${r.risk === 'high' ? 'red' : 'yellow'}-6)`} style={{ flexShrink: 0, marginTop: 3 }} />
                         </Tooltip>
                       )}
                     </Group>
+                    <Text fz="xs" c="dimmed" className="mono" lh={1.5} mt={2}>MST {r.partnerTax}</Text>
+                  </Table.Td>
+                  <Table.Td ta="right">
+                    <Text fz="sm" className="tnum" lh={1.5}>{r.vat.toLocaleString('vi-VN')}</Text>
+                    <Text fz="xs" c="dimmed" lh={1.5}>{r.vatRate}%</Text>
+                  </Table.Td>
+                  <Table.Td ta="right">
+                    <Text fz="sm" fw={600} className="tnum" lh={1.5}>{r.total.toLocaleString('vi-VN')}</Text>
+                    <Text fz="xs" c={r.paid ? 'teal.7' : 'orange.7'} lh={1.5}>{r.paid ? 'Đã TT' : 'Chưa TT'}</Text>
+                  </Table.Td>
+                  <Table.Td pl={28}>
                     <Group gap={6} wrap="nowrap">
-                      <Text fz="xs" c="dimmed" className="mono" lh={1.3}>{r.partnerTax}</Text>
-                      {r.tags.map((t) => <Badge key={t} size="xs" variant="outline" color="gray" leftSection={<IconTag size={9} />}>{t}</Badge>)}
+                      <Box w={8} h={8} style={{ borderRadius: 99, flexShrink: 0, background: `var(--mantine-color-${STATUS_META[r.status].color}-6)` }} />
+                      <Text fz="sm" style={{ whiteSpace: 'nowrap' }}>{STATUS_META[r.status].label}</Text>
                     </Group>
-                  </Table.Td>
-                  <Table.Td ta="right"><Text fz="sm" className="tnum">{(r.preTax - r.discount).toLocaleString('vi-VN')}</Text></Table.Td>
-                  <Table.Td ta="right">
-                    <Text fz="sm" className="tnum" lh={1.3}>{r.vat.toLocaleString('vi-VN')}</Text>
-                    <Text fz="xs" c="dimmed" lh={1.3}>{r.vatRate}%</Text>
-                  </Table.Td>
-                  <Table.Td ta="right">
-                    <Text fz="sm" fw={700} className="tnum" lh={1.3}>{r.total.toLocaleString('vi-VN')}</Text>
-                    <Text fz="xs" c={r.paid ? 'teal.7' : 'orange.7'} lh={1.3}>{r.paid ? 'Đã TT' : 'Chưa TT'}</Text>
-                  </Table.Td>
-                  <Table.Td><Badge color={STATUS_META[r.status].color} variant="light" style={{ textTransform: 'none' }}>{STATUS_META[r.status].label}</Badge></Table.Td>
-                  <Table.Td ta="center">
-                    <Tooltip label={r.hasOriginal ? 'Đã lưu XML/PDF' : 'Chưa có bản gốc'}>
-                      {r.hasOriginal ? <IconCloudCheck size={18} color="var(--mantine-color-teal-6)" /> : <IconCloudOff size={18} opacity={0.35} />}
-                    </Tooltip>
+                    <Group gap={4} wrap="nowrap" c={r.hasOriginal ? 'dimmed' : 'orange.7'}>
+                      {r.hasOriginal ? <IconCloudCheck size={13} /> : <IconCloudOff size={13} />}
+                      <Text fz="xs" inherit style={{ whiteSpace: 'nowrap' }}>{r.hasOriginal ? 'Có bản gốc' : 'Chưa có gốc'}</Text>
+                    </Group>
                   </Table.Td>
                   <Table.Td onClick={(e) => e.stopPropagation()}>
                     <Menu position="bottom-end" withinPortal>
@@ -331,7 +366,7 @@ function InvoicesInner() {
               ))}
               {pageRows.length === 0 && (
                 <Table.Tr>
-                  <Table.Td colSpan={10}>
+                  <Table.Td colSpan={8}>
                     <Box py={56} ta="center">
                       <Text fw={700}>Không có hoá đơn khớp bộ lọc</Text>
                       <Text fz="sm" c="dimmed" mt={4}>Thử bỏ bớt điều kiện lọc hoặc đổi khoảng ngày.</Text>
@@ -343,13 +378,14 @@ function InvoicesInner() {
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
+        </Box>
 
-        <Group justify="space-between" px="md" py="sm" style={{ borderTop: '1px solid var(--ihx-border)' }}>
+        <Group justify="space-between" px={{ base: 'md', sm: 'lg' }} py="md" style={{ borderTop: '1px solid var(--ihx-border)' }}>
           <Group gap="sm">
             <Text fz="sm" c="dimmed">
               {filtered.length ? `${(page - 1) * ps + 1}–${Math.min(page * ps, filtered.length)}` : 0} / {filtered.length} hoá đơn
             </Text>
-            <Select size="xs" w={110} value={pageSize} onChange={(v) => setPageSize(v ?? '20')} data={PAGE_SIZES.map((v) => ({ value: v, label: `${v} / trang` }))} allowDeselect={false} />
+            <Select size="xs" w={110} visibleFrom="sm" value={pageSize} onChange={(v) => setPageSize(v ?? '20')} data={PAGE_SIZES.map((v) => ({ value: v, label: `${v} / trang` }))} allowDeselect={false} />
           </Group>
           <Pagination total={Math.max(1, Math.ceil(filtered.length / ps))} value={page} onChange={setPage} size="sm" />
         </Group>

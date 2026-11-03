@@ -241,7 +241,7 @@ function ReviewTool() {
               {issues.slice(0, 60).map(({ inv, reasons }) => (
                 <Table.Tr key={inv.id}>
                   <Table.Td><Text fz="sm" fw={600} className="mono">{inv.number}</Text><Text fz="xs" c="dimmed">{dateVN(inv.issuedAt)} · <Badge size="xs" variant="dot" color={STATUS_META[inv.status].color}>{STATUS_META[inv.status].label}</Badge></Text></Table.Td>
-                  <Table.Td maw={240}><Text fz="sm" truncate>{inv.partnerName}</Text><Text fz="xs" c="dimmed" className="mono">{inv.partnerTax}</Text></Table.Td>
+                  <Table.Td maw={260}><Text fz="sm" lineClamp={2} lh={1.4}>{inv.partnerName}</Text><Text fz="xs" c="dimmed" className="mono">{inv.partnerTax}</Text></Table.Td>
                   <Table.Td ta="right" className="tnum" fw={600}>{inv.total.toLocaleString('vi-VN')}</Table.Td>
                   <Table.Td ta="right" className="tnum">{inv.vat.toLocaleString('vi-VN')}</Table.Td>
                   <Table.Td><Stack gap={4}>{reasons.map((r) => <Badge key={r.text} size="sm" variant="light" color={r.color} style={{ textTransform: 'none', fontWeight: 600 }}>{r.text}</Badge>)}</Stack></Table.Td>

@@ -23,7 +23,7 @@ export const theme = createTheme({
   fontFamilyMonospace: '"JetBrains Mono", ui-monospace, monospace',
   headings: {
     fontFamily: '"Be Vietnam Pro", system-ui, sans-serif',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   defaultRadius: 'md',
   cursorType: 'pointer',
@@ -31,7 +31,7 @@ export const theme = createTheme({
     Card: { defaultProps: { radius: 'md', withBorder: true, padding: 'lg' } },
     Paper: { defaultProps: { radius: 'md' } },
     Button: { defaultProps: { radius: 'md' } },
-    Badge: { defaultProps: { radius: 'sm', variant: 'light' }, styles: { root: { textTransform: 'none', fontWeight: 600 } } },
+    Badge: { defaultProps: { radius: 'sm', variant: 'light' }, styles: { root: { textTransform: 'none', fontWeight: 500 } } },
     Modal: { defaultProps: { radius: 'md', centered: true, overlayProps: { blur: 6, backgroundOpacity: 0.35 } } },
     Drawer: { defaultProps: { overlayProps: { blur: 4, backgroundOpacity: 0.5 } } },
     TextInput: { defaultProps: { radius: 'md' } },

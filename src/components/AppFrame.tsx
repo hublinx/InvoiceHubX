@@ -226,7 +226,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
                         styles={{
                           root: { borderRadius: 8, justifyContent: mini ? 'center' : undefined },
                           section: mini ? { marginInlineEnd: 0 } : undefined,
-                          label: { fontWeight: 600, fontSize: 14 },
+                          label: { fontWeight: 500, fontSize: 14 },
                           body: mini ? { display: 'none' } : undefined,
                         }}
                       />
@@ -262,11 +262,11 @@ export function AppFrame({ children }: { children: ReactNode }) {
 /** Tiêu đề trang thống nhất cho mọi màn hình trong app */
 export function PageHeader({ title, subtitle, right, eyebrow }: { title: ReactNode; subtitle?: ReactNode; right?: ReactNode; eyebrow?: ReactNode }) {
   return (
-    <Group justify="space-between" align="flex-end" mb="lg" gap="md">
+    <Group justify="space-between" align="flex-end" mb={28} gap="md">
       <Box style={{ minWidth: 0 }}>
         {eyebrow && <Text fz="xs" fw={700} tt="uppercase" lts={1.2} c="iris.7" mb={4}>{eyebrow}</Text>}
-        <Text component="h1" fz={{ base: 22, md: 28 }} fw={800} lh={1.2} m={0}>{title}</Text>
-        {subtitle && <Text c="dimmed" fz="sm" mt={4} maw={720}>{subtitle}</Text>}
+        <Text component="h1" fz={{ base: 22, md: 26 }} fw={700} lh={1.25} m={0}>{title}</Text>
+        {subtitle && <Text c="dimmed" fz="sm" mt={6} maw={720}>{subtitle}</Text>}
       </Box>
       {right && <Group gap="sm">{right}</Group>}
     </Group>
@@ -282,7 +282,7 @@ export function SectionCard({ title, description, actions, children, noPadding, 
       {(title || actions) && (
         <Group justify="space-between" align="flex-start" px={20} pt={18} pb={noPadding ? 14 : 0} gap="sm" wrap="nowrap">
           <Box style={{ minWidth: 0 }}>
-            {title && <Text component="div" fw={700} fz="md">{title}</Text>}
+            {title && <Text component="div" fw={600} fz="md">{title}</Text>}
             {description && <Text component="div" fz="xs" c="dimmed" mt={2}>{description}</Text>}
           </Box>
           {actions && <Group gap="xs" wrap="nowrap">{actions}</Group>}

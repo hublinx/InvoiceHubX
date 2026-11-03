@@ -233,7 +233,7 @@ export default function Dashboard() {
                       <Text fz="xs" className="mono" c="dimmed">{r.symbol} · {r.number}</Text>
                       <Badge color={r.risk === 'high' ? 'red' : 'yellow'}>{r.risk === 'high' ? 'Rủi ro cao' : 'Cần xem'}</Badge>
                     </Group>
-                    <Text fz="sm" fw={600} truncate>{r.partnerName}</Text>
+                    <Text fz="sm" fw={500} lineClamp={2} lh={1.4}>{r.partnerName}</Text>
                     <Group justify="space-between" mt={6}>
                       <Text fz="xs" c="dimmed">{dateVN(r.issuedAt)}</Text>
                       <Text fz="sm" fw={800} className="tnum">{vnd(r.total)}</Text>

@@ -5,7 +5,7 @@
 }
 [data-mantine-color-scheme='light'] {
   --mantine-color-body: #f4f6fa;
-  --mantine-color-text: #0f1f3d;
+  --mantine-color-text: #1f2a44;
   --mantine-color-dimmed: #5b6b85;
 }
 [data-mantine-color-scheme='dark'] {
@@ -83,4 +83,6 @@ body {
 .stat-strip > .stat-cell { border-right: 1px solid var(--ihx-border); border-bottom: 1px solid var(--ihx-border); min-width: 0; }
 
 /* Tiêu đề bảng rõ ràng */
-.mantine-Table-th { font-size: 12px; font-weight: 700; color: var(--mantine-color-dimmed); text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; }
+.mantine-Table-th { font-size: 13px; font-weight: 500; color: var(--mantine-color-dimmed); white-space: nowrap; }
+.mantine-Table-td { color: var(--mantine-color-text); }
+.mantine-Table-tr { border-color: var(--ihx-border) !important; }
