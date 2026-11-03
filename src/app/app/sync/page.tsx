@@ -36,7 +36,7 @@ export default function SyncPage() {
         subtitle="Theo dõi tiến trình tải hoá đơn từ cổng của Tổng cục Thuế, đặt lịch và chọn nơi chạy đồng bộ."
         right={<Button size="md" className="volt-btn" onClick={syncNow} leftSection={<IconRefresh size={18} className={syncing ? 'spin' : undefined} />}>Đồng bộ tất cả</Button>}
       />
-      <Grid gap="lg">
+      <Grid gap="md">
         <Grid.Col span={{ base: 12, lg: 7 }}>
           <Card className="glass" p="lg" h="100%">
             <Text fw={800} fz="lg" mb="md">Trạng thái theo doanh nghiệp</Text>
@@ -44,7 +44,7 @@ export default function SyncPage() {
               {companies.map((c) => {
                 const p = c.status === 'syncing' ? progress[c.id] ?? 30 : c.status === 'error' ? 100 : 100;
                 return (
-                  <Paper key={c.id} withBorder p="md" radius="lg">
+                  <Paper key={c.id} withBorder p="md" radius="md">
                     <Group justify="space-between" mb={8}>
                       <Group gap="sm">
                         <ThemeIcon radius="xl" variant="light" color={c.status === 'error' ? 'red' : c.status === 'syncing' ? 'iris' : 'teal'}>

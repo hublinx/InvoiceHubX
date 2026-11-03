@@ -76,7 +76,7 @@ function AddCompanyModal({ opened, onClose }: { opened: boolean; onClose: () => 
 
       {step === 1 && (
         <Stack>
-          <Paper withBorder p="md" radius="lg">
+          <Paper withBorder p="md" radius="md">
             <Group>
               <Avatar color="iris" radius="xl">{initials(name)}</Avatar>
               <Box><Text fw={700}>{name}</Text><Text fz="sm" c="dimmed" className="mono">MST {mst} · Đang hoạt động</Text></Box>
@@ -124,7 +124,7 @@ function CompaniesInner() {
           const st = STATUS_DOT[c.status]!;
           const isActive = c.id === activeId;
           return (
-            <Card key={c.id} className="glass lift" p="lg" style={isActive ? { borderColor: 'var(--mantine-color-iris-5)', boxShadow: '0 0 0 1px var(--mantine-color-iris-5)' } : undefined}>
+            <Card key={c.id} className="glass lift" p="lg" style={{ display: 'flex', flexDirection: 'column', ...(isActive ? { borderColor: 'var(--mantine-color-iris-6)', boxShadow: '0 0 0 1px var(--mantine-color-iris-6)' } : {}) }}>
               <Group justify="space-between" align="flex-start" wrap="nowrap">
                 <Group wrap="nowrap" style={{ minWidth: 0 }}>
                   <Avatar size={48} radius="lg" color={c.color} variant="filled">{initials(c.shortName)}</Avatar>
@@ -146,31 +146,33 @@ function CompaniesInner() {
                   </Menu.Dropdown>
                 </Menu>
               </Group>
-              <Text fz="sm" c="dimmed" mt="md" lineClamp={2} mih={42}>{c.name}</Text>
-              <Group mt="md" gap="xs">
+              <Text fz="sm" c="dimmed" mt="md" lineClamp={1} title={c.name}>{c.name}</Text>
+              <Group mt="sm" mb="md" gap="xs">
                 <Badge color={st.color} variant="dot">{st.label}</Badge>
                 <Badge color="gray" variant="light">{c.invoices.toLocaleString('vi-VN')} hoá đơn</Badge>
               </Group>
               {c.status === 'error' && (
-                <Alert mt="md" color="red" variant="light" radius="md" p="xs" title="Đăng nhập thất bại">
-                  <Text fz="xs">Mật khẩu cổng thuế đã thay đổi. Cập nhật để tiếp tục đồng bộ.</Text>
-                </Alert>
+                <Text mt="sm" fz="xs" c="red.7" fw={600}>Mật khẩu cổng thuế đã thay đổi — cập nhật để tiếp tục đồng bộ.</Text>
               )}
-              <Group justify="space-between" mt="lg" pt="md" style={{ borderTop: '1px solid var(--ihx-border)' }}>
+              <Group justify="space-between" mt="auto" pt="md" style={{ borderTop: '1px solid var(--ihx-border)', marginTop: 'auto' }}>
                 <Box>
                   <Text fz={11} c="dimmed">Đồng bộ lần cuối</Text>
                   <Text fz="sm" fw={600}>{timeVN(c.lastSync)}</Text>
                 </Box>
-                <Switch label="Tự động" checked={c.autoSync} onChange={(e) => updateCompany(c.id, { autoSync: e.currentTarget.checked })} color="volt" styles={{ thumb: { background: '#0a0b12' } }} />
+                <Switch label="Tự động" checked={c.autoSync} onChange={(e) => updateCompany(c.id, { autoSync: e.currentTarget.checked })} color="teal" />
               </Group>
-              <Button fullWidth mt="md" variant={isActive ? 'filled' : 'light'} onClick={() => setActiveId(c.id)} disabled={isActive}>
-                {isActive ? 'Đang làm việc' : 'Chuyển sang MST này'}
-              </Button>
+              {c.status === 'error' ? (
+                <Button fullWidth mt="md" color="red" variant="light" leftSection={<IconKey size={16} />}>Cập nhật mật khẩu</Button>
+              ) : (
+                <Button fullWidth mt="md" variant={isActive ? 'light' : 'default'} color={isActive ? 'teal' : undefined} leftSection={isActive ? <IconCheck size={16} /> : null} onClick={() => !isActive && setActiveId(c.id)}>
+                  {isActive ? 'Đang làm việc' : 'Chuyển sang MST này'}
+                </Button>
+              )}
             </Card>
           );
         })}
         <Card p="lg" onClick={open} style={{ borderStyle: 'dashed', cursor: 'pointer', background: 'transparent' }} className="lift">
-          <Stack align="center" justify="center" h="100%" mih={260} gap="sm">
+          <Stack align="center" justify="center" h="100%" mih={200} gap="sm">
             <ThemeIcon size={56} radius="xl" variant="light"><IconPlus size={28} /></ThemeIcon>
             <Text fw={800}>Thêm doanh nghiệp</Text>
             <Text fz="sm" c="dimmed" ta="center" maw={240}>Chỉ cần MST và tài khoản cổng hoá đơn điện tử</Text>

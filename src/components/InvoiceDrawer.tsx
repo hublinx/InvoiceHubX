@@ -19,7 +19,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
     <Drawer opened={!!inv} onClose={onClose} position="right" size="xl" title={<Text fw={800}>Chi tiết hoá đơn</Text>} scrollAreaComponent={ScrollArea.Autosize}>
       {inv && (
         <Stack gap="lg">
-          <Paper p="lg" radius="xl" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,.10), rgba(37,99,235,.02))', border: '1px solid rgba(37,99,235,.2)' }}>
+          <Paper p="lg" radius="md" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,.10), rgba(37,99,235,.02))', border: '1px solid rgba(37,99,235,.2)' }}>
             <Group justify="space-between" align="flex-start">
               <Box>
                 <Group gap={6}>
@@ -48,19 +48,19 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
           </Paper>
 
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <Paper withBorder p="md" radius="lg">
+            <Paper withBorder p="md" radius="md">
               <Text fz="xs" c="dimmed" tt="uppercase" fw={700} lts={1}>Người bán</Text>
               <Text fw={700} mt={4}>{inv.direction === 'in' ? inv.partnerName : active.name}</Text>
               <Text fz="sm" className="mono" c="dimmed">MST {inv.direction === 'in' ? inv.partnerTax : active.taxCode}</Text>
             </Paper>
-            <Paper withBorder p="md" radius="lg">
+            <Paper withBorder p="md" radius="md">
               <Text fz="xs" c="dimmed" tt="uppercase" fw={700} lts={1}>Người mua</Text>
               <Text fw={700} mt={4}>{inv.direction === 'out' ? inv.partnerName : active.name}</Text>
               <Text fz="sm" className="mono" c="dimmed">MST {inv.direction === 'out' ? inv.partnerTax : active.taxCode}</Text>
             </Paper>
           </SimpleGrid>
 
-          <Paper withBorder radius="lg" p={0} style={{ overflow: 'hidden' }}>
+          <Paper withBorder radius="md" p={0} style={{ overflow: 'hidden' }}>
             <Table.ScrollContainer minWidth={520}>
               <Table verticalSpacing="sm" horizontalSpacing="md" striped>
                 <Table.Thead>
@@ -87,7 +87,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
             </Stack>
           </Paper>
 
-          <Paper withBorder p="md" radius="lg">
+          <Paper withBorder p="md" radius="md">
             <Group gap="sm" mb="sm">
               <ThemeIcon variant="light" color={inv.risk === 'none' ? 'teal' : 'orange'} radius="md">
                 {inv.risk === 'none' ? <IconShieldCheck size={18} /> : <IconShieldExclamation size={18} />}
@@ -101,7 +101,7 @@ export function InvoiceDrawer({ invoice, onClose }: { invoice: Invoice | null; o
                 <Text fz="xs" c="dimmed">{inv.risk === 'none' ? 'Đang hoạt động bình thường' : inv.risk === 'high' ? 'Ngừng hoạt động / bỏ địa chỉ kinh doanh' : 'Tạm ngừng kinh doanh có thời hạn'}</Text>
               </Timeline.Item>
               <Timeline.Item color={inv.paid ? 'teal' : 'gray'} title={inv.paid ? 'Đã thanh toán' : 'Chưa ghi nhận thanh toán'}>
-                <Text fz="xs" c="dimmed">{inv.total >= 20_000_000 ? 'Trên 20 triệu — cần chứng từ không dùng tiền mặt' : 'Dưới ngưỡng 20 triệu'}</Text>
+                <Text fz="xs" c="dimmed">{inv.total >= 5_000_000 ? 'Từ 5 triệu — cần chứng từ thanh toán không dùng tiền mặt để khấu trừ' : 'Dưới ngưỡng 5 triệu'}</Text>
               </Timeline.Item>
             </Timeline>
           </Paper>

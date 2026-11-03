@@ -81,7 +81,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
 
       {step === 0 && (
         <Stack>
-          <Paper p="lg" radius="xl" className="ticket" style={{ background: 'linear-gradient(135deg, #1e3a8a, #1d4ed8)', color: '#fff' }}>
+          <Paper p="lg" radius="md" className="ticket" style={{ background: 'linear-gradient(135deg, #1e3a8a, #1d4ed8)', color: '#fff' }}>
             <Group justify="space-between" align="flex-start">
               <Box>
                 <Text fz="xs" tt="uppercase" fw={700} lts={1.5} opacity={0.7}>Gói đã chọn</Text>
@@ -104,7 +104,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
               error={code && applied !== code && code.length > 3 && !COUPONS[code] ? 'Mã không hợp lệ' : null} />
             <Button variant="light" onClick={() => COUPONS[code] && setApplied(code)} disabled={!COUPONS[code]}>Áp dụng</Button>
           </Group>
-          <Paper withBorder p="sm" radius="lg"><Text fz="sm">Tài khoản nhận gói: <b>{user.email}</b></Text></Paper>
+          <Paper withBorder p="sm" radius="md"><Text fz="sm">Tài khoản nhận gói: <b>{user.email}</b></Text></Paper>
           <Button size="md" className="volt-btn" onClick={() => setStep(1)}>Tiếp tục thanh toán</Button>
         </Stack>
       )}
@@ -118,7 +118,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
           <Tabs.Panel value="bank">
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
               <Stack align="center" gap="xs">
-                <Paper p="md" radius="xl" bg="white" shadow="md"><FakeQr seed={orderCode} size={210} /></Paper>
+                <Paper p="md" radius="md" bg="white" shadow="md"><FakeQr seed={orderCode} size={210} /></Paper>
                 <Group gap={6}>
                   <RingProgress size={34} thickness={4} roundCaps sections={[{ value: (left / 900) * 100, color: left < 120 ? 'red' : 'iris' }]} />
                   <Text fz="sm" c="dimmed">Mã hết hạn sau <Text span fw={800} c="var(--mantine-color-text)" className="mono">{String(Math.floor(left / 60)).padStart(2, '0')}:{String(left % 60).padStart(2, '0')}</Text></Text>
@@ -126,7 +126,7 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
                 <Text fz="xs" c="dimmed" ta="center">Mở app ngân hàng bất kỳ → Quét QR (minh hoạ trong bản demo)</Text>
               </Stack>
               <Stack gap={0}>
-                <Paper withBorder radius="lg" px="md" py="xs">
+                <Paper withBorder radius="md" px="md" py="xs">
                   <CopyRow label="Ngân hàng" value="Demo Bank" mono={false} />
                   <CopyRow label="Số tài khoản" value="0000 1234 5678" />
                   <CopyRow label="Chủ tài khoản" value="INVOICEHUBX DEMO" mono={false} />
@@ -151,14 +151,14 @@ export function CheckoutModal({ planId, months, onClose }: { planId: PlanId | nu
                   { icon: IconBrandMessenger, t: 'Messenger', d: 'm.me/invoicehubx' },
                   { icon: IconPhone, t: 'Hotline', d: '1900 0000' },
                 ].map((c) => (
-                  <Paper key={c.t} withBorder p="md" radius="lg" className="lift" style={{ cursor: 'pointer' }}>
+                  <Paper key={c.t} withBorder p="md" radius="md" className="lift" style={{ cursor: 'pointer' }}>
                     <ThemeIcon variant="light" radius="md" mb="xs"><c.icon size={18} /></ThemeIcon>
                     <Text fw={700} fz="sm">{c.t}</Text>
                     <Text fz="xs" c="dimmed">{c.d}</Text>
                   </Paper>
                 ))}
               </SimpleGrid>
-              <Paper withBorder p="md" radius="lg">
+              <Paper withBorder p="md" radius="md">
                 <Text fz="xs" c="dimmed" mb={4}>Tin nhắn gợi ý (bấm để sao chép)</Text>
                 <CopyRow label="" value={`Mua ${p.name} ${months} tháng · ${user.email} · ${orderCode}`} mono={false} />
               </Paper>

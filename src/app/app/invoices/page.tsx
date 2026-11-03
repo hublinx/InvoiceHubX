@@ -1,36 +1,62 @@
 'use client';
 
 import {
-  ActionIcon, Affix, Badge, Box, Button, Card, Checkbox, Chip, Group, Menu, MultiSelect, Pagination, Paper,
-  SegmentedControl, Select, SimpleGrid, Table, Text, TextInput, Tooltip, Transition,
+  ActionIcon, Affix, Badge, Box, Button, Checkbox, Collapse, Group, Input, Menu, MultiSelect, NumberInput, Pagination,
+  Paper, Pill, SegmentedControl, Select, SimpleGrid, Table, Text, TextInput, Tooltip, Transition,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useDebouncedValue } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
-  IconAlertTriangle, IconArrowsSort, IconCalendar, IconCloudCheck, IconCloudOff, IconDots, IconDownload,
-  IconEye, IconFileSpreadsheet, IconFilter, IconSearch, IconTag, IconX,
+  IconAdjustmentsHorizontal, IconAlertTriangle, IconArrowsSort, IconCalendar, IconChevronDown, IconCloudCheck,
+  IconCloudOff, IconDots, IconDownload, IconEye, IconFileSpreadsheet, IconSearch, IconSortAscending,
+  IconSortDescending, IconTag, IconX,
 } from '@tabler/icons-react';
 import 'dayjs/locale/vi';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { PageHeader } from '@/components/AppFrame';
 import { InvoiceDrawer } from '@/components/InvoiceDrawer';
 import { STATUS_META, type Invoice } from '@/lib/data';
-import { dateVN, vnd, compact } from '@/lib/format';
+import { dateVN, vnd } from '@/lib/format';
 import { useStore } from '@/lib/store';
 
-const PAGE = 12;
-type SortKey = 'issuedAt' | 'total' | 'partnerName';
+const PAGE_SIZES = ['10', '20', '50'];
+type SortKey = 'issuedAt' | 'total' | 'partnerName' | 'vat';
+
+type Filters = {
+  statuses: string[];
+  dates: [string | null, string | null];
+  vatRates: string[];
+  minTotal: number | '';
+  maxTotal: number | '';
+  partners: string[];
+  paid: string | null;
+  original: string | null;
+  risk: string | null;
+  tags: string[];
+};
+const EMPTY: Filters = { statuses: [], dates: [null, null], vatRates: [], minTotal: '', maxTotal: '', partners: [], paid: null, original: null, risk: null, tags: [] };
 
 function exportCsv(rows: Invoice[], name: string) {
-  const head = ['Ký hiệu', 'Số HĐ', 'Ngày', 'Loại', 'Đối tác', 'MST', 'Tiền hàng', 'VAT%', 'Tiền thuế', 'Tổng', 'Trạng thái'];
-  const lines = rows.map((r) => [r.symbol, r.number, dateVN(r.issuedAt), r.direction === 'in' ? 'Vào' : 'Ra', `"${r.partnerName}"`, r.partnerTax, r.preTax, r.vatRate, r.vat, r.total, STATUS_META[r.status].label].join(','));
+  const head = ['Ký hiệu', 'Số HĐ', 'Ngày lập', 'Loại', 'Đối tác', 'MST', 'Tiền hàng', 'Chiết khấu', 'VAT%', 'Tiền thuế', 'Tổng thanh toán', 'Trạng thái', 'Thanh toán'];
+  const lines = rows.map((r) => [r.symbol, r.number, dateVN(r.issuedAt), r.direction === 'in' ? 'Vào' : 'Ra', `"${r.partnerName}"`, r.partnerTax, r.preTax, r.discount, r.vatRate, r.vat, r.total, STATUS_META[r.status].label, r.paid ? 'Đã TT' : 'Chưa TT'].join(','));
   const blob = new Blob(['﻿' + [head.join(','), ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = name;
   a.click();
+}
+
+/** Một ô số liệu trong dải thống kê */
+function Stat({ label, value, sub, color }: { label: string; value: ReactNode; sub?: ReactNode; color?: string }) {
+  return (
+    <Box px="md" py={12} className="stat-cell">
+      <Text fz={11} c="dimmed" fw={600} tt="uppercase" lts={0.5} truncate>{label}</Text>
+      <Text fz="md" fw={800} className="tnum" c={color} mt={2} truncate>{value}</Text>
+      {sub && <Text fz={11} c="dimmed" truncate>{sub}</Text>}
+    </Box>
+  );
 }
 
 function InvoicesInner() {
@@ -39,28 +65,40 @@ function InvoicesInner() {
   const [direction, setDirection] = useState<'all' | 'in' | 'out'>('all');
   const [q, setQ] = useState(params.get('q') ?? '');
   const [dq] = useDebouncedValue(q, 200);
-  const [statuses, setStatuses] = useState<string[]>([]);
-  const [riskOnly, setRiskOnly] = useState(params.get('risk') === '1');
-  const [missingOnly, setMissingOnly] = useState(false);
-  const [vat, setVat] = useState<string | null>(null);
-  const [dates, setDates] = useState<[string | null, string | null]>([null, null]);
+  const [f, setF] = useState<Filters>({ ...EMPTY, risk: params.get('risk') === '1' ? 'risky' : null });
+  const [advOpen, setAdvOpen] = useState(params.get('risk') === '1');
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: 'issuedAt', dir: -1 });
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState('20');
   const [selected, setSelected] = useState<string[]>([]);
   const [open, setOpen] = useState<Invoice | null>(null);
+  const set = <K extends keyof Filters>(k: K, v: Filters[K]) => setF((s) => ({ ...s, [k]: v }));
 
-  useEffect(() => { setSelected([]); setPage(1); }, [active.id]);
+  useEffect(() => { setSelected([]); setPage(1); setF(EMPTY); }, [active.id]);
+
+  const partnerOptions = useMemo(() => {
+    const m = new Map<string, string>();
+    invoices.forEach((i) => m.set(i.partnerTax, i.partnerName));
+    return [...m.entries()].map(([value, label]) => ({ value, label: `${label} · ${value}` }));
+  }, [invoices]);
+  const tagOptions = useMemo(() => [...new Set(invoices.flatMap((i) => i.tags))], [invoices]);
 
   const filtered = useMemo(() => {
     const term = dq.trim().toLowerCase();
-    const from = dates[0] ? new Date(dates[0]).getTime() : -Infinity;
-    const to = dates[1] ? new Date(dates[1]).getTime() + 86400000 : Infinity;
+    const from = f.dates[0] ? new Date(f.dates[0]).getTime() : -Infinity;
+    const to = f.dates[1] ? new Date(f.dates[1]).getTime() + 86400000 : Infinity;
     const rows = invoices.filter((i) => {
       if (direction !== 'all' && i.direction !== direction) return false;
-      if (statuses.length && !statuses.includes(i.status)) return false;
-      if (riskOnly && i.risk === 'none') return false;
-      if (missingOnly && i.hasOriginal) return false;
-      if (vat && String(i.vatRate) !== vat) return false;
+      if (f.statuses.length && !f.statuses.includes(i.status)) return false;
+      if (f.vatRates.length && !f.vatRates.includes(String(i.vatRate))) return false;
+      if (f.minTotal !== '' && i.total < f.minTotal) return false;
+      if (f.maxTotal !== '' && i.total > f.maxTotal) return false;
+      if (f.partners.length && !f.partners.includes(i.partnerTax)) return false;
+      if (f.paid && (f.paid === 'paid') !== i.paid) return false;
+      if (f.original && (f.original === 'yes') !== i.hasOriginal) return false;
+      if (f.risk === 'risky' && i.risk === 'none') return false;
+      if (f.risk === 'high' && i.risk !== 'high') return false;
+      if (f.tags.length && !f.tags.some((t) => i.tags.includes(t))) return false;
       const t = new Date(i.issuedAt).getTime();
       if (t < from || t > to) return false;
       if (term && !`${i.number} ${i.symbol} ${i.partnerName} ${i.partnerTax}`.toLowerCase().includes(term)) return false;
@@ -70,125 +108,166 @@ function InvoicesInner() {
       const x = a[sort.key], y = b[sort.key];
       return (typeof x === 'number' ? x - (y as number) : String(x).localeCompare(String(y))) * sort.dir;
     });
-  }, [invoices, direction, statuses, riskOnly, missingOnly, vat, dates, dq, sort]);
+  }, [invoices, direction, f, dq, sort]);
 
-  useEffect(() => setPage(1), [direction, statuses, riskOnly, missingOnly, vat, dates, dq]);
+  useEffect(() => setPage(1), [direction, f, dq, pageSize]);
 
-  const pageRows = filtered.slice((page - 1) * PAGE, page * PAGE);
-  const totals = filtered.reduce((s, i) => ({ pre: s.pre + i.preTax, vat: s.vat + i.vat, total: s.total + i.total }), { pre: 0, vat: 0, total: 0 });
+  const ps = Number(pageSize);
+  const pageRows = filtered.slice((page - 1) * ps, page * ps);
+  const totals = useMemo(() => {
+    const live = filtered.filter((i) => i.status !== 'cancelled');
+    return {
+      count: filtered.length,
+      inCount: filtered.filter((i) => i.direction === 'in').length,
+      outCount: filtered.filter((i) => i.direction === 'out').length,
+      pre: live.reduce((s, i) => s + i.preTax - i.discount, 0),
+      vat: live.reduce((s, i) => s + i.vat, 0),
+      total: live.reduce((s, i) => s + i.total, 0),
+      risky: filtered.filter((i) => i.risk !== 'none').length,
+      unpaid: live.filter((i) => !i.paid).reduce((s, i) => s + i.total, 0),
+    };
+  }, [filtered]);
+
   const allOnPage = pageRows.length > 0 && pageRows.every((r) => selected.includes(r.id));
-  const activeFilters = statuses.length + (riskOnly ? 1 : 0) + (missingOnly ? 1 : 0) + (vat ? 1 : 0) + (dates[0] ? 1 : 0);
 
-  const toggleSort = (key: SortKey) => setSort((s) => ({ key, dir: s.key === key ? (s.dir === 1 ? -1 : 1) : -1 }));
-  const Th = ({ k, children, right }: { k: SortKey; children: React.ReactNode; right?: boolean }) => (
-    <Table.Th ta={right ? 'right' : undefined} onClick={() => toggleSort(k)} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
-      <Group gap={4} justify={right ? 'flex-end' : 'flex-start'} wrap="nowrap">{children}<IconArrowsSort size={13} opacity={sort.key === k ? 1 : 0.35} /></Group>
-    </Table.Th>
-  );
+  // Danh sách bộ lọc đang áp dụng → hiển thị dạng "pill" có nút xoá
+  const chips: { key: string; label: string; clear: () => void }[] = [];
+  if (f.statuses.length) chips.push({ key: 'st', label: `Trạng thái: ${f.statuses.map((s) => STATUS_META[s as keyof typeof STATUS_META].label).join(', ')}`, clear: () => set('statuses', []) });
+  if (f.dates[0]) chips.push({ key: 'dt', label: `Ngày: ${dateVN(f.dates[0])}${f.dates[1] ? ' – ' + dateVN(f.dates[1]) : ''}`, clear: () => set('dates', [null, null]) });
+  if (f.vatRates.length) chips.push({ key: 'vat', label: `VAT: ${f.vatRates.map((v) => v + '%').join(', ')}`, clear: () => set('vatRates', []) });
+  if (f.minTotal !== '' || f.maxTotal !== '') chips.push({ key: 'amt', label: `Tổng tiền: ${f.minTotal !== '' ? f.minTotal.toLocaleString('vi-VN') : '0'} – ${f.maxTotal !== '' ? f.maxTotal.toLocaleString('vi-VN') : '∞'}`, clear: () => setF((s) => ({ ...s, minTotal: '', maxTotal: '' })) });
+  if (f.partners.length) chips.push({ key: 'pt', label: `Đối tác: ${f.partners.length}`, clear: () => set('partners', []) });
+  if (f.paid) chips.push({ key: 'paid', label: f.paid === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán', clear: () => set('paid', null) });
+  if (f.original) chips.push({ key: 'org', label: f.original === 'yes' ? 'Có bản gốc' : 'Chưa có bản gốc', clear: () => set('original', null) });
+  if (f.risk) chips.push({ key: 'risk', label: f.risk === 'high' ? 'MST rủi ro cao' : 'MST có rủi ro', clear: () => set('risk', null) });
+  if (f.tags.length) chips.push({ key: 'tag', label: `Nhãn: ${f.tags.join(', ')}`, clear: () => set('tags', []) });
+  const clearAll = () => { setF(EMPTY); setQ(''); };
 
-  const clearAll = () => { setStatuses([]); setRiskOnly(false); setMissingOnly(false); setVat(null); setDates([null, null]); setQ(''); };
+  const Th = ({ k, children, right, w }: { k: SortKey; children: ReactNode; right?: boolean; w?: number }) => {
+    const on = sort.key === k;
+    const Icon = !on ? IconArrowsSort : sort.dir === 1 ? IconSortAscending : IconSortDescending;
+    return (
+      <Table.Th w={w} ta={right ? 'right' : undefined} onClick={() => setSort((s) => ({ key: k, dir: s.key === k ? (s.dir === 1 ? -1 : 1) : -1 }))} style={{ cursor: 'pointer', whiteSpace: 'nowrap', userSelect: 'none' }}>
+        <Group gap={4} justify={right ? 'flex-end' : 'flex-start'} wrap="nowrap" c={on ? 'iris.7' : undefined}>{children}<Icon size={14} opacity={on ? 1 : 0.35} /></Group>
+      </Table.Th>
+    );
+  };
 
   return (
     <>
       <PageHeader
-        eyebrow="Kho hoá đơn"
         title="Hoá đơn điện tử"
-        subtitle={`${active.name} · ${invoices.length} hoá đơn`}
-        right={
-          <Group>
-            <Button variant="default" leftSection={<IconFileSpreadsheet size={16} />} onClick={() => exportCsv(filtered, `hoa-don-${active.taxCode}.csv`)}>
-              Xuất Excel ({filtered.length})
-            </Button>
-          </Group>
-        }
+        subtitle={<>{active.name} · <span className="mono">MST {active.taxCode}</span></>}
+        right={<Button variant="default" leftSection={<IconFileSpreadsheet size={16} />} onClick={() => exportCsv(filtered, `hoa-don-${active.taxCode}.csv`)}>Xuất Excel</Button>}
       />
 
-      <SimpleGrid cols={{ base: 1, sm: 3 }} mb="lg">
-        {[
-          { label: 'Tiền hàng chưa thuế', value: totals.pre, color: 'iris' },
-          { label: 'Tiền thuế GTGT', value: totals.vat, color: 'yellow' },
-          { label: 'Tổng thanh toán', value: totals.total, color: 'volt' },
-        ].map((s) => (
-          <Paper key={s.label} className="glass" withBorder p="md" radius="lg" style={{ borderLeft: `4px solid var(--mantine-color-${s.color}-5)` }}>
-            <Text fz="xs" c="dimmed" tt="uppercase" fw={700} lts={1}>{s.label}</Text>
-            <Text fz={22} fw={800} className="tnum">{vnd(s.value)}</Text>
-          </Paper>
-        ))}
-      </SimpleGrid>
+      <Paper className="glass" withBorder radius="md" style={{ overflow: 'hidden' }}>
+        {/* Dải thống kê gọn — luôn tính theo bộ lọc hiện tại */}
+        <SimpleGrid cols={{ base: 2, sm: 3, lg: 6 }} spacing={0} className="stat-strip" style={{ background: 'var(--mantine-color-body)' }}>
+          <Stat label="Số hoá đơn" value={totals.count.toLocaleString('vi-VN')} sub={`${totals.inCount} vào · ${totals.outCount} ra`} />
+          <Stat label="Tiền hàng (sau CK)" value={totals.pre.toLocaleString('vi-VN')} sub="Chưa gồm thuế" />
+          <Stat label="Thuế GTGT" value={totals.vat.toLocaleString('vi-VN')} sub="Không tính HĐ huỷ" />
+          <Stat label="Tổng thanh toán" value={totals.total.toLocaleString('vi-VN')} color="iris.8" sub="Đơn vị: đồng" />
+          <Stat label="Chưa thanh toán" value={totals.unpaid.toLocaleString('vi-VN')} color="orange.8" sub="Công nợ theo HĐ" />
+          <Stat label="MST rủi ro" value={totals.risky} color={totals.risky ? 'red.7' : undefined} sub="Hoá đơn cần kiểm tra" />
+        </SimpleGrid>
 
-      <Card className="glass" p={0}>
-        <Box p="md" style={{ borderBottom: '1px solid var(--ihx-border)' }}>
+        {/* Thanh công cụ */}
+        <Box px="md" py="sm">
           <Group justify="space-between" gap="sm">
-            <SegmentedControl
-              radius="xl"
-              value={direction}
-              onChange={(v) => setDirection(v as typeof direction)}
-              data={[
-                { value: 'all', label: `Tất cả · ${invoices.length}` },
-                { value: 'in', label: `Đầu vào · ${invoices.filter((i) => i.direction === 'in').length}` },
-                { value: 'out', label: `Đầu ra · ${invoices.filter((i) => i.direction === 'out').length}` },
-              ]}
-            />
-            <TextInput
-              placeholder="Số HĐ, ký hiệu, tên hoặc MST đối tác…"
-              leftSection={<IconSearch size={16} />}
-              rightSection={q ? <ActionIcon variant="subtle" size="sm" onClick={() => setQ('')}><IconX size={14} /></ActionIcon> : null}
-              value={q}
-              onChange={(e) => setQ(e.currentTarget.value)}
-              w={{ base: '100%', sm: 340 }}
-              radius="xl"
-            />
-          </Group>
-          <Group mt="md" gap="sm" align="flex-end">
-            <MultiSelect
-              placeholder={statuses.length ? undefined : 'Trạng thái'}
-              data={Object.entries(STATUS_META).map(([value, m]) => ({ value, label: m.label }))}
-              value={statuses}
-              onChange={setStatuses}
-              leftSection={<IconFilter size={16} />}
-              w={{ base: '100%', sm: 260 }}
-              clearable
-              radius="xl"
-            />
-            <DatePickerInput
-              type="range"
-              locale="vi"
-              placeholder="Khoảng ngày lập"
-              leftSection={<IconCalendar size={16} />}
-              value={dates}
-              onChange={(v) => setDates(v as [string | null, string | null])}
-              clearable
-              valueFormat="DD/MM/YYYY"
-              w={{ base: '100%', sm: 250 }}
-              radius="xl"
-            />
-            <Select placeholder="Thuế suất" data={['0', '5', '8', '10'].map((v) => ({ value: v, label: `VAT ${v}%` }))} value={vat} onChange={setVat} clearable w={{ base: '100%', sm: 140 }} radius="xl" />
-            <Chip checked={riskOnly} onChange={setRiskOnly} color="orange" variant="light" icon={<IconAlertTriangle size={14} />}>MST rủi ro</Chip>
-            <Chip checked={missingOnly} onChange={setMissingOnly} color="iris" variant="light">Chưa có bản gốc</Chip>
-            {activeFilters > 0 && <Button variant="subtle" size="compact-sm" color="gray" onClick={clearAll}>Xoá {activeFilters} bộ lọc</Button>}
+            <Group gap="sm" style={{ flex: 1 }} wrap="wrap">
+              <SegmentedControl
+                value={direction}
+                onChange={(v) => setDirection(v as typeof direction)}
+                data={[
+                  { value: 'all', label: 'Tất cả' },
+                  { value: 'in', label: 'Đầu vào' },
+                  { value: 'out', label: 'Đầu ra' },
+                ]}
+              />
+              <TextInput
+                placeholder="Số HĐ, ký hiệu, tên hoặc MST đối tác"
+                leftSection={<IconSearch size={16} />}
+                rightSection={q ? <ActionIcon variant="subtle" color="gray" size="sm" onClick={() => setQ('')} aria-label="Xoá"><IconX size={14} /></ActionIcon> : null}
+                value={q}
+                onChange={(e) => setQ(e.currentTarget.value)}
+                style={{ flex: 1, minWidth: 220, maxWidth: 420 }}
+              />
+              <DatePickerInput
+                type="range" locale="vi" placeholder="Khoảng ngày lập" leftSection={<IconCalendar size={16} />}
+                value={f.dates} onChange={(v) => set('dates', v as [string | null, string | null])} clearable valueFormat="DD/MM/YYYY" w={230}
+              />
+            </Group>
+            <Button
+              variant={advOpen || chips.length ? 'light' : 'default'}
+              leftSection={<IconAdjustmentsHorizontal size={16} />}
+              rightSection={<IconChevronDown size={14} style={{ transform: advOpen ? 'rotate(180deg)' : undefined, transition: 'transform 150ms' }} />}
+              onClick={() => setAdvOpen((o) => !o)}
+            >
+              Lọc nâng cao{chips.length ? ` (${chips.length})` : ''}
+            </Button>
           </Group>
         </Box>
 
-        <Table.ScrollContainer minWidth={980}>
-          <Table highlightOnHover verticalSpacing="sm" horizontalSpacing="md">
-            <Table.Thead>
+        {/* Bộ lọc nâng cao — xổ ra */}
+        <Collapse expanded={advOpen} transitionDuration={180}>
+          <Box px="md" py="md" style={{ borderTop: '1px solid var(--ihx-border)', background: 'var(--mantine-color-body)' }}>
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="md" verticalSpacing="sm">
+              <MultiSelect label="Trạng thái hoá đơn" placeholder="Tất cả" data={Object.entries(STATUS_META).map(([value, m]) => ({ value, label: m.label }))} value={f.statuses} onChange={(v) => set('statuses', v)} clearable />
+              <MultiSelect label="Thuế suất" placeholder="Tất cả" data={['0', '5', '8', '10'].map((v) => ({ value: v, label: `${v}%` }))} value={f.vatRates} onChange={(v) => set('vatRates', v)} clearable />
+              <MultiSelect label="Đối tác" placeholder="Tìm theo tên / MST" data={partnerOptions} value={f.partners} onChange={(v) => set('partners', v)} searchable clearable maxDropdownHeight={260} />
+              <MultiSelect label="Nhãn" placeholder="Tất cả" data={tagOptions} value={f.tags} onChange={(v) => set('tags', v)} clearable />
+              <Input.Wrapper label="Tổng thanh toán (đ)">
+                <Group gap={6} wrap="nowrap">
+                  <NumberInput placeholder="Từ" value={f.minTotal} onChange={(v) => set('minTotal', v === '' ? '' : Number(v))} thousandSeparator="." decimalSeparator="," hideControls allowNegative={false} />
+                  <Text c="dimmed">–</Text>
+                  <NumberInput placeholder="Đến" value={f.maxTotal} onChange={(v) => set('maxTotal', v === '' ? '' : Number(v))} thousandSeparator="." decimalSeparator="," hideControls allowNegative={false} />
+                </Group>
+              </Input.Wrapper>
+              <Select label="Thanh toán" placeholder="Tất cả" data={[{ value: 'paid', label: 'Đã thanh toán' }, { value: 'unpaid', label: 'Chưa thanh toán' }]} value={f.paid} onChange={(v) => set('paid', v)} clearable />
+              <Select label="Bản gốc XML/PDF" placeholder="Tất cả" data={[{ value: 'yes', label: 'Đã có bản gốc' }, { value: 'no', label: 'Chưa có bản gốc' }]} value={f.original} onChange={(v) => set('original', v)} clearable />
+              <Select label="Rủi ro MST đối tác" placeholder="Tất cả" data={[{ value: 'risky', label: 'Có rủi ro (mọi mức)' }, { value: 'high', label: 'Chỉ rủi ro cao' }]} value={f.risk} onChange={(v) => set('risk', v)} clearable />
+            </SimpleGrid>
+            <Group justify="space-between" mt="md">
+              <Text fz="xs" c="dimmed">Kết quả cập nhật ngay khi thay đổi bộ lọc.</Text>
+              <Group gap="xs">
+                <Button variant="subtle" color="gray" size="xs" onClick={clearAll} disabled={!chips.length && !q}>Đặt lại</Button>
+                <Button size="xs" onClick={() => setAdvOpen(false)}>Thu gọn</Button>
+              </Group>
+            </Group>
+          </Box>
+        </Collapse>
+
+        {/* Bộ lọc đang áp dụng */}
+        {chips.length > 0 && (
+          <Group gap={6} px="md" py={10} style={{ borderTop: '1px solid var(--ihx-border)' }}>
+            <Text fz="xs" c="dimmed" fw={600} mr={4}>Đang lọc:</Text>
+            {chips.map((c) => <Pill key={c.key} withRemoveButton onRemove={c.clear} size="md">{c.label}</Pill>)}
+            <Button variant="subtle" size="compact-xs" color="red" onClick={clearAll}>Xoá tất cả</Button>
+          </Group>
+        )}
+
+        <Table.ScrollContainer minWidth={1000} type="native">
+          <Table highlightOnHover verticalSpacing={10} horizontalSpacing="md" style={{ borderTop: '1px solid var(--ihx-border)', tableLayout: 'fixed' }}>
+            <Table.Thead bg="var(--mantine-color-body)">
               <Table.Tr>
-                <Table.Th w={40}>
+                <Table.Th w={44}>
                   <Checkbox
-                    aria-label="Chọn trang"
+                    aria-label="Chọn cả trang"
                     checked={allOnPage}
                     indeterminate={!allOnPage && pageRows.some((r) => selected.includes(r.id))}
                     onChange={() => setSelected((s) => (allOnPage ? s.filter((id) => !pageRows.some((r) => r.id === id)) : [...new Set([...s, ...pageRows.map((r) => r.id)])]))}
                   />
                 </Table.Th>
-                <Table.Th>Hoá đơn</Table.Th>
-                <Th k="issuedAt">Ngày lập</Th>
+                <Table.Th w={140}>Số / Ký hiệu</Table.Th>
+                <Th k="issuedAt" w={105}>Ngày lập</Th>
                 <Th k="partnerName">Đối tác</Th>
-                <Table.Th ta="right">Tiền thuế</Table.Th>
-                <Th k="total" right>Tổng tiền</Th>
-                <Table.Th>Trạng thái</Table.Th>
-                <Table.Th ta="center">Gốc</Table.Th>
-                <Table.Th w={50} />
+                <Table.Th ta="right" w={125}>Tiền hàng</Table.Th>
+                <Th k="vat" right w={115}>Thuế GTGT</Th>
+                <Th k="total" right w={130}>Tổng tiền</Th>
+                <Table.Th w={115}>Trạng thái</Table.Th>
+                <Table.Th ta="center" w={56}>Gốc</Table.Th>
+                <Table.Th w={44} />
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -198,34 +277,49 @@ function InvoicesInner() {
                     <Checkbox aria-label="Chọn" checked={selected.includes(r.id)} onChange={() => setSelected((s) => (s.includes(r.id) ? s.filter((x) => x !== r.id) : [...s, r.id]))} />
                   </Table.Td>
                   <Table.Td>
-                    <Group gap={8} wrap="nowrap">
-                      <Box w={4} h={34} style={{ borderRadius: 4, background: r.direction === 'in' ? 'var(--mantine-color-iris-4)' : 'var(--mantine-color-volt-6)' }} />
+                    <Group gap={10} wrap="nowrap">
+                      <Tooltip label={r.direction === 'in' ? 'Đầu vào' : 'Đầu ra'}>
+                        <Box w={3} h={32} style={{ borderRadius: 2, flexShrink: 0, background: r.direction === 'in' ? 'var(--mantine-color-iris-6)' : 'var(--mantine-color-volt-5)' }} />
+                      </Tooltip>
                       <Box>
-                        <Text fz="sm" fw={700} className="mono">{r.number}</Text>
-                        <Text fz="xs" c="dimmed" className="mono">{r.symbol}</Text>
+                        <Text fz="sm" fw={700} className="mono" lh={1.3}>{r.number}</Text>
+                        <Text fz="xs" c="dimmed" className="mono" lh={1.3}>{r.symbol}</Text>
                       </Box>
                     </Group>
                   </Table.Td>
                   <Table.Td><Text fz="sm" className="tnum">{dateVN(r.issuedAt)}</Text></Table.Td>
-                  <Table.Td maw={300}>
+                  <Table.Td>
                     <Group gap={6} wrap="nowrap">
-                      <Text fz="sm" fw={600} truncate>{r.partnerName}</Text>
-                      {r.risk !== 'none' && <Tooltip label={r.risk === 'high' ? 'MST rủi ro cao' : 'MST cần theo dõi'}><IconAlertTriangle size={15} color={`var(--mantine-color-${r.risk === 'high' ? 'red' : 'yellow'}-5)`} style={{ flexShrink: 0 }} /></Tooltip>}
+                      <Text fz="sm" fw={600} truncate lh={1.3} title={r.partnerName}>{r.partnerName}</Text>
+                      {r.risk !== 'none' && (
+                        <Tooltip label={r.risk === 'high' ? 'MST ngừng hoạt động' : 'MST tạm ngừng kinh doanh'}>
+                          <IconAlertTriangle size={15} color={`var(--mantine-color-${r.risk === 'high' ? 'red' : 'yellow'}-6)`} style={{ flexShrink: 0 }} />
+                        </Tooltip>
+                      )}
                     </Group>
-                    <Group gap={6}>
-                      <Text fz="xs" c="dimmed" className="mono">{r.partnerTax}</Text>
+                    <Group gap={6} wrap="nowrap">
+                      <Text fz="xs" c="dimmed" className="mono" lh={1.3}>{r.partnerTax}</Text>
                       {r.tags.map((t) => <Badge key={t} size="xs" variant="outline" color="gray" leftSection={<IconTag size={9} />}>{t}</Badge>)}
                     </Group>
                   </Table.Td>
-                  <Table.Td ta="right"><Text fz="sm" className="tnum">{r.vat.toLocaleString('vi-VN')}</Text><Text fz="xs" c="dimmed">{r.vatRate}%</Text></Table.Td>
-                  <Table.Td ta="right"><Text fz="sm" fw={800} className="tnum">{r.total.toLocaleString('vi-VN')}</Text></Table.Td>
-                  <Table.Td><Badge color={STATUS_META[r.status].color} variant="dot">{STATUS_META[r.status].label}</Badge></Table.Td>
+                  <Table.Td ta="right"><Text fz="sm" className="tnum">{(r.preTax - r.discount).toLocaleString('vi-VN')}</Text></Table.Td>
+                  <Table.Td ta="right">
+                    <Text fz="sm" className="tnum" lh={1.3}>{r.vat.toLocaleString('vi-VN')}</Text>
+                    <Text fz="xs" c="dimmed" lh={1.3}>{r.vatRate}%</Text>
+                  </Table.Td>
+                  <Table.Td ta="right">
+                    <Text fz="sm" fw={700} className="tnum" lh={1.3}>{r.total.toLocaleString('vi-VN')}</Text>
+                    <Text fz="xs" c={r.paid ? 'teal.7' : 'orange.7'} lh={1.3}>{r.paid ? 'Đã TT' : 'Chưa TT'}</Text>
+                  </Table.Td>
+                  <Table.Td><Badge color={STATUS_META[r.status].color} variant="light" style={{ textTransform: 'none' }}>{STATUS_META[r.status].label}</Badge></Table.Td>
                   <Table.Td ta="center">
-                    {r.hasOriginal ? <IconCloudCheck size={18} color="var(--mantine-color-teal-5)" /> : <IconCloudOff size={18} opacity={0.4} />}
+                    <Tooltip label={r.hasOriginal ? 'Đã lưu XML/PDF' : 'Chưa có bản gốc'}>
+                      {r.hasOriginal ? <IconCloudCheck size={18} color="var(--mantine-color-teal-6)" /> : <IconCloudOff size={18} opacity={0.35} />}
+                    </Tooltip>
                   </Table.Td>
                   <Table.Td onClick={(e) => e.stopPropagation()}>
                     <Menu position="bottom-end" withinPortal>
-                      <Menu.Target><ActionIcon variant="subtle" color="gray"><IconDots size={16} /></ActionIcon></Menu.Target>
+                      <Menu.Target><ActionIcon variant="subtle" color="gray" aria-label="Thao tác"><IconDots size={16} /></ActionIcon></Menu.Target>
                       <Menu.Dropdown>
                         <Menu.Item leftSection={<IconEye size={14} />} onClick={() => setOpen(r)}>Xem chi tiết</Menu.Item>
                         <Menu.Item leftSection={<IconDownload size={14} />}>Tải XML + PDF</Menu.Item>
@@ -236,29 +330,42 @@ function InvoicesInner() {
                 </Table.Tr>
               ))}
               {pageRows.length === 0 && (
-                <Table.Tr><Table.Td colSpan={9}><Box py={60} ta="center"><Text fz={40}>🧾</Text><Text fw={700}>Không có hoá đơn khớp bộ lọc</Text><Button mt="sm" variant="light" onClick={clearAll}>Xoá bộ lọc</Button></Box></Table.Td></Table.Tr>
+                <Table.Tr>
+                  <Table.Td colSpan={10}>
+                    <Box py={56} ta="center">
+                      <Text fw={700}>Không có hoá đơn khớp bộ lọc</Text>
+                      <Text fz="sm" c="dimmed" mt={4}>Thử bỏ bớt điều kiện lọc hoặc đổi khoảng ngày.</Text>
+                      <Button mt="md" variant="light" onClick={clearAll}>Xoá bộ lọc</Button>
+                    </Box>
+                  </Table.Td>
+                </Table.Tr>
               )}
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
 
-        <Group justify="space-between" p="md" style={{ borderTop: '1px solid var(--ihx-border)' }}>
-          <Text fz="sm" c="dimmed">Hiển thị {filtered.length ? (page - 1) * PAGE + 1 : 0}–{Math.min(page * PAGE, filtered.length)} / {filtered.length}</Text>
-          <Pagination total={Math.max(1, Math.ceil(filtered.length / PAGE))} value={page} onChange={setPage} radius="xl" size="sm" />
+        <Group justify="space-between" px="md" py="sm" style={{ borderTop: '1px solid var(--ihx-border)' }}>
+          <Group gap="sm">
+            <Text fz="sm" c="dimmed">
+              {filtered.length ? `${(page - 1) * ps + 1}–${Math.min(page * ps, filtered.length)}` : 0} / {filtered.length} hoá đơn
+            </Text>
+            <Select size="xs" w={110} value={pageSize} onChange={(v) => setPageSize(v ?? '20')} data={PAGE_SIZES.map((v) => ({ value: v, label: `${v} / trang` }))} allowDeselect={false} />
+          </Group>
+          <Pagination total={Math.max(1, Math.ceil(filtered.length / ps))} value={page} onChange={setPage} size="sm" />
         </Group>
-      </Card>
+      </Paper>
 
       <Affix position={{ bottom: 24, left: 0, right: 0 }} zIndex={150}>
         <Transition transition="slide-up" mounted={selected.length > 0}>
           {(styles) => (
             <Group justify="center" style={styles} px="md">
-              <Paper shadow="xl" radius="xl" px="lg" py="sm" style={{ background: '#0f1f3d', border: '1px solid rgba(37,99,235,.4)' }}>
+              <Paper shadow="xl" radius="md" px="md" py="sm" style={{ background: '#0f1f3d' }}>
                 <Group gap="md">
-                  <Text fw={700} c="white">Đã chọn {selected.length} hoá đơn</Text>
-                  <Text fz="sm" c="gray.5" className="tnum" visibleFrom="sm">{compact(invoices.filter((i) => selected.includes(i.id)).reduce((s, i) => s + i.total, 0))}</Text>
-                  <Button size="xs" className="volt-btn" leftSection={<IconDownload size={14} />} onClick={() => { notifications.show({ title: 'Đã đưa vào hàng đợi', message: `Đang nén ${selected.length} hoá đơn (XML + PDF)…`, color: 'iris' }); setSelected([]); }}>Tải bản gốc</Button>
-                  <Button size="xs" variant="white" color="dark" leftSection={<IconFileSpreadsheet size={14} />} onClick={() => exportCsv(invoices.filter((i) => selected.includes(i.id)), 'hoa-don-da-chon.csv')}>Excel</Button>
-                  <ActionIcon variant="subtle" color="gray" onClick={() => setSelected([])}><IconX size={16} /></ActionIcon>
+                  <Text fw={700} c="white" fz="sm">Đã chọn {selected.length} hoá đơn</Text>
+                  <Text fz="sm" c="gray.4" className="tnum" visibleFrom="sm">{vnd(invoices.filter((i) => selected.includes(i.id)).reduce((s, i) => s + i.total, 0))}</Text>
+                  <Button size="xs" leftSection={<IconDownload size={14} />} onClick={() => { notifications.show({ title: 'Đã đưa vào hàng đợi', message: `Đang nén ${selected.length} hoá đơn (XML + PDF)…`, color: 'iris' }); setSelected([]); }}>Tải bản gốc</Button>
+                  <Button size="xs" variant="white" leftSection={<IconFileSpreadsheet size={14} />} onClick={() => exportCsv(invoices.filter((i) => selected.includes(i.id)), 'hoa-don-da-chon.csv')}>Excel</Button>
+                  <ActionIcon variant="subtle" color="gray" onClick={() => setSelected([])} aria-label="Bỏ chọn"><IconX size={16} /></ActionIcon>
                 </Group>
               </Paper>
             </Group>

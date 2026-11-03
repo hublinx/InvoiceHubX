@@ -66,14 +66,14 @@ export default function BillingPage() {
     <>
       <PageHeader eyebrow="Gói dịch vụ" title={<>Đầu tư một lần, <span className="gradient-text">nhẹ đầu cả năm</span></>} subtitle="Giá đã gồm VAT, thanh toán một lần, không tự động gia hạn. Thời hạn càng dài, ưu đãi càng sâu — tối đa 65%." />
 
-      <Grid gap="lg" mb="xl">
+      <Grid gap="md" mb="xl">
         <Grid.Col span={{ base: 12, lg: 7 }}><MembershipCard /></Grid.Col>
         <Grid.Col span={{ base: 12, lg: 5 }}>
           <Card className="glass" p="lg" h="100%">
             <Text fw={800} mb="sm">Bạn đang dùng</Text>
             <SimpleGrid cols={2}>
               {[['MST đã kết nối', '3 / ∞'], ['Lượt tải tháng này', '312'], ['Dung lượng Cloud', '1,8 GB'], ['Thiết bị', '3']].map(([k, v]) => (
-                <Paper key={k} withBorder p="sm" radius="lg"><Text fz="xs" c="dimmed">{k}</Text><Text fw={800} fz="lg" className="tnum">{v}</Text></Paper>
+                <Paper key={k} withBorder p="sm" radius="md"><Text fz="xs" c="dimmed">{k}</Text><Text fw={800} fz="lg" className="tnum">{v}</Text></Paper>
               ))}
             </SimpleGrid>
             <Button mt="md" fullWidth className="volt-btn" onClick={() => setCheckout(plan.id === 'free' ? 'pro' : plan.id)} leftSection={<IconSparkles size={16} />}>
@@ -84,7 +84,7 @@ export default function BillingPage() {
       </Grid>
 
       {/* Duration picker */}
-      <Paper className="glass" withBorder p="md" radius="xl" mb="lg">
+      <Paper className="glass" withBorder p="md" radius="md" mb="lg">
         <Group justify="space-between" mb="sm" px={4}>
           <Text fw={800}>Chọn thời hạn</Text>
           <Text fz="sm" c="dimmed">Áp dụng cho mọi gói trả phí</Text>
@@ -114,7 +114,7 @@ export default function BillingPage() {
           const current = plan.id === p.id;
           const featured = p.id === 'plus';
           return (
-            <Card key={p.id} p="xl" className="glass lift" style={featured ? { borderColor: 'var(--mantine-color-iris-7)', borderWidth: 2, boxShadow: '0 12px 32px -16px rgba(30,58,138,.45)', borderTop: '5px solid var(--mantine-color-volt-5)' } : undefined}>
+            <Card key={p.id} p="lg" className="glass lift" style={featured ? { borderColor: 'var(--mantine-color-iris-7)', borderWidth: 2, boxShadow: '0 12px 32px -16px rgba(30,58,138,.45)', borderTop: '5px solid var(--mantine-color-volt-5)' } : undefined}>
               <Group justify="space-between">
                 <Text fw={800} fz={22}>{p.name}</Text>
                 {current ? <Badge color="teal" variant="filled">Đang dùng</Badge> : p.highlight ? <Badge color="volt" variant="light" >{p.highlight}</Badge> : null}
@@ -177,7 +177,7 @@ export default function BillingPage() {
         </Table.ScrollContainer>
       </Card>
 
-      <Grid gap="lg">
+      <Grid gap="md">
         <Grid.Col span={{ base: 12, lg: 7 }}>
           <Card className="glass" p={0} h="100%">
             <Text fw={800} fz="lg" p="lg" pb={0}>Lịch sử thanh toán</Text>

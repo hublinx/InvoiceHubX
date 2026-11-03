@@ -87,14 +87,14 @@ export default function Dashboard() {
         </Alert>
       )}
 
-      <SimpleGrid cols={{ base: 1, xs: 2, lg: 4 }} mb="lg">
+      <SimpleGrid cols={{ base: 1, xs: 2, lg: 4 }} spacing="md" mb="md">
         <Kpi label="Tổng tiền đầu vào" value={compact(stats.inTotal)} delta={12} icon={IconArrowDownLeft} color="iris" spark={spark('Đầu vào')} />
         <Kpi label="Tổng tiền đầu ra" value={compact(stats.outTotal)} delta={8} icon={IconArrowUpRight} color="teal" spark={spark('Đầu ra')} />
         <Kpi label="VAT được khấu trừ" value={compact(stats.vatIn)} delta={-3} icon={IconReceiptTax} color="yellow" spark={spark('Đầu vào').map((v) => v * 0.09)} />
         <Kpi label="Hoá đơn trong kỳ" value={String(invoices.length)} delta={21} icon={IconFileInvoice} color="cyan" spark={series.map((s) => s['Đầu vào'] + s['Đầu ra'])} />
       </SimpleGrid>
 
-      <Grid gap="lg">
+      <Grid gap="md">
         <Grid.Col span={{ base: 12, lg: 8 }}>
           <Card className="glass" p="lg" h="100%">
             <Group justify="space-between" mb="md">
@@ -208,7 +208,7 @@ export default function Dashboard() {
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Card p="xl" style={{ background: 'linear-gradient(120deg, #1e3a8a 0%, #1d4ed8 50%, #172554 100%)', border: 0 }}>
+          <Card p="lg" style={{ background: 'linear-gradient(120deg, #1e3a8a 0%, #1d4ed8 50%, #172554 100%)', border: 0 }}>
             <Group justify="space-between" gap="lg">
               <Group gap="lg" wrap="nowrap">
                 <ThemeIcon size={56} radius="xl" color="volt"  variant="filled"><IconSparkles size={28} /></ThemeIcon>
@@ -228,7 +228,7 @@ export default function Dashboard() {
               <Group mb="md" gap="xs"><IconAlertTriangle size={20} color="var(--mantine-color-orange-5)" /><Text fw={800} fz="lg">Cảnh báo rủi ro gần đây</Text></Group>
               <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }}>
                 {stats.risky.slice(0, 6).map((r) => (
-                  <Card key={r.id} p="md" radius="lg" withBorder>
+                  <Card key={r.id} p="md" radius="md" withBorder>
                     <Group justify="space-between" mb={4}>
                       <Text fz="xs" className="mono" c="dimmed">{r.symbol} · {r.number}</Text>
                       <Badge color={r.risk === 'high' ? 'red' : 'yellow'}>{r.risk === 'high' ? 'Rủi ro cao' : 'Cần xem'}</Badge>

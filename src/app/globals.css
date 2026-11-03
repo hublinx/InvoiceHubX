@@ -77,3 +77,10 @@ body {
 
 @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 .floaty { animation: floaty 7s ease-in-out infinite; }
+
+/* Dải thống kê: các ô chia bởi đường kẻ mảnh, tự xuống dòng gọn gàng */
+.stat-strip { margin: 0 -1px 0 0; }
+.stat-strip > .stat-cell { border-right: 1px solid var(--ihx-border); border-bottom: 1px solid var(--ihx-border); min-width: 0; }
+
+/* Tiêu đề bảng rõ ràng */
+.mantine-Table-th { font-size: 12px; font-weight: 700; color: var(--mantine-color-dimmed); text-transform: uppercase; letter-spacing: .3px; white-space: nowrap; }

@@ -30,7 +30,7 @@ function PasswordCard() {
   const color = score < 2 ? 'red' : score < 4 ? 'yellow' : 'teal';
   const ok = cur && score === 4 && pw === pw2;
   return (
-    <Card className="glass" p="xl">
+    <Card className="glass" p="lg">
       <Text fw={800} fz="lg">Đổi mật khẩu</Text>
       <Text fz="sm" c="dimmed" mb="lg">Mật khẩu mạnh giúp bảo vệ dữ liệu hoá đơn của mọi doanh nghiệp bạn quản lý.</Text>
       <Stack maw={480}>
@@ -90,7 +90,7 @@ export default function AccountPage() {
         </Tabs.List>
 
         <Tabs.Panel value="profile">
-          <Card className="glass" p="xl">
+          <Card className="glass" p="lg">
             <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
               <TextInput label="Họ và tên" leftSection={<IconUser size={16} />} value={name} onChange={(e) => setName(e.currentTarget.value)} />
               <TextInput label="Số điện thoại" leftSection={<IconPhone size={16} />} value={phone} onChange={(e) => setPhone(e.currentTarget.value)} />
@@ -112,7 +112,7 @@ export default function AccountPage() {
         <Tabs.Panel value="security">
           <Stack gap="lg">
             <PasswordCard />
-            <Card className="glass" p="xl">
+            <Card className="glass" p="lg">
               <Group justify="space-between">
                 <Group>
                   <ThemeIcon size={44} radius="md" variant="light" color="volt"><IconShieldLock size={22} /></ThemeIcon>
@@ -121,7 +121,7 @@ export default function AccountPage() {
                 <Switch size="lg" checked={twoFa} onChange={(e) => setTwoFa(e.currentTarget.checked)} onLabel="BẬT" offLabel="TẮT" />
               </Group>
             </Card>
-            <Card p="xl" style={{ borderColor: 'var(--mantine-color-red-8)' }} className="glass">
+            <Card p="lg" style={{ borderColor: 'var(--mantine-color-red-8)' }} className="glass">
               <Text fw={800} c="red.5">Vùng nguy hiểm</Text>
               <Group justify="space-between" mt="sm">
                 <Text fz="sm" c="dimmed" maw={520}>Xoá vĩnh viễn tài khoản và toàn bộ dữ liệu hoá đơn đã lưu trên Cloud. Không thể hoàn tác.</Text>
@@ -132,7 +132,7 @@ export default function AccountPage() {
         </Tabs.Panel>
 
         <Tabs.Panel value="devices">
-          <Card className="glass" p="xl">
+          <Card className="glass" p="lg">
             <Group justify="space-between" mb="md">
               <Box><Text fw={800} fz="lg">Thiết bị đang đăng nhập</Text><Text fz="sm" c="dimmed">Gói Pro cho phép tối đa 5 thiết bị cùng lúc.</Text></Box>
               <Button variant="light" color="red" disabled={devices.length <= 1} onClick={() => setDevices((d) => d.filter((x) => x.current))}>Đăng xuất tất cả thiết bị khác</Button>
@@ -161,7 +161,7 @@ export default function AccountPage() {
         </Tabs.Panel>
 
         <Tabs.Panel value="notify">
-          <Card className="glass" p="xl">
+          <Card className="glass" p="lg">
             <Stack gap="lg">
               {[
                 ['Có hoá đơn đầu vào mới', 'Gửi tóm tắt mỗi lần đồng bộ có dữ liệu mới', true],
