@@ -101,6 +101,59 @@ body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-are
   mask-image: linear-gradient(180deg, black 0%, black 60%, transparent 100%);
 }
 [data-mantine-color-scheme='dark'] .ledger-bg { opacity: 0.5; }
+
+
+/* ================= Trang đăng nhập ================= */
+.auth-shell .ledger-bg { opacity: .6; }
+
+/* Nền aurora: 3 vệt màu lớn trôi chậm */
+.aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; filter: blur(60px); }
+.aurora .blob { position: absolute; border-radius: 50%; opacity: .55; will-change: transform; }
+.aurora .b1 { width: 620px; height: 620px; left: -160px; top: -220px; background: #93b4fd; animation: drift1 22s ease-in-out infinite alternate; }
+.aurora .b2 { width: 520px; height: 520px; right: -140px; top: 18%; background: #c4b5fd; animation: drift2 26s ease-in-out infinite alternate; }
+.aurora .b3 { width: 560px; height: 560px; left: 30%; bottom: -300px; background: #fcd34d; opacity: .4; animation: drift3 30s ease-in-out infinite alternate; }
+[data-mantine-color-scheme='dark'] .aurora .blob { opacity: .22; }
+@keyframes drift1 { to { transform: translate(180px, 120px) scale(1.15); } }
+@keyframes drift2 { to { transform: translate(-160px, 90px) scale(.9); } }
+@keyframes drift3 { to { transform: translate(-140px, -80px) scale(1.1); } }
+
+/* Viền sáng chạy quanh khung */
+@property --ihx-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+.glow-border {
+  padding: 1.5px; border-radius: 18px;
+  background: conic-gradient(from var(--ihx-angle), rgba(37,99,235,.15), #2563eb, #93b4fd, #f59e0b, rgba(37,99,235,.15) 60%, rgba(37,99,235,.15));
+  animation: spin-border 6s linear infinite;
+  box-shadow: 0 30px 60px -30px rgba(30, 58, 138, .45), 0 0 0 1px rgba(255,255,255,.4) inset;
+}
+@keyframes spin-border { to { --ihx-angle: 360deg; } }
+.auth-card {
+  background: rgba(255, 255, 255, .86) !important;
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+[data-mantine-color-scheme='dark'] .auth-card { background: rgba(21, 26, 38, .85) !important; }
+
+.logo-glow { border-radius: 12px; box-shadow: 0 8px 22px -6px rgba(37, 99, 235, .6); line-height: 0; }
+
+/* Thẻ trang trí trôi */
+.floater { position: absolute; }
+.glass-chip {
+  background: rgba(255, 255, 255, .72) !important;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, .8);
+  box-shadow: 0 18px 40px -20px rgba(15, 31, 61, .35);
+}
+[data-mantine-color-scheme='dark'] .glass-chip { background: rgba(21, 26, 38, .7) !important; border-color: rgba(255,255,255,.08); }
+.float-a { transform: rotate(-6deg); animation: bob 7s ease-in-out infinite; }
+.float-b { transform: rotate(4deg); animation: bob 6s ease-in-out -2s infinite; }
+.float-c { transform: rotate(5deg); animation: bob 8s ease-in-out -4s infinite; }
+.float-d { transform: rotate(-3deg); animation: bob 6.5s ease-in-out -1s infinite; }
+@keyframes bob { 50% { translate: 0 -12px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora .blob, .glow-border, .floater { animation: none !important; }
+}
 @media (max-width: 36em) {
-  .auth-card { box-shadow: none !important; }
+  .aurora { filter: blur(40px); }
+  .glow-border { box-shadow: 0 20px 40px -24px rgba(30, 58, 138, .4); }
 }
