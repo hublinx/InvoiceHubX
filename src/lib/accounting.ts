@@ -127,8 +127,8 @@ export function upcomingDeadlines(today = new Date('2026-11-03')): Deadline[] {
 // ---------- Tra cứu MST (mẫu) ----------
 const KNOWN: Record<string, { name: string; address: string; status: 'active' | 'paused' | 'closed' }> = {
   '0100107518': { name: 'Công ty CP Hàng không Sao Việt', address: 'Long Biên, Hà Nội', status: 'active' },
-  '0314789654': { name: 'Công ty TNHH Vận tải Phương Nam', address: 'Quận 7, TP. Hồ Chí Minh', status: 'closed' },
-  '0316654321': { name: 'Công ty CP Phần mềm Mây Trắng', address: 'Thủ Đức, TP. Hồ Chí Minh', status: 'paused' },
+  '0314789667': { name: 'Công ty TNHH Vận tải Phương Nam', address: 'Quận 7, TP. Hồ Chí Minh', status: 'closed' },
+  '0316654337': { name: 'Công ty CP Phần mềm Mây Trắng', address: 'Thủ Đức, TP. Hồ Chí Minh', status: 'paused' },
 };
 export function lookupTaxCode(mst: string) {
   const k = KNOWN[mst];

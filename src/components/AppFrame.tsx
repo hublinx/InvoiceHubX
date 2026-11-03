@@ -9,7 +9,7 @@ import { Spotlight, spotlight, type SpotlightActionData } from '@mantine/spotlig
 import {
   IconArrowsExchange, IconBell, IconBolt, IconBuildingStore, IconCalculator, IconCreditCard, IconFileInvoice,
   IconHelpCircle, IconLayoutDashboard, IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand, IconLogout,
-  IconRefresh, IconSearch, IconSparkles, IconUserCircle,
+  IconRefresh, IconSearch, IconSparkles, IconUserCircle, IconFileCode, IconZoomCheck,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -26,6 +26,8 @@ export const NAV_GROUPS = [
     items: [
       { href: '/app', label: 'Tổng quan', icon: IconLayoutDashboard },
       { href: '/app/invoices', label: 'Hoá đơn', icon: IconFileInvoice },
+      { href: '/app/xml-reader', label: 'Đọc hoá đơn XML', icon: IconFileCode },
+      { href: '/app/lookup', label: 'Tra cứu MST', icon: IconZoomCheck },
       { href: '/app/tools', label: 'Công cụ kế toán', icon: IconCalculator },
     ],
   },
@@ -267,8 +269,8 @@ export function SectionCard({ title, description, actions, children, noPadding, 
       {(title || actions) && (
         <Group justify="space-between" align="flex-start" px={20} pt={18} pb={noPadding ? 14 : 0} gap="sm" wrap="nowrap">
           <Box style={{ minWidth: 0 }}>
-            {title && <Text fw={700} fz="md">{title}</Text>}
-            {description && <Text fz="xs" c="dimmed" mt={2}>{description}</Text>}
+            {title && <Text component="div" fw={700} fz="md">{title}</Text>}
+            {description && <Text component="div" fz="xs" c="dimmed" mt={2}>{description}</Text>}
           </Box>
           {actions && <Group gap="xs" wrap="nowrap">{actions}</Group>}
         </Group>

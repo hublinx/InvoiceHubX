@@ -12,6 +12,7 @@
     "@mantine/charts": "^9.7.4",
     "@mantine/core": "^9.7.4",
     "@mantine/dates": "^9.7.4",
+    "@mantine/dropzone": "^9.7.4",
     "@mantine/hooks": "^9.7.4",
     "@mantine/notifications": "^9.7.4",
     "@mantine/spotlight": "^9.7.4",

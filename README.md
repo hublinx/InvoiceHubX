@@ -13,6 +13,8 @@ Giao diện (UI-only) cho nền tảng quản lý hoá đơn điện tử: gom h
 | `/` | Landing page |
 | `/app` | Dashboard: KPI, biểu đồ dòng tiền, VAT tạm tính, NCC lớn nhất, cảnh báo rủi ro |
 | `/app/invoices` | Kho hoá đơn: lọc (trạng thái, ngày, thuế suất, rủi ro), sắp xếp, chọn hàng loạt, xuất CSV, drawer chi tiết |
+| `/app/lookup` | Tra cứu MST: nhập là tự tra, kiểm tra chữ số kiểm tra, tra hàng loạt, xuất Excel |
+| `/app/xml-reader` | Đọc hoá đơn XML (TT78): kéo-thả nhiều file, hiển thị như hoá đơn, tự đối chiếu số liệu, chữ ký số, xuất Excel |
 | `/app/tools` | Công cụ kế toán: tính VAT, số tiền bằng chữ, thuế TNCN từ lương, tra cứu MST, lịch hạn nộp thuế, rà soát điều kiện khấu trừ |
 | `/app/companies` | Quản lý MST, wizard thêm MST 3 bước |
 | `/app/sync` | Trung tâm đồng bộ: tiến trình, lịch, Desktop/Cloud, nhật ký |

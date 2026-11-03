@@ -23,9 +23,9 @@ export type Company = {
 };
 
 export const COMPANIES: Company[] = [
-  { id: 'c1', name: 'Công ty Cổ phần Dịch vụ Du lịch Hải Đăng', shortName: 'Hải Đăng Travel', taxCode: '0312456789', status: 'connected', autoSync: true, lastSync: '2026-11-03T08:12:00', invoices: 1284, color: 'iris' },
-  { id: 'c2', name: 'Công ty TNHH Thương mại Minh Khoa', shortName: 'Minh Khoa Trading', taxCode: '0108765432', status: 'syncing', autoSync: true, lastSync: '2026-11-03T07:40:00', invoices: 642, color: 'teal' },
-  { id: 'c3', name: 'Hộ kinh doanh Lan Anh Bakery', shortName: 'Lan Anh Bakery', taxCode: '8034567812', status: 'error', autoSync: false, lastSync: '2026-10-29T21:05:00', invoices: 97, color: 'orange' },
+  { id: 'c1', name: 'Công ty Cổ phần Dịch vụ Du lịch Hải Đăng', shortName: 'Hải Đăng Travel', taxCode: '0312456782', status: 'connected', autoSync: true, lastSync: '2026-11-03T08:12:00', invoices: 1284, color: 'iris' },
+  { id: 'c2', name: 'Công ty TNHH Thương mại Minh Khoa', shortName: 'Minh Khoa Trading', taxCode: '0108765438', status: 'syncing', autoSync: true, lastSync: '2026-11-03T07:40:00', invoices: 642, color: 'teal' },
+  { id: 'c3', name: 'Hộ kinh doanh Lan Anh Bakery', shortName: 'Lan Anh Bakery', taxCode: '8034567810', status: 'error', autoSync: false, lastSync: '2026-10-29T21:05:00', invoices: 97, color: 'orange' },
 ];
 
 export type InvoiceStatus = 'valid' | 'replaced' | 'adjusted' | 'cancelled';
@@ -56,23 +56,23 @@ export type Invoice = {
 
 const SUPPLIERS = [
   ['Công ty CP Hàng không Sao Việt', '0100107518'],
-  ['Công ty TNHH Khách sạn Biển Xanh', '4201234567'],
+  ['Công ty TNHH Khách sạn Biển Xanh', '4201234566'],
   ['Tổng Công ty Điện lực Miền Nam', '0300951119'],
   ['Công ty CP Viễn thông Ánh Dương', '0101245486'],
-  ['Công ty TNHH Vận tải Phương Nam', '0314789654'],
+  ['Công ty TNHH Vận tải Phương Nam', '0314789667'],
   ['Công ty CP Xăng dầu Đại Phát', '0305567890'],
-  ['Công ty TNHH Văn phòng phẩm Hồng Hà', '0108123456'],
-  ['Công ty CP Phần mềm Mây Trắng', '0316654321'],
-  ['Công ty TNHH Nhà hàng Bếp Việt', '0315998877'],
-  ['Công ty CP Lữ hành Thiên Hà', '0102345678'],
+  ['Công ty TNHH Văn phòng phẩm Hồng Hà', '0108123455'],
+  ['Công ty CP Phần mềm Mây Trắng', '0316654337'],
+  ['Công ty TNHH Nhà hàng Bếp Việt', '0315998871'],
+  ['Công ty CP Lữ hành Thiên Hà', '0102345677'],
 ];
 const CUSTOMERS = [
-  ['Công ty TNHH Sự kiện Ngôi Sao', '0317112233'],
-  ['Công ty CP Đầu tư Hưng Thịnh', '0309887766'],
-  ['Trường Quốc tế Bình Minh', '0312223344'],
-  ['Công ty TNHH Dược phẩm An Khang', '0105556677'],
-  ['Ngân hàng TMCP Phú Quý - CN Sài Gòn', '0300112244'],
-  ['Công ty CP Bất động sản Hoàng Gia', '0316667788'],
+  ['Công ty TNHH Sự kiện Ngôi Sao', '0317112231'],
+  ['Công ty CP Đầu tư Hưng Thịnh', '0309887764'],
+  ['Trường Quốc tế Bình Minh', '0312223347'],
+  ['Công ty TNHH Dược phẩm An Khang', '0105556676'],
+  ['Ngân hàng TMCP Phú Quý - CN Sài Gòn', '0300112240'],
+  ['Công ty CP Bất động sản Hoàng Gia', '0316667784'],
 ];
 const ITEMS: [string, string, number][] = [
   ['Vé máy bay HAN - SGN', 'vé', 1_850_000],

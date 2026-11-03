@@ -10,7 +10,7 @@ import {
 } from '@tabler/icons-react';
 import { useMemo, useState, type ReactNode } from 'react';
 import { PageHeader, SectionCard } from '@/components/AppFrame';
-import { calcPit, lookupTaxCode, numberToWords, TAX_CONFIG, upcomingDeadlines, vatFromGross, vatFromNet } from '@/lib/accounting';
+import { calcPit, numberToWords, TAX_CONFIG, upcomingDeadlines, vatFromGross, vatFromNet } from '@/lib/accounting';
 import { STATUS_META } from '@/lib/data';
 import { dateVN, vnd } from '@/lib/format';
 import { useStore } from '@/lib/store';
@@ -21,7 +21,6 @@ const TOOLS = [
   { id: 'vat', label: 'Tính thuế GTGT', desc: 'Tách / cộng VAT 0–10%', icon: IconReceiptTax },
   { id: 'words', label: 'Số tiền bằng chữ', desc: 'Đọc số ghi chứng từ', icon: IconLetterCase },
   { id: 'pit', label: 'Thuế TNCN từ lương', desc: 'Gross → Net, bảo hiểm', icon: IconUserDollar },
-  { id: 'mst', label: 'Tra cứu MST', desc: 'Tình trạng hoạt động', icon: IconSearch },
   { id: 'deadline', label: 'Lịch hạn nộp thuế', desc: 'Các mốc sắp tới', icon: IconCalendarDue },
   { id: 'review', label: 'Rà soát khấu trừ', desc: 'Hoá đơn đầu vào cần xem', icon: IconFileCheck },
 ] as const;
@@ -182,57 +181,6 @@ function PitTool() {
   );
 }
 
-const MST_STATUS = {
-  active: { label: 'Đang hoạt động', color: 'teal' },
-  paused: { label: 'Tạm ngừng kinh doanh', color: 'yellow' },
-  closed: { label: 'Ngừng hoạt động', color: 'red' },
-};
-
-function MstTool() {
-  const [mst, setMst] = useState('');
-  const [res, setRes] = useState<ReturnType<typeof lookupTaxCode> | null>(null);
-  const [busy, setBusy] = useState(false);
-  const valid = /^\d{10}(-\d{3})?$/.test(mst);
-  const go = () => { setBusy(true); setTimeout(() => { setRes(lookupTaxCode(mst)); setBusy(false); }, 600); };
-  return (
-    <SectionCard title="Tra cứu mã số thuế" description="Kiểm tra tên, địa chỉ và tình trạng hoạt động của đối tác trước khi giao dịch.">
-      <Group align="flex-end" gap="sm" mb="lg">
-        <TextInput style={{ flex: 1 }} label="Mã số thuế" placeholder="10 hoặc 13 số" className="mono" value={mst}
-          onChange={(e) => setMst(e.currentTarget.value.trim())} onKeyDown={(e) => e.key === 'Enter' && valid && go()}
-          error={mst && !valid ? 'MST gồm 10 số, hoặc 10 số + “-” + 3 số' : null} />
-        <Button onClick={go} disabled={!valid} loading={busy} leftSection={<IconSearch size={16} />}>Tra cứu</Button>
-      </Group>
-      <Group gap="xs" mb="lg">
-        <Text fz="xs" c="dimmed">Thử:</Text>
-        {['0100107518', '0314789654', '0316654321'].map((v) => <Button key={v} size="compact-xs" variant="default" className="mono" onClick={() => setMst(v)}>{v}</Button>)}
-      </Group>
-      {res && (
-        <Paper withBorder radius="md" p="md">
-          <Group justify="space-between" align="flex-start" mb="sm">
-            <Box>
-              <Text fw={700}>{res.name}</Text>
-              <Text fz="sm" c="dimmed" className="mono">MST {res.taxCode}</Text>
-            </Box>
-            <Badge color={MST_STATUS[res.status].color} variant="light" size="lg">{MST_STATUS[res.status].label}</Badge>
-          </Group>
-          <Divider mb="sm" />
-          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="sm">
-            {[['Địa chỉ', res.address], ['Người đại diện', res.representative], ['Cơ quan thuế quản lý', res.taxOffice], ['Ngày cấp MST', dateVN(res.issuedAt)]].map(([k, v]) => (
-              <Box key={k}><Text fz="xs" c="dimmed">{k}</Text><Text fz="sm" fw={600}>{v}</Text></Box>
-            ))}
-          </SimpleGrid>
-          {res.status !== 'active' && (
-            <Alert mt="md" color={MST_STATUS[res.status].color} variant="light" icon={<IconAlertTriangle size={18} />} p="sm">
-              <Text fz="sm">Hoá đơn từ MST này có thể không đủ điều kiện khấu trừ thuế GTGT. Kiểm tra lại trước khi kê khai.</Text>
-            </Alert>
-          )}
-          <Text fz="xs" c="dimmed" mt="sm">Dữ liệu mẫu trong bản demo.</Text>
-        </Paper>
-      )}
-    </SectionCard>
-  );
-}
-
 const KIND_COLOR = { GTGT: 'iris', TNCN: 'grape', TNDN: 'cyan', Khác: 'gray' } as const;
 
 function DeadlineTool() {
@@ -309,7 +257,7 @@ function ReviewTool() {
 
 export default function ToolsPage() {
   const [tool, setTool] = useState<ToolId>('vat');
-  const Panel = { vat: VatTool, words: WordsTool, pit: PitTool, mst: MstTool, deadline: DeadlineTool, review: ReviewTool }[tool];
+  const Panel = { vat: VatTool, words: WordsTool, pit: PitTool, deadline: DeadlineTool, review: ReviewTool }[tool];
 
   return (
     <>
