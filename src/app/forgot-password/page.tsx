@@ -35,7 +35,7 @@ export default function ForgotPage() {
     <AuthLayout title="Quên mật khẩu" subtitle="Nhập email đăng ký, chúng tôi sẽ gửi liên kết đặt lại mật khẩu." footer={back}>
       <form noValidate onSubmit={(e) => { e.preventDefault(); setTouched(true); if (!EMAIL_RE.test(email)) return; setBusy(true); setTimeout(() => { setBusy(false); setSent(true); setWait(60); }, 700); }}>
         <Stack gap="md">
-          <TextInput label="Email" type="email" size="md" leftSection={<IconMail size={18} />} value={email} onChange={(e) => setEmail(e.currentTarget.value.trim())}
+          <TextInput label="Email" type="email" leftSection={<IconMail size={18} />} value={email} onChange={(e) => setEmail(e.currentTarget.value.trim())}
             error={touched && !EMAIL_RE.test(email) ? 'Email không hợp lệ' : null} autoComplete="email" data-autofocus />
           <Button type="submit" size="md" loading={busy} fullWidth>Gửi liên kết đặt lại</Button>
         </Stack>

@@ -60,20 +60,21 @@ export default function RegisterPage() {
 
   return (
     <AuthLayout
-      title="Tạo tài khoản"
-      subtitle="Miễn phí gói Starter trọn đời — không cần thẻ thanh toán."
+      tabs
+      title="Tạo tài khoản miễn phí"
+      subtitle="Gói Starter miễn phí trọn đời, không cần thẻ thanh toán"
       footer={<Text fz="sm" c="dimmed">Đã có tài khoản? <Anchor component={Link} href="/login" fw={600}>Đăng nhập</Anchor></Text>}
     >
       <GoogleButton text="signup_with" label="Đăng ký với Google" onSuccess={finish} />
       <OrDivider />
       <form noValidate onSubmit={(e) => { e.preventDefault(); setTouched(true); if (valid) { setStep('otp'); setResend(60); } }}>
         <Stack gap="md">
-          <TextInput label="Họ và tên" size="md" leftSection={<IconUser size={18} />} value={name} onChange={(e) => setName(e.currentTarget.value)}
+          <TextInput label="Họ và tên" leftSection={<IconUser size={18} />} value={name} onChange={(e) => setName(e.currentTarget.value)}
             error={touched && name.trim().length < 2 ? 'Vui lòng nhập họ tên' : null} autoComplete="name" />
-          <TextInput label="Email công việc" type="email" size="md" leftSection={<IconMail size={18} />} value={email} onChange={(e) => setEmail(e.currentTarget.value.trim())}
+          <TextInput label="Email công việc" type="email" leftSection={<IconMail size={18} />} value={email} onChange={(e) => setEmail(e.currentTarget.value.trim())}
             error={touched && !EMAIL_RE.test(email) ? 'Email không hợp lệ' : null} autoComplete="email" />
           <Box>
-            <PasswordInput label="Mật khẩu" size="md" leftSection={<IconLock size={18} />} value={pw} onChange={(e) => setPw(e.currentTarget.value)}
+            <PasswordInput label="Mật khẩu" leftSection={<IconLock size={18} />} value={pw} onChange={(e) => setPw(e.currentTarget.value)}
               error={touched && score < 4 ? 'Mật khẩu chưa đủ mạnh' : null} autoComplete="new-password" />
             <Progress value={(score / 4) * 100} color={score < 2 ? 'red' : score < 4 ? 'yellow' : 'teal'} size={4} mt={8} radius="xl" />
             <Group gap="md" mt={6}>

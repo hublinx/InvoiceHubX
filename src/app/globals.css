@@ -92,3 +92,15 @@ body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-are
 .mantine-AppShell-header { background: var(--ihx-surface); }
 .mantine-AppShell-main { padding-bottom: calc(var(--mantine-spacing-md) + env(safe-area-inset-bottom, 0px)); }
 .mantine-AppShell-navbar { padding-bottom: calc(var(--mantine-spacing-md) + env(safe-area-inset-bottom, 0px)) !important; }
+
+/* Nền trang đăng nhập: giấy kẻ dòng kiểu sổ kế toán, có lề đỏ */
+.ledger-bg {
+  background-image:
+    linear-gradient(90deg, transparent 71px, rgba(220, 38, 38, 0.18) 71px, rgba(220, 38, 38, 0.18) 73px, transparent 73px),
+    repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(37, 99, 235, 0.08) 31px, rgba(37, 99, 235, 0.08) 32px);
+  mask-image: linear-gradient(180deg, black 0%, black 60%, transparent 100%);
+}
+[data-mantine-color-scheme='dark'] .ledger-bg { opacity: 0.5; }
+@media (max-width: 36em) {
+  .auth-card { box-shadow: none !important; }
+}
